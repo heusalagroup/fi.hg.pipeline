@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Job, { isJob } from "./Job";
-import { hasNoOtherKeys, isArray, isRegularObject, map } from "../../ts/modules/lodash";
+import { hasNoOtherKeys, isArray, isArrayOf, isRegularObject, map } from "../../ts/modules/lodash";
 import Name, { isName } from "./Name";
 
 export interface Stage {
@@ -15,7 +15,7 @@ export function isStage (value: any): value is Stage {
     return (
         isRegularObject(value)
         && isName(value?.name)
-        && isArray(value?.jobs, isJob, 1)
+        && isArrayOf(value?.jobs, isJob, 1)
         && hasNoOtherKeys(value, ['name', 'jobs'])
     );
 }

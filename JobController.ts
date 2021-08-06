@@ -4,7 +4,7 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import StepController, { isStepController } from "./types/StepController";
-import { filter, forEach, isArray, map } from "../ts/modules/lodash";
+import { filter, forEach, isArray, isArrayOf, map } from "../ts/modules/lodash";
 import LogService from "../ts/LogService";
 import { ScriptControllerEvent } from "./ScriptController";
 import Controller from "./types/Controller";
@@ -51,7 +51,7 @@ export class JobController implements Controller {
     ) {
 
         if ( !isName(name) ) throw new TypeError(`Job name invalid: ${name}`);
-        if ( !isArray(steps, isStepController, 1) ) throw new TypeError(`Job#${name} must have at least one step`);
+        if ( !isArrayOf(steps, isStepController, 1) ) throw new TypeError(`Job#${name} must have at least one step`);
 
         this._current         = 0;
         this._name            = name;

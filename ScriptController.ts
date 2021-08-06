@@ -4,7 +4,13 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import StepController from "./types/StepController";
-import { isArray, isRegularObject, isString } from "../ts/modules/lodash";
+import {
+    isArray,
+    isArrayOf,
+    isRegularObject,
+    isRegularObjectOf,
+    isString
+} from "../ts/modules/lodash";
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import LogService from "../ts/LogService";
 
@@ -59,8 +65,8 @@ export class ScriptController implements StepController {
 
         if ( !isName(name) ) throw new TypeError(`Script name invalid: ${name}`);
         if ( !isString(command) ) throw new TypeError(`Script#${name} must have a valid command: ${command}`);
-        if ( !isArray(args, isString, 0) ) throw new TypeError(`Script#${name} must have a valid args: ${JSON.stringify(args)}`);
-        if ( !isRegularObject<string, string>(env, isString, isString) ) throw new TypeError(`Script#${name} must have a valid env: ${JSON.stringify(env)}`);
+        if ( !isArrayOf(args, isString, 0) ) throw new TypeError(`Script#${name} must have a valid args: ${JSON.stringify(args)}`);
+        if ( !isRegularObjectOf<string, string>(env, isString, isString) ) throw new TypeError(`Script#${name} must have a valid env: ${JSON.stringify(env)}`);
 
         this._state          = ScriptControllerState.CONSTRUCTED;
         this._name           = name;

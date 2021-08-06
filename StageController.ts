@@ -4,7 +4,7 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import JobController, { isJobController } from "./JobController";
-import { isArray, map } from "../ts/modules/lodash";
+import { isArrayOf, map } from "../ts/modules/lodash";
 import Controller from "./types/Controller";
 
 export enum StageControllerEvent {
@@ -38,7 +38,7 @@ export class StageController implements Controller {
     ) {
 
         if ( !isName(name) ) throw new TypeError(`Stage name invalid: ${name}`);
-        if ( !isArray(jobs, isJobController, 1) ) throw new TypeError(`Stage#${name} must have at least one job`);
+        if ( !isArrayOf(jobs, isJobController, 1) ) throw new TypeError(`Stage#${name} must have at least one job`);
 
         this._name     = name;
         this._jobs     = jobs;

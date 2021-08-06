@@ -4,7 +4,7 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import StageController, { isStageController } from "./StageController";
-import { isArray, map } from "../ts/modules/lodash";
+import { isArray, isArrayOf, map } from "../ts/modules/lodash";
 import Controller from "./types/Controller";
 
 export enum PipelineControllerEvent {
@@ -42,7 +42,7 @@ export class PipelineController implements Controller {
     ) {
 
         if ( !isName(name) ) throw new TypeError(`Pipeline name invalid: ${name}`);
-        if ( !isArray(stages, isStageController, 1) ) throw new TypeError(`Pipeline#${name} must have at least one stage`);
+        if ( !isArrayOf(stages, isStageController, 1) ) throw new TypeError(`Pipeline#${name} must have at least one stage`);
 
         this._name     = name;
         this._stages   = stages;

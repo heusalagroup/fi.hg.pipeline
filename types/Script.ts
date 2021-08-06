@@ -3,9 +3,9 @@
 import Step from "./Step";
 import {
     hasNoOtherKeys,
-    isArrayOrUndefined,
+    isArrayOrUndefinedOf,
     isRegularObject,
-    isRegularObjectOrUndefined,
+    isRegularObjectOrUndefinedOf,
     isString
 } from "../../ts/modules/lodash";
 import Name, { isName } from "./Name";
@@ -24,8 +24,8 @@ export function isScript (value: any): value is Script {
         isRegularObject(value)
         && isName(value?.name)
         && isString(value?.command)
-        && isArrayOrUndefined(value?.args, isString)
-        && isRegularObjectOrUndefined<string, string>(value?.env, isString, isString)
+        && isArrayOrUndefinedOf(value?.args, isString)
+        && isRegularObjectOrUndefinedOf<string, string>(value?.env, isString, isString)
         && hasNoOtherKeys(value, ['name', 'command', 'args', 'env'])
     );
 }

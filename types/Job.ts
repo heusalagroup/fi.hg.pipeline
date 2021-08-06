@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Step, { isStep } from "./Step";
-import { hasNoOtherKeys, isArray, isRegularObject, map } from "../../ts/modules/lodash";
+import { hasNoOtherKeys, isArrayOf, isRegularObject, map } from "../../ts/modules/lodash";
 import { isName } from "./Name";
 
 
@@ -17,7 +17,7 @@ export function isJob (value: any): value is Job {
     return (
         isRegularObject(value)
         && isName(value?.name)
-        && isArray(value?.steps, isStep, 1)
+        && isArrayOf(value?.steps, isStep, 1)
         && hasNoOtherKeys(value, ['name', 'steps'])
     );
 }

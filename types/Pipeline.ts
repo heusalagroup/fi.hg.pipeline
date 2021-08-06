@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Stage, { isStage } from "./Stage";
-import { hasNoOtherKeys, isArray, isRegularObject, map } from "../../ts/modules/lodash";
+import { hasNoOtherKeys, isArrayOf, isRegularObject, map } from "../../ts/modules/lodash";
 import { isName } from "./Name";
 
 
@@ -17,7 +17,7 @@ export function isPipeline (value: any): value is Pipeline {
     return (
         isRegularObject(value)
         && isName(value?.name)
-        && isArray(value?.stages, isStage, 1)
+        && isArrayOf(value?.stages, isStage, 1)
         && hasNoOtherKeys(value, ['name', 'stages'])
     );
 }

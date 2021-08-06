@@ -1,13 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isString, trim } from "../../ts/modules/lodash";
+import { isString, isStringOf, trim } from "../../ts/modules/lodash";
 
 
 export type Name = string;
 
 
 export function isName (value: any): value is Name {
-    return isString(value, 1) && value.indexOf(' ') < 0;
+    return isStringOf(value, 1) && value.indexOf(' ') < 0;
 }
 
 export function stringifyName (value: Name): string {
