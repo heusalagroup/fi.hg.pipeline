@@ -1,12 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import JobController, { isJobController } from "./JobController";
+import ScriptController from "./ScriptController";
 
 describe('isJobController', () => {
 
     test('can detect JobControllers', () => {
 
-        expect(isJobController(new JobController())).toBe(true);
+        expect( isJobController( new JobController("build", [new ScriptController("build_npm", "npm", ["run", "build"])]) ) ).toBe(true);
 
     });
 
@@ -49,7 +50,7 @@ describe('JobController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new JobController()).not.toThrow();
+            expect(() => new JobController("build", [new ScriptController("build_npm", "npm", ["run", "build"])])).not.toThrow();
         });
 
     });
@@ -57,7 +58,31 @@ describe('JobController', () => {
     describe('#toJSON', () => {
 
         test('can turn class to JSON', () => {
-            expect((new JobController()).toJSON()).toStrictEqual({type:'JobController'});
+
+            expect(
+                (new JobController(
+                    "build",
+                    [
+                        new ScriptController(
+                            "build_npm",
+                            "npm",
+                            [ "run", "build" ]
+                        )
+                    ]
+                )).toJSON()
+            ).toStrictEqual({
+                type: 'JobController',
+                name: 'build',
+                steps: [
+                    {
+                        type: "ScriptController",
+                        name: "build_npm",
+                        args: [ "run", "build" ],
+                        env: {}
+                    }
+                ]
+            });
+
         });
 
     });
@@ -65,7 +90,7 @@ describe('JobController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect((new JobController()).toString()).toBe('JobController');
+            expect( ( new JobController("build", [new ScriptController("build_npm", "npm", ["run", "build"])]) ).toString() ).toBe('JobController#build');
         });
 
     });

@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isScript, parseScript, stringifyScript } from "./Script";
-import { isTask, stringifyTask } from "./Task";
+import Script, { isScript, parseScript, stringifyScript } from "./Script";
+import Task, { isTask, stringifyTask } from "./Task";
 import { parseJob } from "./Job";
 
 
@@ -58,6 +58,20 @@ export namespace Step {
 
     export function parse (value: any): Step | undefined {
         return parseStep(value);
+    }
+
+    export function copy (value : Step) : Step {
+
+        if ( isScript(value) ) {
+            return Script.copy(value);
+        }
+
+        if ( isTask(value) ) {
+            return Task.copy(value);
+        }
+
+        throw new TypeError(`Cannot copy unknown step: ${value}`);
+
     }
 
 }

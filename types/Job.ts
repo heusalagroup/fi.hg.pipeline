@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Step, { isStep, stringifyStep } from "./Step";
-import { hasNoOtherKeys, isArray, isRegularObject, isString, map } from "../../ts/modules/lodash";
+import Step, { isStep } from "./Step";
+import { hasNoOtherKeys, isArray, isRegularObject, map } from "../../ts/modules/lodash";
 import { isName } from "./Name";
 
 
@@ -48,6 +48,13 @@ export namespace Job {
 
     export function parse (value: any): Job | undefined {
         return parseJob(value);
+    }
+
+    export function copy (value : Job) : Job {
+        return {
+            name: value.name,
+            steps: map(value.steps, Step.copy)
+        };
     }
 
 }

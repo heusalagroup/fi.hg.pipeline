@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Stage, { isStage } from "./Stage";
-import { hasNoOtherKeys, isArray, isRegularObject, isString } from "../../ts/modules/lodash";
+import { hasNoOtherKeys, isArray, isRegularObject, map } from "../../ts/modules/lodash";
 import { isName } from "./Name";
 
 
@@ -48,6 +48,13 @@ export namespace Pipeline {
 
     export function parse (value: any): Pipeline | undefined {
         return parsePipeline(value);
+    }
+
+    export function copy (value : Pipeline) : Pipeline {
+        return {
+            name: value.name,
+            stages: map(value.stages, Stage.copy)
+        };
     }
 
 }

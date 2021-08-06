@@ -1,3 +1,5 @@
+// Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
+
 import Step, { isStep, parseStep, stringifyStep } from "./Step";
 import Script from "./Script";
 

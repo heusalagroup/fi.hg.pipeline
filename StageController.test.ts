@@ -1,12 +1,18 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import StageController, { isStageController } from "./StageController";
+import JobController from "./JobController";
+import ScriptController from "./ScriptController";
 
 describe('isStageController', () => {
 
     test('can detect StageControllers', () => {
 
-        expect(isStageController(new StageController())).toBe(true);
+        expect( isStageController( new StageController("build", [
+            new JobController("build", [
+                new ScriptController("build_npm", "npm", ["run", "build"])
+            ])
+        ]) ) ).toBe(true);
 
     });
 
@@ -49,7 +55,11 @@ describe('StageController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new StageController()).not.toThrow();
+            expect(() => new StageController("build", [
+            new JobController("build", [
+                new ScriptController("build_npm", "npm", ["run", "build"])
+            ])
+        ])).not.toThrow();
         });
 
     });
@@ -57,7 +67,32 @@ describe('StageController', () => {
     describe('#toJSON', () => {
 
         test('can turn class to JSON', () => {
-            expect((new StageController()).toJSON()).toStrictEqual({type: 'StageController'});
+
+            expect(
+                (new StageController("build", [
+                    new JobController("build", [
+                        new ScriptController("build_npm", "npm", [ "run", "build" ])
+                    ])
+                ])).toJSON()
+            ).toStrictEqual({
+                type: 'StageController',
+                name: 'build',
+                jobs: [
+                    {
+                        type: 'JobController',
+                        name: 'build',
+                        steps: [
+                            {
+                                type: "ScriptController",
+                                name: "build_npm",
+                                args: [ "run", "build" ],
+                                env: {}
+                            }
+                        ]
+                    }
+                ]
+            });
+
         });
 
     });
@@ -65,7 +100,11 @@ describe('StageController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect((new StageController()).toString()).toBe('StageController');
+            expect((new StageController("build", [
+            new JobController("build", [
+                new ScriptController("build_npm", "npm", ["run", "build"])
+            ])
+        ])).toString()).toBe('StageController');
         });
 
     });

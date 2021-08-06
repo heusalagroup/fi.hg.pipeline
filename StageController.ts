@@ -2,6 +2,9 @@
 
 import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
+import Name, { isName } from "./types/Name";
+import JobController, { isJobController } from "./JobController";
+import { isArray, map } from "../ts/modules/lodash";
 
 export enum StageControllerEvent {
 
@@ -23,11 +26,26 @@ export type StageControllerDestructor = ObserverDestructor;
 
 export class StageController {
 
-    private readonly _observer: Observer<StageControllerEvent>;
+    private readonly _observer : Observer<StageControllerEvent>;
+    private readonly _name     : Name;
+    private readonly _jobs     : JobController[];
 
 
-    public constructor () {
-        this._observer = new Observer<StageControllerEvent>("StageController");
+    public constructor (
+        name: Name,
+        jobs: JobController[]
+    ) {
+
+        if ( !isName(name) ) throw new TypeError(`Stage name invalid: ${name}`);
+        if ( !isArray(jobs, isJobController, 1) ) throw new TypeError(`Stage#${name} must have at least one job`);
+
+        this._name     = name;
+        this._jobs     = jobs;
+        this._observer = new Observer<StageControllerEvent>(`StageController#${this._name}`);
+    }
+
+    public getName () : Name {
+        return this._name;
     }
 
     public destroy (): void {
@@ -47,7 +65,9 @@ export class StageController {
 
     public toJSON (): Json {
         return {
-            type: 'StageController'
+            type: 'StageController',
+            name: this._name,
+            jobs : map(this._jobs, (item: JobController) : Json => item.toJSON())
         };
     }
 

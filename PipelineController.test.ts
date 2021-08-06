@@ -1,12 +1,21 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import PipelineController, { isPipelineController } from "./PipelineController";
+import StageController from "./StageController";
+import JobController from "./JobController";
+import ScriptController from "./ScriptController";
 
 describe('isPipelineController', () => {
 
     test('can detect PipelineControllers', () => {
 
-        expect(isPipelineController(new PipelineController())).toBe(true);
+        expect( isPipelineController( new PipelineController("foo", [
+            new StageController("build", [
+                new JobController("build", [
+                    new ScriptController("build_npm", "npm", ["run", "build"])
+                ])
+            ])
+        ]) ) ).toBe(true);
 
     });
 
@@ -49,7 +58,13 @@ describe('PipelineController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new PipelineController()).not.toThrow();
+            expect(() => new PipelineController("foo", [
+            new StageController("build", [
+                new JobController("build", [
+                    new ScriptController("build_npm", "npm", ["run", "build"])
+                ])
+            ])
+        ])).not.toThrow();
         });
 
     });
@@ -57,7 +72,42 @@ describe('PipelineController', () => {
     describe('#toJSON', () => {
 
         test('can turn class to JSON', () => {
-            expect((new PipelineController()).toJSON()).toStrictEqual({type: 'PipelineController'});
+
+            expect(
+                (
+                    new PipelineController("foo", [
+                        new StageController("build", [
+                            new JobController("build", [
+                                new ScriptController("build_npm", "npm", ["run", "build"])
+                            ])
+                        ])
+                    ])
+                ).toJSON()
+            ).toStrictEqual({
+                type: 'PipelineController',
+                name: 'foo',
+                stages: [
+                    {
+                        type: 'StageController',
+                        name: 'build',
+                        jobs: [
+                            {
+                                type: 'JobController',
+                                name: 'build',
+                                steps: [
+                                    {
+                                        type: "ScriptController",
+                                        name: "build_npm",
+                                        args: [ "run", "build" ],
+                                        env: {}
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
+
         });
 
     });
@@ -65,7 +115,13 @@ describe('PipelineController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect((new PipelineController()).toString()).toBe('PipelineController');
+            expect((new PipelineController("foo", [
+            new StageController("build", [
+                new JobController("build", [
+                    new ScriptController("build_npm", "npm", ["run", "build"])
+                ])
+            ])
+        ])).toString()).toBe('PipelineController#foo');
         });
 
     });

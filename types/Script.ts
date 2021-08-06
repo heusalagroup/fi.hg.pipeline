@@ -2,17 +2,17 @@
 
 import Step from "./Step";
 import {
-    everyProperty,
     hasNoOtherKeys,
     isArrayOrUndefined,
-    isRegularObject, isRegularObjectOrUndefined,
-    isString, isUndefined
+    isRegularObject,
+    isRegularObjectOrUndefined,
+    isString
 } from "../../ts/modules/lodash";
-import { isName } from "./Name";
+import Name, { isName } from "./Name";
 
 export interface Script extends Step {
 
-    readonly name     : string;
+    readonly name     : Name;
     readonly command  : string;
     readonly args    ?: string[];
     readonly env     ?: {[key: string]: string};
@@ -56,6 +56,33 @@ export namespace Script {
 
     export function parse (value: any): Script | undefined {
         return parseScript(value);
+    }
+
+    export function copy (value : Script) : Script {
+
+        let tmp : Script = {
+            name: value.name,
+            command: value.command
+        };
+
+        const args : string[] | undefined = value.args;
+        if (args !== undefined) {
+            tmp = {
+                ...tmp,
+                args: [...args],
+            };
+        }
+
+        const env : {[key: string]: string} | undefined = value.env;
+        if (env !== undefined) {
+            tmp = {
+                ...tmp,
+                env: {...env},
+            };
+        }
+
+        return tmp;
+
     }
 
 }

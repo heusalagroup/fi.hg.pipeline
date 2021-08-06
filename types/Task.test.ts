@@ -302,4 +302,22 @@ describe('Task', () => {
 
     });
 
+    describe('.copy', () => {
+
+        test('can make a copy', () => {
+
+            const value = {name: "foo"};
+            const copyOfValue : Task = Task.copy(value);
+            expect(copyOfValue).toStrictEqual({name: "foo"});
+
+            // @ts-ignore
+            copyOfValue.name = "bar";
+
+            expect(copyOfValue).toStrictEqual({name: "bar"});
+            expect(value).toStrictEqual({name: "foo"});
+
+        });
+
+    });
+
 });

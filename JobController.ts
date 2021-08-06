@@ -2,6 +2,10 @@
 
 import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
+import Name, { isName } from "./types/Name";
+import StepController, { isStepController } from "./StepController";
+import { isArray, map } from "../ts/modules/lodash";
+import { isStageController } from "./StageController";
 
 export enum JobControllerEvent {
 
@@ -19,11 +23,26 @@ export type JobControllerDestructor = ObserverDestructor;
 
 export class JobController {
 
-    private readonly _observer: Observer<JobControllerEvent>;
+    private readonly _observer : Observer<JobControllerEvent>;
+    private readonly _name     : Name;
+    private readonly _steps    : StepController[];
 
 
-    public constructor () {
-        this._observer = new Observer<JobControllerEvent>("JobController");
+    public constructor (
+        name  : Name,
+        steps : StepController[] = []
+    ) {
+        if ( !isName(name) ) throw new TypeError(`Job name invalid: ${name}`);
+        if ( !isArray(steps, isStepController, 1) ) throw new TypeError(`Job#${name} must have at least one step`);
+
+        this._name     = name;
+        this._steps    = steps;
+        this._observer = new Observer<JobControllerEvent>(`JobController#${this._name}`);
+
+    }
+
+    public getName () : Name {
+        return this._name;
     }
 
     public destroy (): void {
@@ -38,12 +57,14 @@ export class JobController {
     }
 
     public toString (): string {
-        return 'JobController';
+        return `JobController#${this._name}`;
     }
 
     public toJSON (): Json {
         return {
-            type: 'JobController'
+            type  : 'JobController',
+            name  : this._name,
+            steps : map(this._steps, (item: StepController) : Json => item.toJSON())
         };
     }
 

@@ -1,12 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Job, { isJob } from "./Job";
-import { every, hasNoOtherKeys, isArray, isRegularObject } from "../../ts/modules/lodash";
-import { isName } from "./Name";
+import { hasNoOtherKeys, isArray, isRegularObject, map } from "../../ts/modules/lodash";
+import Name, { isName } from "./Name";
 
 export interface Stage {
 
-    readonly name : string;
+    readonly name : Name;
     readonly jobs : readonly Job[];
 
 }
@@ -43,6 +43,13 @@ export namespace Stage {
 
     export function parse (value: any): Stage | undefined {
         return parseStage(value);
+    }
+
+    export function copy (value : Stage) : Stage {
+        return {
+            name: value.name,
+            jobs: map(value.jobs, Job.copy)
+        };
     }
 
 }

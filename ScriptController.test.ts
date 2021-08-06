@@ -6,7 +6,7 @@ describe('isScriptController', () => {
 
     test('can detect ScriptControllers', () => {
 
-        expect(isScriptController(new ScriptController())).toBe(true);
+        expect(isScriptController(new ScriptController("npm_build", "npm", ["run", "build"]))).toBe(true);
 
     });
 
@@ -48,7 +48,7 @@ describe('ScriptController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new ScriptController()).not.toThrow();
+            expect(() => new ScriptController("npm_build", "npm", ["run", "build"])).not.toThrow();
         });
 
     });
@@ -56,7 +56,7 @@ describe('ScriptController', () => {
     describe('#toJSON', () => {
 
         test('can turn class to JSON', () => {
-            expect((new ScriptController()).toJSON()).toStrictEqual({type: 'ScriptController'});
+            expect( (new ScriptController("npm_build", "npm", ["run", "build"])).toJSON() ).toStrictEqual({type: 'ScriptController', args: ["run", "build"], env: {}, name: 'npm_build'});
         });
 
     });
@@ -64,7 +64,7 @@ describe('ScriptController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect((new ScriptController()).toString()).toBe('ScriptController');
+            expect( (new ScriptController("npm_build", "npm", ["run", "build"])).toString() ).toBe('ScriptController#npm_build');
         });
 
     });

@@ -1,3 +1,5 @@
+// Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
+
 import Pipeline, { isPipeline, parsePipeline, stringifyPipeline } from "./Pipeline";
 import Script from "./Script";
 

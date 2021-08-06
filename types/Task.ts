@@ -42,6 +42,10 @@ export namespace Task {
         return parseTask(value);
     }
 
+    export function copy (value : Task) : Task {
+        return {...value};
+    }
+
 }
 
 export default Task;
