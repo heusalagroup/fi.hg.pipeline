@@ -5,6 +5,7 @@ import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import JobController, { isJobController } from "./JobController";
 import { isArray, map } from "../ts/modules/lodash";
+import Controller from "./types/Controller";
 
 export enum StageControllerEvent {
 
@@ -24,7 +25,7 @@ export enum StageControllerEvent {
 
 export type StageControllerDestructor = ObserverDestructor;
 
-export class StageController {
+export class StageController implements Controller {
 
     private readonly _observer : Observer<StageControllerEvent>;
     private readonly _name     : Name;
@@ -73,6 +74,78 @@ export class StageController {
 
 
     public static Event = StageControllerEvent;
+
+    public isCancelled (): boolean {
+        return false;
+    }
+
+    public isFailed (): boolean {
+        return false;
+    }
+
+    public isFinished (): boolean {
+        return false;
+    }
+
+    public isPaused (): boolean {
+        return false;
+    }
+
+    public isRunning (): boolean {
+        return false;
+    }
+
+    public isStarted (): boolean {
+        return false;
+    }
+
+    public isSuccessful (): boolean {
+        return false;
+    }
+
+    public onCancelled (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public onChanged (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public onFailed (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public onFinished (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public onPaused (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public onResumed (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public onStarted (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
+        throw new Error('Not implenented')
+    }
+
+    public pause (): Controller {
+        throw new Error('Not implenented')
+    }
+
+    public resume (): Controller {
+        throw new Error('Not implenented')
+    }
+
+    public start (): Controller {
+        throw new Error('Not implenented')
+    }
+
+    public stop (): Controller {
+        throw new Error('Not implenented')
+    }
 
 }
 
