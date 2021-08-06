@@ -4,7 +4,7 @@ import FS from "fs/promises";
 import Json from "../ts/Json";
 import Pipeline, { isPipeline, parsePipeline } from "./types/Pipeline";
 import Stage, { isStage, parseStage } from "./types/Stage";
-import Step, { isStep, parseStep } from "./types/Step";
+import Step, { parseStep } from "./types/Step";
 import Job, { isJob, parseJob } from "./types/Job";
 import LogService from "../ts/LogService";
 import PipelineController from "./PipelineController";
@@ -19,14 +19,14 @@ import { ObserverDestructor } from "../ts/Observer";
 
 const LOG = LogService.createLogger('Runner');
 
-export namespace Runner {
+export class Runner {
 
-    export function usage (scriptName: string) : number {
+    public static usage (scriptName: string) : number {
         console.log(`USAGE: ${scriptName} PIPELINE_FILE|STAGE_FILE|JOB_FILE|STEP_FILE`);
         return 1;
     }
 
-    export function createStepController (step: Step) : StepController {
+    public static createStepController (step: Step) : StepController {
 
         if (isScript(step)) {
             return new ScriptController(
@@ -41,44 +41,48 @@ export namespace Runner {
 
     }
 
-    export function createJobController (job: Job) : JobController {
+    public static createJobController (job: Job) : JobController {
 
         return new JobController(
             job.name,
-            map(job.steps, (step: Step) : StepController => createStepController(step))
+            map(job.steps, (step: Step) : StepController => this.createStepController(step))
         );
 
     }
 
-    export function createStageController (stage: Stage) : StageController {
+    public static createStageController (stage: Stage) : StageController {
 
         return new StageController(
             stage.name,
-            map(stage.jobs, (job : Job) : JobController => createJobController(job))
+            map(stage.jobs, (job : Job) : JobController => this.createJobController(job))
         );
 
     }
 
-    export function createPipelineController (model: Pipeline) : PipelineController {
+    public static createPipelineController (model: Pipeline) : PipelineController {
 
         return new PipelineController(
             model.name,
-            map(model.stages, (stage : Stage) : StageController => createStageController(stage))
+            map(model.stages, (stage : Stage) : StageController => this.createStageController(stage))
         );
 
     }
 
-    export async function main (
-        scriptName: string,
-        args: string[] = []
-    ) : Promise<number> {
+    public static async main ( args: string[] = [] ) : Promise<number> {
 
         try {
+
+            args.shift();
+            const scriptName = args.shift();
+
+            if (!scriptName) {
+                return this.usage('runner');
+            }
 
             const file = args.shift();
 
             if (!file) {
-                return usage(scriptName);
+                return this.usage(scriptName);
             }
 
             const dataString = await FS.readFile(file, {encoding: 'utf8'});
@@ -94,7 +98,7 @@ export namespace Runner {
 
             if (model === undefined) {
                 LOG.warn('')
-                return usage(scriptName);
+                return this.usage(scriptName);
             }
 
             let controller : Controller | undefined;
@@ -102,26 +106,26 @@ export namespace Runner {
             if ( isPipeline(model) ) {
 
                 LOG.debug(`Starting pipeline ${model.name}`);
-                controller = createPipelineController(model);
+                controller = this.createPipelineController(model);
 
             } else if ( isStage(model) ) {
 
                 LOG.debug(`Starting stage ${model.name}`);
-                controller = createStageController(model);
+                controller = this.createStageController(model);
 
             } else if ( isJob(model) ) {
 
                 LOG.debug(`Starting job ${model.name}`);
-                controller = createJobController(model);
+                controller = this.createJobController(model);
 
             } else {
 
                 LOG.debug(`Starting step ${model.name}`);
-                controller = createStepController(model);
+                controller = this.createStepController(model);
 
             }
 
-            await startAndWaitUntilFinished(controller);
+            await this.startAndWaitUntilFinished(controller);
 
             return 0;
 
@@ -132,7 +136,7 @@ export namespace Runner {
 
     }
 
-    export async function startAndWaitUntilFinished (controller : Controller) : Promise<void> {
+    public static async startAndWaitUntilFinished (controller : Controller) : Promise<void> {
 
         return await new Promise((resolve, reject) => {
 

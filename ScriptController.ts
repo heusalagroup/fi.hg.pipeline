@@ -235,6 +235,8 @@ export class ScriptController implements StepController {
             throw new Error(`Script#${this._name} was already started`);
         }
 
+        LOG.info(`Starting command "${this._command} ${this._args.join(' ')}"`);
+
         this._state = ScriptControllerState.STARTED;
 
         this._process = spawn(this._command, this._args);
@@ -245,6 +247,7 @@ export class ScriptController implements StepController {
         if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_STARTED)) {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_STARTED, this);
         }
+
         if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_CHANGED)) {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_CHANGED, this);
         }
@@ -260,6 +263,8 @@ export class ScriptController implements StepController {
         }
 
         if ( !this._process ) throw new Error(`No process initialized`);
+
+        LOG.info(`Pausing command "${this._command} ${this._args.join(' ')}"`);
 
         this._state = ScriptControllerState.PAUSED;
 
@@ -286,6 +291,8 @@ export class ScriptController implements StepController {
             throw new Error(`No process initialized`);
         }
 
+        LOG.info(`Resuming command "${this._command} ${this._args.join(' ')}"`);
+
         this._state = ScriptControllerState.STARTED;
 
         this._process.kill('SIGCONT');
@@ -308,6 +315,8 @@ export class ScriptController implements StepController {
         }
 
         if ( !this._process ) throw new Error(`No process initialized`);
+
+        LOG.debug(`Cancelling command "${this._command} ${this._args.join(' ')}"`);
 
         this._state = ScriptControllerState.CANCELLED;
 

@@ -4,9 +4,8 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import StepController, { isStepController } from "./types/StepController";
-import { filter, forEach, isArray, isArrayOf, map } from "../ts/modules/lodash";
+import { filter, isArrayOf, map } from "../ts/modules/lodash";
 import LogService from "../ts/LogService";
-import { ScriptControllerEvent } from "./ScriptController";
 import Controller from "./types/Controller";
 
 const LOG = LogService.createLogger('JobController');
@@ -169,14 +168,14 @@ export class JobController implements Controller {
     public isFinished () : boolean {
         switch (this._state) {
 
-            case JobControllerState.CONSTRUCTED:
             case JobControllerState.FINISHED:
             case JobControllerState.FAILED:
+            case JobControllerState.CANCELLED:
                 return true;
 
+            case JobControllerState.CONSTRUCTED:
             case JobControllerState.PAUSED:
             case JobControllerState.STARTED:
-            case JobControllerState.CANCELLED:
                 return false;
 
         }
@@ -220,6 +219,8 @@ export class JobController implements Controller {
             throw new Error(`Job#${this._name} was already started`);
         }
 
+        LOG.info(`Starting job ${this._name}`);
+
         this._state = JobControllerState.STARTED;
 
         this._steps[this._current].start();
@@ -241,6 +242,8 @@ export class JobController implements Controller {
         if ( !this.isRunning() ) {
             throw new Error(`Job#${this._name} was not running`);
         }
+
+        LOG.info(`Pausing job ${this._name}`);
 
         this._state = JobControllerState.PAUSED;
 
@@ -264,6 +267,8 @@ export class JobController implements Controller {
             throw new Error(`Job#${this._name} was not paused`);
         }
 
+        LOG.info(`Resuming job ${this._name}`);
+
         this._state = JobControllerState.STARTED;
 
         this._steps[this._current].resume();
@@ -286,6 +291,8 @@ export class JobController implements Controller {
             throw new Error(`Job#${this._name} was not started`);
         }
 
+        LOG.info(`Stopping job ${this._name}`);
+
         this._state = JobControllerState.CANCELLED;
 
         this._steps[this._current].stop();
@@ -302,32 +309,32 @@ export class JobController implements Controller {
 
     }
 
-    public onCancelled (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onCancelled (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_CANCELLED, callback);
     }
 
-    public onChanged (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onChanged (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_CHANGED, callback);
     }
 
-    public onFailed (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onFailed (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_FAILED, callback);
     }
 
-    public onFinished (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onFinished (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_FINISHED, callback);
     }
 
-    public onPaused (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onPaused (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_PAUSED, callback);
     }
 
-    public onResumed (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onResumed (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_RESUMED, callback);
     }
 
-    public onStarted (callback: ObserverCallback<string, [ Controller ]>): ObserverDestructor {
-        throw new Error('Not implenented')
+    public onStarted (callback: ObserverCallback<JobControllerEvent, [ JobController ]>): ObserverDestructor {
+        return this.on(JobControllerEvent.JOB_STARTED, callback);
     }
 
     public static Event = JobControllerEvent;
