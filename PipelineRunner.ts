@@ -1,10 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import FS from "fs/promises";
 import Json from "../ts/Json";
 import Pipeline, { isPipeline, parsePipeline } from "./types/Pipeline";
 import Stage, { isStage, parseStage } from "./types/Stage";
-import Step, { parseStep } from "./types/Step";
+import Step from "./types/Step";
 import Job, { isJob, parseJob } from "./types/Job";
 import LogService from "../ts/LogService";
 import PipelineController from "./PipelineController";
@@ -16,15 +15,11 @@ import { isScript } from "./types/Script";
 import ScriptController from "./ScriptController";
 import Controller from "./types/Controller";
 import { ObserverDestructor } from "../ts/Observer";
+import { parseStep } from "./types/parseStep";
 
-const LOG = LogService.createLogger('Runner');
+const LOG = LogService.createLogger('PipelineRunner');
 
-export class Runner {
-
-    public static usage (scriptName: string) : number {
-        console.log(`USAGE: ${scriptName} PIPELINE_FILE|STAGE_FILE|JOB_FILE|STEP_FILE`);
-        return 1;
-    }
+export class PipelineRunner {
 
     public static createStepController (step: Step) : StepController {
 
@@ -68,71 +63,40 @@ export class Runner {
 
     }
 
-    public static async main ( args: string[] = [] ) : Promise<number> {
+    public static parseModel (data: Json) : Pipeline | Stage | Job | Step | undefined {
 
-        try {
+        const model : Pipeline | Stage | Job | Step | undefined = (
+            parsePipeline(data)
+            ?? parseStage(data)
+            ?? parseJob(data)
+            ?? parseStep(data)
+        );
 
-            args.shift();
-            const scriptName = args.shift();
+        return model;
 
-            if (!scriptName) {
-                return this.usage('runner');
-            }
+    }
 
-            const file = args.shift();
+    public static createController (model: Pipeline | Stage | Job | Step) : Controller | undefined {
 
-            if (!file) {
-                return this.usage(scriptName);
-            }
+        if ( isPipeline(model) ) {
 
-            const dataString = await FS.readFile(file, {encoding: 'utf8'});
+            LOG.debug(`Starting pipeline ${model.name}`);
+            return this.createPipelineController(model);
 
-            const data : Json = JSON.parse(dataString);
+        } else if ( isStage(model) ) {
 
-            const model : Pipeline | Stage | Job | Step | undefined = (
-                parsePipeline(data)
-                ?? parseStage(data)
-                ?? parseJob(data)
-                ?? parseStep(data)
-            );
+            LOG.debug(`Starting stage ${model.name}`);
+            return this.createStageController(model);
 
-            if (model === undefined) {
-                LOG.warn('')
-                return this.usage(scriptName);
-            }
+        } else if ( isJob(model) ) {
 
-            let controller : Controller | undefined;
+            LOG.debug(`Starting job ${model.name}`);
+            return this.createJobController(model);
 
-            if ( isPipeline(model) ) {
-
-                LOG.debug(`Starting pipeline ${model.name}`);
-                controller = this.createPipelineController(model);
-
-            } else if ( isStage(model) ) {
-
-                LOG.debug(`Starting stage ${model.name}`);
-                controller = this.createStageController(model);
-
-            } else if ( isJob(model) ) {
-
-                LOG.debug(`Starting job ${model.name}`);
-                controller = this.createJobController(model);
-
-            } else {
-
-                LOG.debug(`Starting step ${model.name}`);
-                controller = this.createStepController(model);
-
-            }
-
-            await this.startAndWaitUntilFinished(controller);
-
-            return 0;
-
-        } catch (err) {
-            LOG.error(`Exception: `, err);
-            return 2;
         }
+
+        LOG.debug(`Starting step ${model.name}`);
+        return this.createStepController(model);
 
     }
 
@@ -144,32 +108,49 @@ export class Runner {
 
             try {
 
-                listener = controller.onFinished(() => {
+                listener = controller.onChanged(() => {
                     try {
 
-                        LOG.debug(`Controller ${controller.toString()} finished`);
+                        if (controller.isFinished()) {
+
+                            LOG.debug(`Controller ${controller.toString()} finished`);
+
+                            if (listener) {
+                                listener();
+                                listener = undefined;
+                            }
+
+                            resolve();
+
+                        } else {
+                            LOG.debug(`Controller ${controller.toString()} state changed`);
+                        }
+
+                    } catch (err) {
 
                         if (listener) {
                             listener();
                             listener = undefined;
                         }
 
-                        resolve();
-
-                    } catch (err) {
                         reject(err);
+
                     }
                 });
 
                 controller.start();
 
+                LOG.debug(`Controller ${controller.toString()} started`);
+
             } catch (err) {
-                reject(err);
-            } finally {
+
                 if (listener) {
                     listener();
                     listener = undefined;
                 }
+
+                reject(err);
+
             }
 
         });
@@ -178,4 +159,4 @@ export class Runner {
 
 }
 
-export default Runner;
+export default PipelineRunner;

@@ -27,25 +27,8 @@ export function parseTask (value: any): Task | undefined {
     return undefined;
 }
 
-// eslint-disable-next-line
-export namespace Task {
-
-    export function test (value: any): value is Task {
-        return isTask(value);
-    }
-
-    export function stringify (value: Task): string {
-        return stringifyTask(value);
-    }
-
-    export function parse (value: any): Task | undefined {
-        return parseTask(value);
-    }
-
-    export function copy (value : Task) : Task {
-        return {...value};
-    }
-
+export function copyTask (value : Task) : Task {
+    return {...value};
 }
 
 export default Task;

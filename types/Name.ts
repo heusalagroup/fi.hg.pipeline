@@ -22,21 +22,4 @@ export function parseName (value: any): Name | undefined {
     return undefined;
 }
 
-// eslint-disable-next-line
-export namespace Name {
-
-    export function test (value: any): value is Name {
-        return isName(value);
-    }
-
-    export function stringify (value: Name): string {
-        return stringifyName(value);
-    }
-
-    export function parse (value: any): Name | undefined {
-        return parseName(value);
-    }
-
-}
-
 export default Name;

@@ -43,48 +43,4 @@ export function parseScript (value: any): Script | undefined {
 
 }
 
-// eslint-disable-next-line
-export namespace Script {
-
-    export function test (value: any): value is Script {
-        return isScript(value);
-    }
-
-    export function stringify (value: Script): string {
-        return stringifyScript(value);
-    }
-
-    export function parse (value: any): Script | undefined {
-        return parseScript(value);
-    }
-
-    export function copy (value : Script) : Script {
-
-        let tmp : Script = {
-            name: value.name,
-            command: value.command
-        };
-
-        const args : string[] | undefined = value.args;
-        if (args !== undefined) {
-            tmp = {
-                ...tmp,
-                args: [...args],
-            };
-        }
-
-        const env : {[key: string]: string} | undefined = value.env;
-        if (env !== undefined) {
-            tmp = {
-                ...tmp,
-                env: {...env},
-            };
-        }
-
-        return tmp;
-
-    }
-
-}
-
 export default Script;

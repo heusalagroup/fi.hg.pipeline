@@ -409,6 +409,14 @@ export class StageController implements Controller {
 
     }
 
+    public getErrorString () : string {
+        return map(this._jobs, job => job.getErrorString()).join('\n');
+    }
+
+    public getOutputString () : string {
+        return map(this._jobs, job => job.getOutputString()).join('\n');
+    }
+
 
     private _onChanged (event: string, eventJob : JobController) : void {
 

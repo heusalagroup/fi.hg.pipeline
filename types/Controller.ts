@@ -51,6 +51,10 @@ export interface Controller {
         callback: ObserverCallback<string, [Controller]>
     ) : ObserverDestructor;
 
+    getErrorString () : string;
+
+    getOutputString () : string;
+
     toString (): string;
 
     toJSON (): Json;

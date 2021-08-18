@@ -30,28 +30,4 @@ export function parseStage (value: any): Stage | undefined {
     return undefined;
 }
 
-// eslint-disable-next-line
-export namespace Stage {
-
-    export function test (value: any): value is Stage {
-        return isStage(value);
-    }
-
-    export function stringify (value: Stage): string {
-        return stringifyStage(value);
-    }
-
-    export function parse (value: any): Stage | undefined {
-        return parseStage(value);
-    }
-
-    export function copy (value : Stage) : Stage {
-        return {
-            name: value.name,
-            jobs: map(value.jobs, Job.copy)
-        };
-    }
-
-}
-
 export default Stage;

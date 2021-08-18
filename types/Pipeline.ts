@@ -35,28 +35,4 @@ export function parsePipeline (value: any): Pipeline | undefined {
     return undefined;
 }
 
-// eslint-disable-next-line
-export namespace Pipeline {
-
-    export function test (value: any): value is Pipeline {
-        return isPipeline(value);
-    }
-
-    export function stringify (value: Pipeline): string {
-        return stringifyPipeline(value);
-    }
-
-    export function parse (value: any): Pipeline | undefined {
-        return parsePipeline(value);
-    }
-
-    export function copy (value : Pipeline) : Pipeline {
-        return {
-            name: value.name,
-            stages: map(value.stages, Stage.copy)
-        };
-    }
-
-}
-
 export default Pipeline;

@@ -54,7 +54,8 @@ export class ScriptController implements StepController {
 
     private _state   : ScriptControllerState;
     private _process : ChildProcessWithoutNullStreams | undefined;
-
+    private _stdoutChunks : Buffer[];
+    private _stderrChunks : Buffer[];
 
     public constructor (
         name     : Name,
@@ -77,6 +78,8 @@ export class ScriptController implements StepController {
         this._closeCallback  = this._onClose.bind(this);
         this._stdoutCallback = this._onStdOut.bind(this);
         this._stderrCallback = this._onStdErr.bind(this);
+        this._stdoutChunks   = [];
+        this._stderrChunks   = [];
 
     }
 
@@ -362,6 +365,13 @@ export class ScriptController implements StepController {
         return this.on(ScriptControllerEvent.SCRIPT_CHANGED, callback);
     }
 
+    public getErrorString () : string {
+        return Buffer.concat(this._stderrChunks).toString('utf8');
+    }
+
+    public getOutputString () : string {
+        return Buffer.concat(this._stdoutChunks).toString('utf8');
+    }
 
     public static Event = ScriptControllerEvent;
     public static State = ScriptControllerState;
@@ -394,10 +404,12 @@ export class ScriptController implements StepController {
     }
 
     private _onStdOut (chunk: Buffer) {
+        this._stdoutChunks.push(chunk);
         process.stdout.write(chunk);
     }
 
     private _onStdErr (chunk: Buffer) {
+        this._stderrChunks.push(chunk);
         process.stderr.write(chunk);
     }
 

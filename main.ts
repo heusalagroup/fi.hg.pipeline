@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const RunnerModule = require('./Runner');
-const Runner = RunnerModule?.default ?? RunnerModule.Runner ?? RunnerModule;
+const mainModule = require('./MainFunction');
+const main = mainModule?.default ?? mainModule.main ?? mainModule;
 
-Runner.main(process.argv).then((status : number) => {
+main(process.argv).then((status : number) => {
     process.exit(status);
 }).catch((err : any) => {
     console.error(`Error: `, err);

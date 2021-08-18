@@ -35,28 +35,4 @@ export function parseJob (value: any): Job | undefined {
     return undefined;
 }
 
-// eslint-disable-next-line
-export namespace Job {
-
-    export function test (value: any): value is Job {
-        return isJob(value);
-    }
-
-    export function stringify (value: Job): string {
-        return stringifyJob(value);
-    }
-
-    export function parse (value: any): Job | undefined {
-        return parseJob(value);
-    }
-
-    export function copy (value : Job) : Job {
-        return {
-            name: value.name,
-            steps: map(value.steps, Step.copy)
-        };
-    }
-
-}
-
 export default Job;

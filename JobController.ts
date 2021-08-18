@@ -337,6 +337,14 @@ export class JobController implements Controller {
         return this.on(JobControllerEvent.JOB_STARTED, callback);
     }
 
+    public getErrorString () : string {
+        return map(this._steps, step => step.getErrorString()).join('\n');
+    }
+
+    public getOutputString () : string {
+        return map(this._steps, step => step.getOutputString()).join('\n');
+    }
+
     public static Event = JobControllerEvent;
 
 
