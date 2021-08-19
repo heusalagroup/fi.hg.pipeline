@@ -16,6 +16,7 @@ import ScriptController from "./ScriptController";
 import Controller from "./types/Controller";
 import { ObserverDestructor } from "../ts/Observer";
 import { parseStep } from "./types/parseStep";
+import { parsePipelineModel, PipelineModel } from "./types/PipelineModel";
 
 const LOG = LogService.createLogger('PipelineRunner');
 
@@ -63,20 +64,16 @@ export class PipelineRunner {
 
     }
 
-    public static parseModel (data: Json) : Pipeline | Stage | Job | Step | undefined {
-
-        const model : Pipeline | Stage | Job | Step | undefined = (
-            parsePipeline(data)
-            ?? parseStage(data)
-            ?? parseJob(data)
-            ?? parseStep(data)
-        );
-
-        return model;
-
+    /**
+     * Use parsePipelineModel() directly
+     * @param data
+     * @deprecated
+     */
+    public static parseModel (data: Json) : PipelineModel | undefined {
+        return parsePipelineModel(data);
     }
 
-    public static createController (model: Pipeline | Stage | Job | Step) : Controller | undefined {
+    public static createController (model: PipelineModel) : Controller | undefined {
 
         if ( isPipeline(model) ) {
 
