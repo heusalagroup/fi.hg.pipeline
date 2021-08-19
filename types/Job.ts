@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Step, { isStep } from "./Step";
-import { hasNoOtherKeys, isArrayOf, isRegularObject, map } from "../../ts/modules/lodash";
+import { hasNoOtherKeys, isArrayOf, isRegularObject } from "../../ts/modules/lodash";
 import { isName } from "./Name";
 
 
