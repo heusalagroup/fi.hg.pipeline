@@ -73,7 +73,7 @@ export class PipelineRunner {
         return parsePipelineModel(data);
     }
 
-    public static createController (model: PipelineModel) : Controller | undefined {
+    public static createController (model: PipelineModel) : Controller {
 
         if ( isPipeline(model) ) {
 
