@@ -1,5 +1,6 @@
 import FS from "fs/promises";
 import Json from "../../ts/Json";
+import JsonAny from "../../ts/Json";
 import PipelineRunner from "../PipelineRunner";
 import Controller from "../types/Controller";
 import LogService from "../../ts/LogService";
@@ -11,6 +12,9 @@ import RunnerResourceType from "./types/RunnerResourceType";
 import HttpRunnerResource from "./types/HttpRunnerResource";
 import MatrixRoomRunnerResource from "./types/MatrixRoomRunnerResource";
 import RunnerExitStatus from "./types/RunnerExitStatus";
+import RequestClient from "../../ts/RequestClient";
+import { isBearerRunnerAuthentication } from "./types/BearerRunnerAuthentication";
+import { isBasicRunnerAuthentication } from "./types/BasicRunnerAuthentication";
 
 const LOG = LogService.createLogger('main');
 
@@ -79,7 +83,10 @@ export function mainUsage (
     return exitStatus;
 }
 
-export async function runLocalResource (scriptName : string, resource : LocalRunnerResource) : Promise<RunnerExitStatus> {
+export async function runLocalResource (
+    scriptName : string,
+    resource : LocalRunnerResource
+) : Promise<RunnerExitStatus> {
 
     try {
 
@@ -96,7 +103,11 @@ export async function runLocalResource (scriptName : string, resource : LocalRun
 
         let controller : Controller = PipelineRunner.createController(model);
 
+        LOG.info(`Running ${controller.getName()} from ${resource.path}`);
+
         await PipelineRunner.startAndWaitUntilFinished(controller);
+
+        LOG.info(`Successfully finished ${controller.getName()} from ${resource.path}`);
 
         return RunnerExitStatus.OK;
 
@@ -107,30 +118,49 @@ export async function runLocalResource (scriptName : string, resource : LocalRun
 
 }
 
-export async function runHttpResource (scriptName : string, resource : HttpRunnerResource) : Promise<RunnerExitStatus> {
+export async function runHttpResource (
+    scriptName : string,
+    resource : HttpRunnerResource
+) : Promise<RunnerExitStatus> {
 
     try {
 
-        LOG.error(`Unimplemented http resource: `, resource);
-        return RunnerExitStatus.UNIMPLEMENTED_FEATURE;
+        const headers : any = {};
 
-        // const dataString = await FS.readFile(resource.path, {encoding: 'utf8'});
-        //
-        // const data : Json = JSON.parse(dataString);
-        //
-        // const model = parsePipelineModel(data);
-        //
-        // if ( model === undefined ) {
-        //     LOG.warn('Model was not valid: ', data);
-        //     return mainUsage(scriptName);
-        // }
-        //
-        // let controller : Controller = PipelineRunner.createController(model);
-        //
-        // await PipelineRunner.startAndWaitUntilFinished(controller);
-        //
-        // return RunnerExitStatus.OK;
+        if (resource.authentication) {
+            if (isBearerRunnerAuthentication(resource.authentication)) {
+                headers['Authorization'] = `Bearer ${resource.authentication.access_token}`;
+            }
+            if (isBasicRunnerAuthentication(resource.authentication)) {
+                const username = resource.authentication.username;
+                const password = resource.authentication.password;
+                headers['Authorization'] = `Basic ${ new Buffer(username + ':' + password).toString('base64') }`;
+            }
+        }
 
+        const data : JsonAny | undefined = await RequestClient.getJson(resource.url, headers);
+
+        if ( data === undefined ) {
+            LOG.error( `Failed to load URL "${resource.url}": `, data);
+            return mainUsage(scriptName, RunnerExitStatus.RESOURCE_LOAD_FAILED);
+        }
+
+        const model = parsePipelineModel(data);
+
+        if ( model === undefined ) {
+            LOG.error(`Model from URL "${resource.url}" was not valid: `, data);
+            return mainUsage(scriptName, RunnerExitStatus.RESOURCE_MODEL_INVALID);
+        }
+
+        let controller : Controller = PipelineRunner.createController(model);
+
+        LOG.info(`Running ${controller.getName()} from ${resource.url}`);
+
+        await PipelineRunner.startAndWaitUntilFinished(controller);
+
+        LOG.info(`Successfully finished ${controller.getName()} from ${resource.url}`);
+
+        return RunnerExitStatus.OK;
 
     } catch (err) {
         LOG.error(`Error: `, err);
@@ -139,7 +169,10 @@ export async function runHttpResource (scriptName : string, resource : HttpRunne
 
 }
 
-export async function runMatrixRoomResource (scriptName : string, resource : MatrixRoomRunnerResource) : Promise<RunnerExitStatus> {
+export async function runMatrixRoomResource (
+    scriptName : string,
+    resource : MatrixRoomRunnerResource
+) : Promise<RunnerExitStatus> {
 
     try {
 
@@ -170,7 +203,9 @@ export async function runMatrixRoomResource (scriptName : string, resource : Mat
 
 }
 
-export async function main (args: string[] = []) : Promise<RunnerExitStatus> {
+export async function main (
+    args: string[] = []
+) : Promise<RunnerExitStatus> {
 
     try {
 
