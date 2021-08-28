@@ -5,9 +5,11 @@ import Json from "../../ts/Json";
 import Name from "./Name";
 import ScriptController from "../ScriptController";
 import Controller, { isController } from "./Controller";
+import ControllerState from "./ControllerState";
 
 export interface StepController extends Controller {
 
+    getState () : ControllerState;
     getName () : Name;
 
     isRunning ()    : boolean;

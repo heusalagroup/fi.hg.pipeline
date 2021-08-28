@@ -13,6 +13,7 @@ import {
 } from "../ts/modules/lodash";
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import LogService from "../ts/LogService";
+import ControllerState from "./types/ControllerState";
 
 const LOG = LogService.createLogger('ScriptController');
 
@@ -32,15 +33,6 @@ export type ScriptControllerEventCallback = ObserverCallback<ScriptControllerEve
 
 export type ScriptControllerDestructor = ObserverDestructor;
 
-export enum ScriptControllerState {
-    CONSTRUCTED,
-    STARTED,
-    PAUSED,
-    CANCELLED,
-    FINISHED,
-    FAILED
-}
-
 export class ScriptController implements StepController {
 
     private readonly _observer       : Observer<ScriptControllerEvent>;
@@ -52,7 +44,7 @@ export class ScriptController implements StepController {
     private readonly _stdoutCallback : ((data: Buffer) => void);
     private readonly _stderrCallback : ((data: Buffer) => void);
 
-    private _state   : ScriptControllerState;
+    private _state   : ControllerState;
     private _process : ChildProcessWithoutNullStreams | undefined;
     private _stdoutChunks : Buffer[];
     private _stderrChunks : Buffer[];
@@ -69,7 +61,7 @@ export class ScriptController implements StepController {
         if ( !isArrayOf(args, isString, 0) ) throw new TypeError(`Script#${name} must have a valid args: ${JSON.stringify(args)}`);
         if ( !isRegularObjectOf<string, string>(env, isString, isString) ) throw new TypeError(`Script#${name} must have a valid env: ${JSON.stringify(env)}`);
 
-        this._state          = ScriptControllerState.CONSTRUCTED;
+        this._state          = ControllerState.CONSTRUCTED;
         this._name           = name;
         this._command        = command;
         this._args           = args;
@@ -95,12 +87,12 @@ export class ScriptController implements StepController {
 
     }
 
-    public getName () : Name {
-        return this._name;
+    public getState () : ControllerState {
+        return this._state;
     }
 
-    public getState () : ScriptControllerState {
-        return this._state;
+    public getName () : Name {
+        return this._name;
     }
 
     public on (name : ScriptControllerEvent, callback: ScriptControllerEventCallback) : ScriptControllerDestructor {
@@ -114,6 +106,7 @@ export class ScriptController implements StepController {
     public toJSON (): Json {
         return {
             type: 'ScriptController',
+            state : this._state,
             name: this._name,
             args: this._args,
             env: this._env
@@ -123,14 +116,14 @@ export class ScriptController implements StepController {
     public isRunning () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.STARTED:
+            case ControllerState.STARTED:
                 return true;
 
-            case ScriptControllerState.PAUSED:
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.CANCELLED:
-            case ScriptControllerState.FINISHED:
-            case ScriptControllerState.FAILED:
+            case ControllerState.PAUSED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -139,14 +132,14 @@ export class ScriptController implements StepController {
     public isStarted () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.STARTED:
-            case ScriptControllerState.PAUSED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
                 return true;
 
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.CANCELLED:
-            case ScriptControllerState.FINISHED:
-            case ScriptControllerState.FAILED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -155,14 +148,14 @@ export class ScriptController implements StepController {
     public isPaused () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.PAUSED:
+            case ControllerState.PAUSED:
                 return true;
 
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.STARTED:
-            case ScriptControllerState.CANCELLED:
-            case ScriptControllerState.FINISHED:
-            case ScriptControllerState.FAILED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -171,14 +164,14 @@ export class ScriptController implements StepController {
     public isFinished () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.CANCELLED:
-            case ScriptControllerState.FINISHED:
-            case ScriptControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return true;
 
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.STARTED:
-            case ScriptControllerState.PAUSED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
                 return false;
 
         }
@@ -187,14 +180,14 @@ export class ScriptController implements StepController {
     public isSuccessful () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.FINISHED:
+            case ControllerState.FINISHED:
                 return true;
 
-            case ScriptControllerState.FAILED:
-            case ScriptControllerState.CANCELLED:
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.STARTED:
-            case ScriptControllerState.PAUSED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
                 return false;
 
         }
@@ -203,14 +196,14 @@ export class ScriptController implements StepController {
     public isCancelled () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.CANCELLED:
+            case ControllerState.CANCELLED:
                 return true;
 
-            case ScriptControllerState.FINISHED:
-            case ScriptControllerState.FAILED:
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.STARTED:
-            case ScriptControllerState.PAUSED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
                 return false;
 
         }
@@ -219,14 +212,14 @@ export class ScriptController implements StepController {
     public isFailed () : boolean {
         switch (this._state) {
 
-            case ScriptControllerState.FAILED:
+            case ControllerState.FAILED:
                 return true;
 
-            case ScriptControllerState.CANCELLED:
-            case ScriptControllerState.FINISHED:
-            case ScriptControllerState.CONSTRUCTED:
-            case ScriptControllerState.STARTED:
-            case ScriptControllerState.PAUSED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
                 return false;
 
         }
@@ -234,13 +227,13 @@ export class ScriptController implements StepController {
 
     public start () : ScriptController {
 
-        if (this._state !== ScriptControllerState.CONSTRUCTED) {
+        if (this._state !== ControllerState.CONSTRUCTED) {
             throw new Error(`Script#${this._name} was already started`);
         }
 
         LOG.info(`Starting command "${this._command} ${this._args.join(' ')}"`);
 
-        this._state = ScriptControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         this._process = spawn(this._command, this._args);
         this._process.stdout.on('data', this._stdoutCallback);
@@ -269,7 +262,7 @@ export class ScriptController implements StepController {
 
         LOG.info(`Pausing command "${this._command} ${this._args.join(' ')}"`);
 
-        this._state = ScriptControllerState.PAUSED;
+        this._state = ControllerState.PAUSED;
 
         this._process.kill('SIGSTOP');
 
@@ -296,7 +289,7 @@ export class ScriptController implements StepController {
 
         LOG.info(`Resuming command "${this._command} ${this._args.join(' ')}"`);
 
-        this._state = ScriptControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         this._process.kill('SIGCONT');
 
@@ -313,7 +306,7 @@ export class ScriptController implements StepController {
 
     public stop () : ScriptController {
 
-        if ( this._state !== ScriptControllerState.STARTED ) {
+        if ( this._state !== ControllerState.STARTED ) {
             throw new Error(`Script#${this._name} was not started`);
         }
 
@@ -321,7 +314,7 @@ export class ScriptController implements StepController {
 
         LOG.debug(`Cancelling command "${this._command} ${this._args.join(' ')}"`);
 
-        this._state = ScriptControllerState.CANCELLED;
+        this._state = ControllerState.CANCELLED;
 
         this._process.kill('SIGTERM');
 
@@ -374,7 +367,7 @@ export class ScriptController implements StepController {
     }
 
     public static Event = ScriptControllerEvent;
-    public static State = ScriptControllerState;
+    public static State = ControllerState;
 
 
     private _onClose (code: number) {
@@ -383,14 +376,14 @@ export class ScriptController implements StepController {
 
         if (code === 0) {
 
-            this._state = ScriptControllerState.FINISHED;
+            this._state = ControllerState.FINISHED;
             if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_FINISHED)) {
                 this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_FINISHED, this);
             }
 
         } else {
 
-            this._state = ScriptControllerState.FAILED;
+            this._state = ControllerState.FAILED;
             if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_FAILED)) {
                 this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_FAILED, this);
             }

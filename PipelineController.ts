@@ -7,6 +7,7 @@ import StageController, { isStageController, StageControllerDestructor } from ".
 import { isArrayOf, map } from "../ts/modules/lodash";
 import Controller from "./types/Controller";
 import LogService from "../ts/LogService";
+import ControllerState from "./types/ControllerState";
 
 const LOG = LogService.createLogger('PipelineController');
 
@@ -24,15 +25,6 @@ export enum PipelineControllerEvent {
 
 export type PipelineControllerDestructor = ObserverDestructor;
 
-export enum PipelineControllerState {
-    CONSTRUCTED,
-    STARTED,
-    PAUSED,
-    CANCELLED,
-    FINISHED,
-    FAILED
-}
-
 export class PipelineController implements Controller {
 
     private readonly _name            : Name;
@@ -40,7 +32,7 @@ export class PipelineController implements Controller {
     private readonly _observer        : Observer<PipelineControllerEvent>;
     private readonly _changedCallback : (event: string, stage : StageController) => void;
 
-    private _state            : PipelineControllerState;
+    private _state            : ControllerState;
     private _stageDestructors : StageControllerDestructor[];
     private _current          : number;
 
@@ -56,10 +48,14 @@ export class PipelineController implements Controller {
         this._name             = name;
         this._stages           = stages;
         this._observer         = new Observer<PipelineControllerEvent>(`PipelineController#${this._name}`);
-        this._state            = PipelineControllerState.CONSTRUCTED;
+        this._state            = ControllerState.CONSTRUCTED;
         this._changedCallback  = this._onChanged.bind(this);
         this._stageDestructors = map(stages, (item : StageController) : StageControllerDestructor  => item.onChanged(this._changedCallback));
 
+    }
+
+    public getState () : ControllerState {
+        return this._state;
     }
 
     public getName () : Name {
@@ -84,6 +80,7 @@ export class PipelineController implements Controller {
     public toJSON (): Json {
         return {
             type   : 'PipelineController',
+            state : this._state,
             name   : this._name,
             stages : map(this._stages, (item: StageController) : Json => item.toJSON())
         };
@@ -92,14 +89,14 @@ export class PipelineController implements Controller {
     public isCancelled (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.CANCELLED:
+            case ControllerState.CANCELLED:
                 return true;
 
-            case PipelineControllerState.STARTED:
-            case PipelineControllerState.PAUSED:
-            case PipelineControllerState.CONSTRUCTED:
-            case PipelineControllerState.FINISHED:
-            case PipelineControllerState.FAILED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -108,14 +105,14 @@ export class PipelineController implements Controller {
     public isFailed (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.FAILED:
+            case ControllerState.FAILED:
                 return true;
 
-            case PipelineControllerState.CANCELLED:
-            case PipelineControllerState.STARTED:
-            case PipelineControllerState.PAUSED:
-            case PipelineControllerState.CONSTRUCTED:
-            case PipelineControllerState.FINISHED:
+            case ControllerState.CANCELLED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.FINISHED:
                 return false;
 
         }
@@ -124,14 +121,14 @@ export class PipelineController implements Controller {
     public isFinished (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.FAILED:
-            case PipelineControllerState.CANCELLED:
-            case PipelineControllerState.FINISHED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
                 return true;
 
-            case PipelineControllerState.STARTED:
-            case PipelineControllerState.PAUSED:
-            case PipelineControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -140,14 +137,14 @@ export class PipelineController implements Controller {
     public isPaused (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.PAUSED:
+            case ControllerState.PAUSED:
                 return true;
 
-            case PipelineControllerState.FAILED:
-            case PipelineControllerState.CANCELLED:
-            case PipelineControllerState.FINISHED:
-            case PipelineControllerState.STARTED:
-            case PipelineControllerState.CONSTRUCTED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.STARTED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -156,14 +153,14 @@ export class PipelineController implements Controller {
     public isRunning (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.STARTED:
+            case ControllerState.STARTED:
                 return true;
 
-            case PipelineControllerState.PAUSED:
-            case PipelineControllerState.FAILED:
-            case PipelineControllerState.CANCELLED:
-            case PipelineControllerState.FINISHED:
-            case PipelineControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -172,14 +169,14 @@ export class PipelineController implements Controller {
     public isStarted (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.STARTED:
-            case PipelineControllerState.PAUSED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
                 return true;
 
-            case PipelineControllerState.FAILED:
-            case PipelineControllerState.CANCELLED:
-            case PipelineControllerState.FINISHED:
-            case PipelineControllerState.CONSTRUCTED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -188,14 +185,14 @@ export class PipelineController implements Controller {
     public isSuccessful (): boolean {
         switch (this._state) {
 
-            case PipelineControllerState.FINISHED:
+            case ControllerState.FINISHED:
                 return true;
 
-            case PipelineControllerState.STARTED:
-            case PipelineControllerState.PAUSED:
-            case PipelineControllerState.FAILED:
-            case PipelineControllerState.CANCELLED:
-            case PipelineControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
+            case ControllerState.PAUSED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -237,7 +234,7 @@ export class PipelineController implements Controller {
 
         LOG.info(`Pausing pipeline ${this._name}`);
 
-        this._state = PipelineControllerState.PAUSED;
+        this._state = ControllerState.PAUSED;
 
         this._stages[this._current].pause();
 
@@ -261,7 +258,7 @@ export class PipelineController implements Controller {
 
         LOG.info(`Resuming pipeline ${this._name}`);
 
-        this._state = PipelineControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         this._stages[this._current].resume();
 
@@ -279,13 +276,13 @@ export class PipelineController implements Controller {
 
     public start (): PipelineController {
 
-        if (this._state !== PipelineControllerState.CONSTRUCTED) {
+        if (this._state !== ControllerState.CONSTRUCTED) {
             throw new Error(`Job#${this._name} was already started`);
         }
 
         LOG.info(`Starting pipeline ${this._name}`);
 
-        this._state = PipelineControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         this._stages[this._current].start();
 
@@ -303,13 +300,13 @@ export class PipelineController implements Controller {
 
     public stop (): PipelineController {
 
-        if ( this._state !== PipelineControllerState.STARTED ) {
+        if ( this._state !== ControllerState.STARTED ) {
             throw new Error(`Job#${this._name} was not started`);
         }
 
         LOG.info(`Stopping pipeline ${this._name}`);
 
-        this._state = PipelineControllerState.CANCELLED;
+        this._state = ControllerState.CANCELLED;
 
         this._stages[this._current].stop();
 
@@ -357,7 +354,7 @@ export class PipelineController implements Controller {
 
             if ( currentStage.isFailed() ) {
 
-                this._state = PipelineControllerState.FAILED;
+                this._state = ControllerState.FAILED;
 
                 if ( this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_FAILED) ) {
                     this._observer.triggerEvent(PipelineControllerEvent.PIPELINE_FAILED, this);
@@ -367,7 +364,7 @@ export class PipelineController implements Controller {
 
             } else if (currentStage.isCancelled()) {
 
-                this._state = PipelineControllerState.CANCELLED;
+                this._state = ControllerState.CANCELLED;
 
                 if ( this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_CANCELLED) ) {
                     this._observer.triggerEvent(PipelineControllerEvent.PIPELINE_CANCELLED, this);
@@ -381,11 +378,11 @@ export class PipelineController implements Controller {
 
                 if ( this._current < this._stages.length ) {
 
-                    this._state = PipelineControllerState.STARTED;
+                    this._state = ControllerState.STARTED;
 
                     const nextStage = this._stages[this._current].start();
 
-                    if ( prevState === PipelineControllerState.PAUSED && this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_RESUMED) ) {
+                    if ( prevState === ControllerState.PAUSED && this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_RESUMED) ) {
                         this._observer.triggerEvent(PipelineControllerEvent.PIPELINE_RESUMED, this);
                     }
 
@@ -393,7 +390,7 @@ export class PipelineController implements Controller {
 
                 } else {
 
-                    this._state = PipelineControllerState.FINISHED;
+                    this._state = ControllerState.FINISHED;
 
                     if (this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_FINISHED)) {
                         this._observer.triggerEvent(PipelineControllerEvent.PIPELINE_FINISHED, this);
@@ -411,7 +408,7 @@ export class PipelineController implements Controller {
 
         } else if ( currentStage.isPaused() && !this.isPaused() ) {
 
-            this._state = PipelineControllerState.PAUSED;
+            this._state = ControllerState.PAUSED;
 
             if ( this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_PAUSED) ) {
                 this._observer.triggerEvent(PipelineControllerEvent.PIPELINE_PAUSED, this);
@@ -425,7 +422,7 @@ export class PipelineController implements Controller {
 
         } else if ( currentStage.isStarted() && this.isPaused() ) {
 
-            this._state = PipelineControllerState.STARTED;
+            this._state = ControllerState.STARTED;
 
             if ( this._observer.hasCallbacks(PipelineControllerEvent.PIPELINE_RESUMED) ) {
                 this._observer.triggerEvent(PipelineControllerEvent.PIPELINE_RESUMED, this);

@@ -4,11 +4,13 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
 import Json from "../ts/Json";
 import Name, { isName } from "./types/Name";
 import JobController, {
-    isJobController, JobControllerDestructor, JobControllerEvent, JobControllerState
+    isJobController,
+    JobControllerDestructor
 } from "./JobController";
-import { every, filter, forEach, isArrayOf, map, some } from "../ts/modules/lodash";
+import { every, filter, isArrayOf, map, some } from "../ts/modules/lodash";
 import Controller from "./types/Controller";
 import LogService from "../ts/LogService";
+import ControllerState from "./types/ControllerState";
 
 const LOG = LogService.createLogger('StageController');
 
@@ -26,15 +28,6 @@ export enum StageControllerEvent {
 
 export type StageControllerDestructor = ObserverDestructor;
 
-export enum StageControllerState {
-    CONSTRUCTED,
-    STARTED,
-    PAUSED,
-    CANCELLED,
-    FINISHED,
-    FAILED
-}
-
 export class StageController implements Controller {
 
     private readonly _observer        : Observer<StageControllerEvent>;
@@ -42,7 +35,7 @@ export class StageController implements Controller {
     private readonly _jobs            : JobController[];
     private readonly _changedCallback : (event: string, job : JobController) => void;
 
-    private _state          : StageControllerState;
+    private _state          : ControllerState;
     private _jobDestructors : JobControllerDestructor[];
 
 
@@ -54,13 +47,17 @@ export class StageController implements Controller {
         if ( !isName(name) ) throw new TypeError(`Stage name invalid: ${name}`);
         if ( !isArrayOf(jobs, isJobController, 1) ) throw new TypeError(`Stage#${name} must have at least one job`);
 
-        this._state           = StageControllerState.CONSTRUCTED;
+        this._state           = ControllerState.CONSTRUCTED;
         this._name            = name;
         this._jobs            = jobs;
         this._observer        = new Observer<StageControllerEvent>(`StageController#${this._name}`);
         this._changedCallback = this._onChanged.bind(this);
         this._jobDestructors  = map(jobs, (item : JobController) : JobControllerDestructor => item.onChanged(this._changedCallback));
 
+    }
+
+    public getState () : ControllerState {
+        return this._state;
     }
 
     public getName () : Name {
@@ -85,6 +82,7 @@ export class StageController implements Controller {
     public toJSON (): Json {
         return {
             type: 'StageController',
+            state : this._state,
             name: this._name,
             jobs : map(this._jobs, (item: JobController) : Json => item.toJSON())
         };
@@ -96,14 +94,14 @@ export class StageController implements Controller {
     public isCancelled (): boolean {
         switch (this._state) {
 
-            case StageControllerState.CANCELLED:
+            case ControllerState.CANCELLED:
                 return true;
 
-            case StageControllerState.FINISHED:
-            case StageControllerState.FAILED:
-            case StageControllerState.CONSTRUCTED:
-            case StageControllerState.PAUSED:
-            case StageControllerState.STARTED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
                 return false;
 
         }
@@ -112,14 +110,14 @@ export class StageController implements Controller {
     public isFailed (): boolean {
         switch (this._state) {
 
-            case StageControllerState.FAILED:
+            case ControllerState.FAILED:
                 return true;
 
-            case StageControllerState.CANCELLED:
-            case StageControllerState.FINISHED:
-            case StageControllerState.CONSTRUCTED:
-            case StageControllerState.PAUSED:
-            case StageControllerState.STARTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
                 return false;
 
         }
@@ -128,14 +126,14 @@ export class StageController implements Controller {
     public isFinished (): boolean {
         switch (this._state) {
 
-            case StageControllerState.FINISHED:
-            case StageControllerState.FAILED:
-            case StageControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
                 return true;
 
-            case StageControllerState.CONSTRUCTED:
-            case StageControllerState.PAUSED:
-            case StageControllerState.STARTED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
                 return false;
 
         }
@@ -144,14 +142,14 @@ export class StageController implements Controller {
     public isPaused (): boolean {
         switch (this._state) {
 
-            case StageControllerState.PAUSED:
+            case ControllerState.PAUSED:
                 return true;
 
-            case StageControllerState.FAILED:
-            case StageControllerState.CANCELLED:
-            case StageControllerState.FINISHED:
-            case StageControllerState.CONSTRUCTED:
-            case StageControllerState.STARTED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.STARTED:
                 return false;
 
         }
@@ -160,14 +158,14 @@ export class StageController implements Controller {
     public isRunning (): boolean {
         switch (this._state) {
 
-            case StageControllerState.STARTED:
+            case ControllerState.STARTED:
                 return true;
 
-            case StageControllerState.PAUSED:
-            case StageControllerState.FAILED:
-            case StageControllerState.CANCELLED:
-            case StageControllerState.FINISHED:
-            case StageControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -176,14 +174,14 @@ export class StageController implements Controller {
     public isStarted (): boolean {
         switch (this._state) {
 
-            case StageControllerState.PAUSED:
-            case StageControllerState.STARTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
                 return true;
 
-            case StageControllerState.FAILED:
-            case StageControllerState.CANCELLED:
-            case StageControllerState.FINISHED:
-            case StageControllerState.CONSTRUCTED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -192,14 +190,14 @@ export class StageController implements Controller {
     public isSuccessful (): boolean {
         switch (this._state) {
 
-            case StageControllerState.FINISHED:
+            case ControllerState.FINISHED:
                 return true;
 
-            case StageControllerState.PAUSED:
-            case StageControllerState.STARTED:
-            case StageControllerState.FAILED:
-            case StageControllerState.CANCELLED:
-            case StageControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
+            case ControllerState.CONSTRUCTED:
                 return false;
 
         }
@@ -235,13 +233,13 @@ export class StageController implements Controller {
 
     public start (): Controller {
 
-        if (this._state !== StageControllerState.CONSTRUCTED) {
+        if (this._state !== ControllerState.CONSTRUCTED) {
             throw new Error(`Stage#${this._name} was already started`);
         }
 
         LOG.info(`Starting stage ${this._name}`);
 
-        this._state = StageControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         const failedJobs = filter(this._jobs, (job: JobController) => {
             try {
@@ -255,7 +253,7 @@ export class StageController implements Controller {
 
         if ( failedJobs.length === this._jobs.length ) {
 
-            this._state = StageControllerState.FAILED;
+            this._state = ControllerState.FAILED;
 
             if (this._observer.hasCallbacks(StageControllerEvent.STAGE_FAILED)) {
                 this._observer.triggerEvent(StageControllerEvent.STAGE_FAILED, this);
@@ -279,13 +277,13 @@ export class StageController implements Controller {
 
     public pause (): Controller {
 
-        if (this._state === StageControllerState.PAUSED) {
+        if (this._state === ControllerState.PAUSED) {
             throw new Error(`Stage#${this._name} was already paused`);
         }
 
         LOG.info(`Pausing stage ${this._name}`);
 
-        this._state = StageControllerState.PAUSED;
+        this._state = ControllerState.PAUSED;
 
         const failedJobs = filter(this._jobs, (job: JobController) => {
             try {
@@ -321,13 +319,13 @@ export class StageController implements Controller {
 
     public resume (): Controller {
 
-        if (this._state === StageControllerState.STARTED) {
+        if (this._state === ControllerState.STARTED) {
             throw new Error(`Stage#${this._name} was already started`);
         }
 
         LOG.info(`Resuming stage ${this._name}`);
 
-        this._state = StageControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         const failedJobs = filter(this._jobs, (job: JobController) => {
             try {
@@ -369,7 +367,7 @@ export class StageController implements Controller {
 
         LOG.info(`Stopping stage ${this._name}`);
 
-        this._state = StageControllerState.CANCELLED;
+        this._state = ControllerState.CANCELLED;
 
         const failedJobs = filter(this._jobs, (job: JobController) => {
             try {
@@ -443,9 +441,9 @@ export class StageController implements Controller {
                 const hasFailedJobs    = some(this._jobs, (job: JobController) : boolean => job.isFailed());
                 const hasCancelledJobs = some(this._jobs, (job: JobController) : boolean => job.isCancelled());
 
-                if ( hasFailedJobs && this._state !== StageControllerState.FAILED ) {
+                if ( hasFailedJobs && this._state !== ControllerState.FAILED ) {
 
-                    this._state = StageControllerState.FAILED;
+                    this._state = ControllerState.FAILED;
 
                     if (this._observer.hasCallbacks(StageControllerEvent.STAGE_FAILED)) {
                         this._observer.triggerEvent(StageControllerEvent.STAGE_FAILED, this);
@@ -455,9 +453,9 @@ export class StageController implements Controller {
                         this._observer.triggerEvent(StageControllerEvent.STAGE_CHANGED, this);
                     }
 
-                } else if ( hasCancelledJobs && this._state !== StageControllerState.CANCELLED ) {
+                } else if ( hasCancelledJobs && this._state !== ControllerState.CANCELLED ) {
 
-                    this._state = StageControllerState.CANCELLED;
+                    this._state = ControllerState.CANCELLED;
 
                     if (this._observer.hasCallbacks(StageControllerEvent.STAGE_CANCELLED)) {
                         this._observer.triggerEvent(StageControllerEvent.STAGE_CANCELLED, this);
@@ -467,9 +465,9 @@ export class StageController implements Controller {
                         this._observer.triggerEvent(StageControllerEvent.STAGE_CHANGED, this);
                     }
 
-                } else if (this._state !== StageControllerState.FINISHED) {
+                } else if (this._state !== ControllerState.FINISHED) {
 
-                    this._state = StageControllerState.FINISHED;
+                    this._state = ControllerState.FINISHED;
 
                     if (this._observer.hasCallbacks(StageControllerEvent.STAGE_FINISHED)) {
                         this._observer.triggerEvent(StageControllerEvent.STAGE_FINISHED, this);
@@ -489,9 +487,9 @@ export class StageController implements Controller {
 
             const allStartedJobsPaused = every(startedJobs, (job: JobController) : boolean => job.isPaused());
 
-            if ( allStartedJobsPaused && this._state !== StageControllerState.PAUSED ) {
+            if ( allStartedJobsPaused && this._state !== ControllerState.PAUSED ) {
 
-                this._state = StageControllerState.PAUSED;
+                this._state = ControllerState.PAUSED;
 
                 if (this._observer.hasCallbacks(StageControllerEvent.STAGE_PAUSED)) {
                     this._observer.triggerEvent(StageControllerEvent.STAGE_PAUSED, this);
@@ -501,9 +499,9 @@ export class StageController implements Controller {
                     this._observer.triggerEvent(StageControllerEvent.STAGE_CHANGED, this);
                 }
 
-            } else if ( !allStartedJobsPaused && this._state === StageControllerState.PAUSED ) {
+            } else if ( !allStartedJobsPaused && this._state === ControllerState.PAUSED ) {
 
-                this._state = StageControllerState.STARTED;
+                this._state = ControllerState.STARTED;
 
                 if (this._observer.hasCallbacks(StageControllerEvent.STAGE_RESUMED)) {
                     this._observer.triggerEvent(StageControllerEvent.STAGE_RESUMED, this);

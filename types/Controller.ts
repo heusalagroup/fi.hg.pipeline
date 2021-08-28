@@ -4,9 +4,11 @@ import Name from "./Name";
 import { ObserverCallback, ObserverDestructor } from "../../ts/Observer";
 import Json from "../../ts/Json";
 import { isFunction, isObject } from "../../ts/modules/lodash";
+import ControllerState from "./ControllerState";
 
 export interface Controller {
 
+    getState () : ControllerState;
     getName () : Name;
 
     isRunning ()    : boolean;

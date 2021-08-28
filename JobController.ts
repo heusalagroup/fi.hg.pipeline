@@ -7,6 +7,7 @@ import StepController, { isStepController } from "./types/StepController";
 import { filter, isArrayOf, map } from "../ts/modules/lodash";
 import LogService from "../ts/LogService";
 import Controller from "./types/Controller";
+import ControllerState from "./types/ControllerState";
 
 const LOG = LogService.createLogger('JobController');
 
@@ -24,15 +25,6 @@ export enum JobControllerEvent {
 
 export type JobControllerDestructor = ObserverDestructor;
 
-export enum JobControllerState {
-    CONSTRUCTED,
-    STARTED,
-    PAUSED,
-    CANCELLED,
-    FINISHED,
-    FAILED
-}
-
 export class JobController implements Controller {
 
     private readonly _observer        : Observer<JobControllerEvent>;
@@ -40,7 +32,7 @@ export class JobController implements Controller {
     private readonly _steps           : StepController[];
     private readonly _changedCallback : (event: string, step : StepController) => void;
 
-    private _state           : JobControllerState;
+    private _state           : ControllerState;
     private _stepDestructors : ObserverDestructor[];
     private _current         : number;
 
@@ -56,10 +48,14 @@ export class JobController implements Controller {
         this._name            = name;
         this._steps           = steps;
         this._observer        = new Observer<JobControllerEvent>(`JobController#${this._name}`);
-        this._state           = JobControllerState.CONSTRUCTED;
+        this._state           = ControllerState.CONSTRUCTED;
         this._changedCallback = this._onChanged.bind(this);
         this._stepDestructors = map(steps, item => item.onChanged(this._changedCallback));
 
+    }
+
+    public getState () : ControllerState {
+        return this._state;
     }
 
     public getName () : Name {
@@ -96,6 +92,7 @@ export class JobController implements Controller {
     public toJSON (): Json {
         return {
             type  : 'JobController',
+            state : this._state,
             name  : this._name,
             steps : map(this._steps, (item: StepController) : Json => item.toJSON())
         };
@@ -104,14 +101,14 @@ export class JobController implements Controller {
     public isRunning () : boolean {
         switch (this._state) {
 
-            case JobControllerState.STARTED:
+            case ControllerState.STARTED:
                 return true;
 
-            case JobControllerState.PAUSED:
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.CANCELLED:
-            case JobControllerState.FINISHED:
-            case JobControllerState.FAILED:
+            case ControllerState.PAUSED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -120,14 +117,14 @@ export class JobController implements Controller {
     public isStarted () : boolean {
         switch (this._state) {
 
-            case JobControllerState.PAUSED:
-            case JobControllerState.STARTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
                 return true;
 
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.CANCELLED:
-            case JobControllerState.FINISHED:
-            case JobControllerState.FAILED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -136,14 +133,14 @@ export class JobController implements Controller {
     public isPaused () : boolean {
         switch (this._state) {
 
-            case JobControllerState.PAUSED:
+            case ControllerState.PAUSED:
                 return true;
 
-            case JobControllerState.STARTED:
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.CANCELLED:
-            case JobControllerState.FINISHED:
-            case JobControllerState.FAILED:
+            case ControllerState.STARTED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -152,14 +149,14 @@ export class JobController implements Controller {
     public isCancelled () : boolean {
         switch (this._state) {
 
-            case JobControllerState.CANCELLED:
+            case ControllerState.CANCELLED:
                 return true;
 
-            case JobControllerState.PAUSED:
-            case JobControllerState.STARTED:
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.FINISHED:
-            case JobControllerState.FAILED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
                 return false;
 
         }
@@ -168,14 +165,14 @@ export class JobController implements Controller {
     public isFinished () : boolean {
         switch (this._state) {
 
-            case JobControllerState.FINISHED:
-            case JobControllerState.FAILED:
-            case JobControllerState.CANCELLED:
+            case ControllerState.FINISHED:
+            case ControllerState.FAILED:
+            case ControllerState.CANCELLED:
                 return true;
 
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.PAUSED:
-            case JobControllerState.STARTED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
                 return false;
 
         }
@@ -184,14 +181,14 @@ export class JobController implements Controller {
     public isFailed () : boolean {
         switch (this._state) {
 
-            case JobControllerState.FAILED:
+            case ControllerState.FAILED:
                 return true;
 
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.FINISHED:
-            case JobControllerState.PAUSED:
-            case JobControllerState.STARTED:
-            case JobControllerState.CANCELLED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.FINISHED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
+            case ControllerState.CANCELLED:
                 return false;
 
         }
@@ -200,14 +197,14 @@ export class JobController implements Controller {
     public isSuccessful () : boolean {
         switch (this._state) {
 
-            case JobControllerState.FINISHED:
+            case ControllerState.FINISHED:
                 return true;
 
-            case JobControllerState.FAILED:
-            case JobControllerState.CONSTRUCTED:
-            case JobControllerState.PAUSED:
-            case JobControllerState.STARTED:
-            case JobControllerState.CANCELLED:
+            case ControllerState.FAILED:
+            case ControllerState.CONSTRUCTED:
+            case ControllerState.PAUSED:
+            case ControllerState.STARTED:
+            case ControllerState.CANCELLED:
                 return false;
 
         }
@@ -215,13 +212,13 @@ export class JobController implements Controller {
 
     public start () : JobController {
 
-        if (this._state !== JobControllerState.CONSTRUCTED) {
+        if (this._state !== ControllerState.CONSTRUCTED) {
             throw new Error(`Job#${this._name} was already started`);
         }
 
         LOG.info(`Starting job ${this._name}`);
 
-        this._state = JobControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         this._steps[this._current].start();
 
@@ -245,7 +242,7 @@ export class JobController implements Controller {
 
         LOG.info(`Pausing job ${this._name}`);
 
-        this._state = JobControllerState.PAUSED;
+        this._state = ControllerState.PAUSED;
 
         this._steps[this._current].pause();
 
@@ -269,7 +266,7 @@ export class JobController implements Controller {
 
         LOG.info(`Resuming job ${this._name}`);
 
-        this._state = JobControllerState.STARTED;
+        this._state = ControllerState.STARTED;
 
         this._steps[this._current].resume();
 
@@ -287,13 +284,13 @@ export class JobController implements Controller {
 
     public stop ()    : JobController {
 
-        if ( this._state !== JobControllerState.STARTED ) {
+        if ( this._state !== ControllerState.STARTED ) {
             throw new Error(`Job#${this._name} was not started`);
         }
 
         LOG.info(`Stopping job ${this._name}`);
 
-        this._state = JobControllerState.CANCELLED;
+        this._state = ControllerState.CANCELLED;
 
         this._steps[this._current].stop();
 
@@ -369,7 +366,7 @@ export class JobController implements Controller {
 
             if ( currentStep.isFailed() ) {
 
-                this._state = JobControllerState.FAILED;
+                this._state = ControllerState.FAILED;
 
                 if ( this._observer.hasCallbacks(JobControllerEvent.JOB_FAILED) ) {
                     this._observer.triggerEvent(JobControllerEvent.JOB_FAILED, this);
@@ -377,7 +374,7 @@ export class JobController implements Controller {
 
             } else if (currentStep.isCancelled()) {
 
-                this._state = JobControllerState.CANCELLED;
+                this._state = ControllerState.CANCELLED;
 
                 if ( this._observer.hasCallbacks(JobControllerEvent.JOB_CANCELLED) ) {
                     this._observer.triggerEvent(JobControllerEvent.JOB_CANCELLED, this);
@@ -389,17 +386,17 @@ export class JobController implements Controller {
 
                 if ( this._current < this._steps.length ) {
 
-                    this._state = JobControllerState.STARTED;
+                    this._state = ControllerState.STARTED;
 
                     this._steps[this._current].start();
 
-                    if ( prevState === JobControllerState.PAUSED && this._observer.hasCallbacks(JobControllerEvent.JOB_RESUMED) ) {
+                    if ( prevState === ControllerState.PAUSED && this._observer.hasCallbacks(JobControllerEvent.JOB_RESUMED) ) {
                         this._observer.triggerEvent(JobControllerEvent.JOB_RESUMED, this);
                     }
 
                 } else {
 
-                    this._state = JobControllerState.FINISHED;
+                    this._state = ControllerState.FINISHED;
 
                     if (this._observer.hasCallbacks(JobControllerEvent.JOB_FINISHED)) {
                         this._observer.triggerEvent(JobControllerEvent.JOB_FINISHED, this);
@@ -415,7 +412,7 @@ export class JobController implements Controller {
 
         } else if ( currentStep.isPaused() && !this.isPaused() ) {
 
-            this._state = JobControllerState.PAUSED;
+            this._state = ControllerState.PAUSED;
 
             if ( this._observer.hasCallbacks(JobControllerEvent.JOB_PAUSED) ) {
                 this._observer.triggerEvent(JobControllerEvent.JOB_PAUSED, this);
@@ -427,7 +424,7 @@ export class JobController implements Controller {
 
         } else if ( currentStep.isStarted() && this.isPaused() ) {
 
-            this._state = JobControllerState.STARTED;
+            this._state = ControllerState.STARTED;
 
             if ( this._observer.hasCallbacks(JobControllerEvent.JOB_RESUMED) ) {
                 this._observer.triggerEvent(JobControllerEvent.JOB_RESUMED, this);
