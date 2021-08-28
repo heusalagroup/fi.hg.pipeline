@@ -1,4 +1,6 @@
-### Pipeline runner program
+## Pipeline runner program
+
+### Command Line Usage
 
 ```
 $ ts-node main.ts 
@@ -61,3 +63,7 @@ USAGE: runner ARG(1) [...ARG(N)]
       ACCESS_TOKEN
 
 ```
+
+### Example pipelines
+
+Check out our [example pipelines](https://github.com/sendanor/test/tree/main/examples/pipeline).
