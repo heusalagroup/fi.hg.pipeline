@@ -1,6 +1,8 @@
 # @sendanor/pipeline
 
-Our NodeJS pipeline processor written in TypeScript.
+This is our Pipeline Processor Library written in TypeScript.
+
+For the installable Pipeline Runner, check out [@sendanor/pipeline-runner](https://github.com/sendanor/pipeline-runner).
 
 ### It's MIT licenced
 
