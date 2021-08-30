@@ -3,8 +3,10 @@
 import PipelineModel, { isPipelineModel, parsePipelineModel } from "../types/PipelineModel";
 import {
     hasNoOtherKeys,
-    isRegularObject, isString,
-    isStringOrUndefined, isUndefined
+    isRegularObject,
+    isString,
+    isStringOrUndefined,
+    isUndefined
 } from "../../ts/modules/lodash";
 import ControllerStateDTO, { isControllerStateDTO } from "../controllers/types/ControllerStateDTO";
 
@@ -86,6 +88,7 @@ export function parsePipelineRunDTO (value: any): PipelineRunDTO | undefined {
         model,
         state
     };
+
 }
 
 export default PipelineRunDTO;
