@@ -9,8 +9,9 @@ import ControllerStateDTO, { isControllerStateDTO } from "../controllers/types/C
 
 export interface PipelineRunDTO {
 
-    readonly model : PipelineModel;
-    readonly state : ControllerStateDTO;
+    readonly pipelineId ?: string;
+    readonly model       : PipelineModel;
+    readonly state       : ControllerStateDTO;
 
 }
 

@@ -3,7 +3,7 @@
 import PipelineModel, { isPipelineModel, parsePipelineModel } from "../types/PipelineModel";
 import {
     hasNoOtherKeys,
-    isRegularObject
+    isRegularObject, isUndefined
 } from "../../ts/modules/lodash";
 
 export interface PipelineDTO {
@@ -19,6 +19,16 @@ export function isPipelineDTO (value: any): value is PipelineDTO {
             'model'
         ])
         && isPipelineModel(value?.model)
+    );
+}
+
+export function isPartialPipelineDTO (value: any): value is Partial<PipelineDTO> {
+    return (
+        isRegularObject(value)
+        && hasNoOtherKeys(value, [
+            'model'
+        ])
+        && ( isUndefined(value?.model) || isPipelineModel(value?.model) )
     );
 }
 
