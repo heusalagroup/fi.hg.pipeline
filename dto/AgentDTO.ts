@@ -3,13 +3,14 @@
 import {
     hasNoOtherKeys,
     isRegularObject,
-    isString,
-    isStringOrUndefined
+    isUndefined
 } from "../../ts/modules/lodash";
+
+import AgentModel, { isAgentModel, parseAgentModel } from "../types/AgentModel";
 
 export interface AgentDTO {
 
-    readonly name : string;
+    readonly model : AgentModel;
 
 }
 
@@ -17,9 +18,9 @@ export function isAgentDTO (value: any): value is AgentDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
-            'name'
+            'model'
         ])
-        && isString(value?.name)
+        && isAgentDTO(value?.model)
     );
 }
 
@@ -27,9 +28,9 @@ export function isPartialAgentDTO (value: any): value is Partial<AgentDTO> {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
-            'name'
+            'model'
         ])
-        && isStringOrUndefined(value?.name)
+        && ( isUndefined(value?.model) || isAgentModel(value?.model) )
     );
 }
 
@@ -38,8 +39,9 @@ export function stringifyAgentDTO (value: AgentDTO): string {
 }
 
 export function parseAgentDTO (value: any): AgentDTO | undefined {
-    const name = `${value?.name}`;
-    return {name};
+    const model : AgentModel | undefined = parseAgentModel(value?.model);
+    if (model === undefined) return undefined;
+    return {model};
 }
 
 export default AgentDTO;
