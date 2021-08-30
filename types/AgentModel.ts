@@ -13,16 +13,6 @@ export interface AgentModel {
 
 }
 
-export function isPartialAgentModel (value: any): value is Partial<AgentModel> {
-    return (
-        isRegularObject(value)
-        && hasNoOtherKeys(value, [
-            'name'
-        ])
-        && isStringOrUndefined(value?.name)
-    );
-}
-
 export function isAgentModel (value: any): value is AgentModel {
     return (
         isRegularObject(value)
@@ -30,6 +20,16 @@ export function isAgentModel (value: any): value is AgentModel {
             'name'
         ])
         && isString(value?.name)
+    );
+}
+
+export function isPartialAgentModel (value: any): value is Partial<AgentModel> {
+    return (
+        isRegularObject(value)
+        && hasNoOtherKeys(value, [
+            'name'
+        ])
+        && isStringOrUndefined(value?.name)
     );
 }
 
