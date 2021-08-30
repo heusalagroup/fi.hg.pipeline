@@ -1,13 +1,16 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
-import Json from "../ts/Json";
-import Name, { isName } from "./types/Name";
-import StageController, { isStageController, StageControllerDestructor } from "./StageController";
-import { isArrayOf, map } from "../ts/modules/lodash";
-import Controller from "./types/Controller";
-import LogService from "../ts/LogService";
-import ControllerState from "./types/ControllerState";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
+import Json from "../../../ts/Json";
+import Name, { isName } from "../../types/Name";
+import StageController, { isStageController, StageControllerDestructor } from "../stage/StageController";
+import { isArrayOf, map } from "../../../ts/modules/lodash";
+import Controller from "../types/Controller";
+import LogService from "../../../ts/LogService";
+import ControllerState from "../types/ControllerState";
+import PipelineControllerStateDTO from "./PipelineControllerStateDTO";
+import ControllerType from "../types/ControllerType";
+import StageControllerStateDTO from "../stage/StageControllerStateDTO";
 
 const LOG = LogService.createLogger('PipelineController');
 
@@ -77,13 +80,17 @@ export class PipelineController implements Controller {
         return `PipelineController#${this._name}`;
     }
 
-    public toJSON (): Json {
+    public getStateDTO (): PipelineControllerStateDTO {
         return {
-            type   : 'PipelineController',
-            state : this._state,
+            type   : ControllerType.PIPELINE,
+            state  : this._state,
             name   : this._name,
-            stages : map(this._stages, (item: StageController) : Json => item.toJSON())
+            stages : map(this._stages, (item: StageController) : StageControllerStateDTO => item.getStateDTO())
         };
+    }
+
+    public toJSON (): Json {
+        return this.getStateDTO() as unknown as Json;
     }
 
     public isCancelled (): boolean {

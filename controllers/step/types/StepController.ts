@@ -1,11 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ObserverCallback, ObserverDestructor } from "../../ts/Observer";
-import Json from "../../ts/Json";
-import Name from "./Name";
-import ScriptController from "../ScriptController";
-import Controller, { isController } from "./Controller";
-import ControllerState from "./ControllerState";
+import { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
+import Json from "../../../../ts/Json";
+import Name from "../../../types/Name";
+import ScriptController from "../script/ScriptController";
+import Controller, { isController } from "../../types/Controller";
+import ControllerState from "../../types/ControllerState";
 
 export interface StepController extends Controller {
 

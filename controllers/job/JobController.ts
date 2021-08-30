@@ -1,13 +1,16 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
-import Json from "../ts/Json";
-import Name, { isName } from "./types/Name";
-import StepController, { isStepController } from "./types/StepController";
-import { filter, isArrayOf, map } from "../ts/modules/lodash";
-import LogService from "../ts/LogService";
-import Controller from "./types/Controller";
-import ControllerState from "./types/ControllerState";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
+import Json from "../../../ts/Json";
+import Name, { isName } from "../../types/Name";
+import StepController, { isStepController } from "../step/types/StepController";
+import { filter, isArrayOf, map } from "../../../ts/modules/lodash";
+import LogService from "../../../ts/LogService";
+import Controller from "../types/Controller";
+import ControllerState from "../types/ControllerState";
+import StepControllerStateDTO from "../step/types/StepControllerStateDTO";
+import JobControllerStateDTO from "./JobControllerStateDTO";
+import ControllerType from "../types/ControllerType";
 
 const LOG = LogService.createLogger('JobController');
 
@@ -89,13 +92,17 @@ export class JobController implements Controller {
         return `JobController#${this._name}`;
     }
 
-    public toJSON (): Json {
+    public getStateDTO (): JobControllerStateDTO {
         return {
-            type  : 'JobController',
+            type  : ControllerType.JOB,
             state : this._state,
             name  : this._name,
-            steps : map(this._steps, (item: StepController) : Json => item.toJSON())
+            steps : map(this._steps, (item: StepController) : StepControllerStateDTO => item.getStateDTO())
         };
+    }
+
+    public toJSON (): Json {
+        return this.getStateDTO() as unknown as Json;
     }
 
     public isRunning () : boolean {

@@ -1,10 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Name from "./Name";
-import { ObserverCallback, ObserverDestructor } from "../../ts/Observer";
-import Json from "../../ts/Json";
-import { isFunction, isObject } from "../../ts/modules/lodash";
+import Name from "../../types/Name";
+import { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
+import Json from "../../../ts/Json";
+import { isFunction, isObject } from "../../../ts/modules/lodash";
 import ControllerState from "./ControllerState";
+import ControllerStateDTO from "./ControllerStateDTO";
 
 export interface Controller {
 
@@ -58,6 +59,8 @@ export interface Controller {
     getOutputString () : string;
 
     toString (): string;
+
+    getStateDTO () : ControllerStateDTO;
 
     toJSON (): Json;
 

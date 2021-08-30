@@ -1,19 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
-import Json from "../ts/Json";
-import Name, { isName } from "./types/Name";
-import StepController from "./types/StepController";
-import {
-    isArray,
-    isArrayOf,
-    isRegularObject,
-    isRegularObjectOf,
-    isString
-} from "../ts/modules/lodash";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
+import Json from "../../../../ts/Json";
+import Name, { isName } from "../../../types/Name";
+import StepController from "../types/StepController";
+import { isArrayOf, isRegularObjectOf, isString } from "../../../../ts/modules/lodash";
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
-import LogService from "../ts/LogService";
-import ControllerState from "./types/ControllerState";
+import LogService from "../../../../ts/LogService";
+import ControllerState from "../../types/ControllerState";
+import ScriptControllerStateDTO from "./ScriptControllerStateDTO";
+import ControllerType from "../../types/ControllerType";
 
 const LOG = LogService.createLogger('ScriptController');
 
@@ -103,14 +99,16 @@ export class ScriptController implements StepController {
         return `ScriptController#${this._name}`;
     }
 
-    public toJSON (): Json {
+    public getStateDTO (): ScriptControllerStateDTO {
         return {
-            type: 'ScriptController',
+            type: ControllerType.SCRIPT_STEP,
             state : this._state,
-            name: this._name,
-            args: this._args,
-            env: this._env
+            name: this._name
         };
+    }
+
+    public toJSON (): Json {
+        return this.getStateDTO() as unknown as Json;
     }
 
     public isRunning () : boolean {

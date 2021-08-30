@@ -31,3 +31,5 @@ export function parsePipelineModel (value: any) : PipelineModel | undefined {
     return model;
 
 }
+
+export default PipelineModel;

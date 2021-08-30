@@ -1,16 +1,19 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../ts/Observer";
-import Json from "../ts/Json";
-import Name, { isName } from "./types/Name";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
+import Json from "../../../ts/Json";
+import Name, { isName } from "../../types/Name";
 import JobController, {
     isJobController,
     JobControllerDestructor
-} from "./JobController";
-import { every, filter, isArrayOf, map, some } from "../ts/modules/lodash";
-import Controller from "./types/Controller";
-import LogService from "../ts/LogService";
-import ControllerState from "./types/ControllerState";
+} from "../job/JobController";
+import { every, filter, isArrayOf, map, some } from "../../../ts/modules/lodash";
+import Controller from "../types/Controller";
+import LogService from "../../../ts/LogService";
+import ControllerState from "../types/ControllerState";
+import StageControllerStateDTO from "./StageControllerStateDTO";
+import JobControllerStateDTO from "../job/JobControllerStateDTO";
+import ControllerType from "../types/ControllerType";
 
 const LOG = LogService.createLogger('StageController');
 
@@ -77,6 +80,15 @@ export class StageController implements Controller {
 
     public toString (): string {
         return `StageController#${this._name}`;
+    }
+
+    public getStateDTO (): StageControllerStateDTO {
+        return {
+            type: ControllerType.STAGE,
+            state : this._state,
+            name: this._name,
+            jobs : map(this._jobs, (item: JobController) : JobControllerStateDTO => item.getStateDTO())
+        };
     }
 
     public toJSON (): Json {

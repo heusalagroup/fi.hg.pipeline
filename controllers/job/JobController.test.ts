@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import JobController, { isJobController } from "./JobController";
-import ScriptController from "./ScriptController";
+import ScriptController from "../step/script/ScriptController";
 
 describe('isJobController', () => {
 
