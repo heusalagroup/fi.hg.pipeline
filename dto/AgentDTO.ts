@@ -20,7 +20,7 @@ export function isAgentDTO (value: any): value is AgentDTO {
         && hasNoOtherKeys(value, [
             'model'
         ])
-        && isAgentDTO(value?.model)
+        && isAgentModel(value?.model)
     );
 }
 
