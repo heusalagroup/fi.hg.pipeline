@@ -2,7 +2,7 @@
 
 import ControllerType from "./ControllerType";
 import ControllerState from "./ControllerState";
-import { hasNoOtherKeys, isRegularObject } from "../../../ts/modules/lodash";
+import { isRegularObject } from "../../../ts/modules/lodash";
 
 export interface ControllerControllerStateDTO {
 
