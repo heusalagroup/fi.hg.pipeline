@@ -18,7 +18,7 @@ import AgentAccountDTO, { isAgentAccountDTO, parseAgentAccountDTO } from "./Agen
 export interface AgentPoolDTO {
 
     readonly id       ?: string;
-    readonly model     : AgentPoolModel;
+    readonly model    ?: AgentPoolModel;
     readonly accounts ?: AgentAccountDTO[];
 
 }
@@ -32,7 +32,7 @@ export function isAgentPoolDTO (value: any): value is AgentPoolDTO {
             'accounts'
         ])
         && isStringOrUndefined(value?.id)
-        && isAgentPoolModel(value?.model)
+        && ( isUndefined(value?.model) || isAgentPoolModel(value?.model))
         && isArrayOrUndefinedOf<AgentAccountDTO>(value?.accounts, isAgentAccountDTO)
     );
 }
@@ -60,7 +60,7 @@ export function parseAgentPoolDTO (value: any): AgentPoolDTO | undefined {
     const id = parseString(value?.id);
 
     const model : AgentPoolModel | undefined = parseAgentPoolModel(value?.model);
-    if (model === undefined) return undefined;
+    // if (model === undefined) return undefined;
 
     let accounts : any = value?.accounts;
 
