@@ -9,7 +9,7 @@ import {
 
 export interface AgentAccountModel {
 
-    readonly name : string;
+    readonly username  : string;
 
 }
 
@@ -17,9 +17,9 @@ export function isAgentAccountModel (value: any): value is AgentAccountModel {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
-            'name'
+            'username'
         ])
-        && isString(value?.name)
+        && isString(value?.username)
     );
 }
 
@@ -27,9 +27,9 @@ export function isPartialAgentAccountModel (value: any): value is Partial<AgentA
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
-            'name'
+            'username'
         ])
-        && isStringOrUndefined(value?.name)
+        && isStringOrUndefined(value?.username)
     );
 }
 
@@ -38,8 +38,11 @@ export function stringifyAgentAccountModel (value: AgentAccountModel): string {
 }
 
 export function parseAgentAccountModel (value: any): AgentAccountModel | undefined {
-    const name = `${value?.name}`;
-    return {name};
+    const username = value?.username ? `${value?.username}` : undefined;
+    if (!username) return undefined;
+    return {
+        username: username
+    };
 }
 
 export default AgentAccountModel;

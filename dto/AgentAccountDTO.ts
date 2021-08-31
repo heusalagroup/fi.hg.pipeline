@@ -12,8 +12,9 @@ import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "
 
 export interface AgentAccountDTO {
 
-    readonly id    ?: string;
-    readonly model  : AgentAccountModel;
+    readonly id       ?: string;
+    readonly model     : AgentAccountModel;
+    readonly password ?: string;
 
 }
 
@@ -22,10 +23,12 @@ export function isAgentAccountDTO (value: any): value is AgentAccountDTO {
         isRegularObject(value)
         && hasNoOtherKeys(value, [
             'id',
-            'model'
+            'model',
+            'password'
         ])
         && isStringOrUndefined(value?.id)
         && isAgentAccountModel(value?.model)
+        && isStringOrUndefined(value?.password)
     );
 }
 
@@ -34,25 +37,32 @@ export function isPartialAgentAccountDTO (value: any): value is Partial<AgentAcc
         isRegularObject(value)
         && hasNoOtherKeys(value, [
             'id',
-            'model'
+            'model',
+            'password'
         ])
         && isStringOrUndefined(value?.id)
         && ( isUndefined(value?.model) || isAgentAccountModel(value?.model) )
+        && isStringOrUndefined(value?.password)
     );
 }
 
 export function stringifyAgentAccountDTO (value: AgentAccountDTO): string {
-    return `AgentDTO(${value})`;
+    return `AgentAccountDTO(${value})`;
 }
 
 export function parseAgentAccountDTO (value: any): AgentAccountDTO | undefined {
 
     const id = parseString(value?.id);
+    const password = parseString(value?.password);
 
     const model : AgentAccountModel | undefined = parseAgentAccountModel(value?.model);
     if (model === undefined) return undefined;
 
-    return {id, model};
+    return {
+        id,
+        model,
+        password
+    };
 
 }
 

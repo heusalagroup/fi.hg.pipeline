@@ -13,11 +13,7 @@ import {
 } from "../../ts/modules/lodash";
 
 import AgentPoolModel, { isAgentPoolModel, parseAgentPoolModel } from "../types/AgentPoolModel";
-import AgentAccountModel, {
-    isAgentAccountModel,
-    parseAgentAccountModel
-} from "../types/AgentAccountModel";
-import AgentAccountDTO from "./AgentAccountDTO";
+import AgentAccountDTO, { isAgentAccountDTO, parseAgentAccountDTO } from "./AgentAccountDTO";
 
 export interface AgentPoolDTO {
 
@@ -37,7 +33,7 @@ export function isAgentPoolDTO (value: any): value is AgentPoolDTO {
         ])
         && isStringOrUndefined(value?.id)
         && isAgentPoolModel(value?.model)
-        && isArrayOrUndefinedOf<AgentAccountModel>(value?.accounts, isAgentAccountModel)
+        && isArrayOrUndefinedOf<AgentAccountDTO>(value?.accounts, isAgentAccountDTO)
     );
 }
 
@@ -51,7 +47,7 @@ export function isPartialAgentPoolDTO (value: any): value is Partial<AgentPoolDT
         ])
         && isStringOrUndefined(value?.id)
         && ( isUndefined(value?.model) || isAgentPoolModel(value?.model) )
-        && isArrayOrUndefinedOf<AgentAccountModel>(value?.accounts, isAgentAccountModel)
+        && isArrayOrUndefinedOf<AgentAccountDTO>(value?.accounts, isAgentAccountDTO)
     );
 }
 
@@ -69,7 +65,7 @@ export function parseAgentPoolDTO (value: any): AgentPoolDTO | undefined {
     let accounts : any = value?.accounts;
 
     if (isArray(accounts)) {
-        accounts = filter(map(accounts, item => parseAgentAccountModel(item)), item => !!item);
+        accounts = filter(map(accounts, item => parseAgentAccountDTO(item)), item => !!item);
         if (accounts.length === 0) {
             accounts = undefined;
         }
