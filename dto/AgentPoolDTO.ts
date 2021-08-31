@@ -8,13 +8,13 @@ import {
 
 import AgentModel, { isAgentModel, parseAgentModel } from "../types/AgentModel";
 
-export interface AgentDTO {
+export interface AgentPoolDTO {
 
     readonly model : AgentModel;
 
 }
 
-export function isAgentDTO (value: any): value is AgentDTO {
+export function isAgentPoolDTO (value: any): value is AgentPoolDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
@@ -24,7 +24,7 @@ export function isAgentDTO (value: any): value is AgentDTO {
     );
 }
 
-export function isPartialAgentDTO (value: any): value is Partial<AgentDTO> {
+export function isPartialAgentPoolDTO (value: any): value is Partial<AgentPoolDTO> {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
@@ -34,14 +34,14 @@ export function isPartialAgentDTO (value: any): value is Partial<AgentDTO> {
     );
 }
 
-export function stringifyAgentDTO (value: AgentDTO): string {
+export function stringifyAgentPoolDTO (value: AgentPoolDTO): string {
     return `AgentDTO(${value})`;
 }
 
-export function parseAgentDTO (value: any): AgentDTO | undefined {
+export function parseAgentPoolDTO (value: any): AgentPoolDTO | undefined {
     const model : AgentModel | undefined = parseAgentModel(value?.model);
     if (model === undefined) return undefined;
     return {model};
 }
 
-export default AgentDTO;
+export default AgentPoolDTO;
