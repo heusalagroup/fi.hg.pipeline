@@ -12,9 +12,10 @@ import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "
 
 export interface AgentAccountDTO {
 
-    readonly id       ?: string;
-    readonly model    ?: AgentAccountModel;
-    readonly password ?: string;
+    readonly id           ?: string;
+    readonly model        ?: AgentAccountModel;
+    readonly password     ?: string;
+    readonly access_token ?: string;
 
 }
 
@@ -24,11 +25,13 @@ export function isAgentAccountDTO (value: any): value is AgentAccountDTO {
         && hasNoOtherKeys(value, [
             'id',
             'model',
-            'password'
+            'password',
+            'access_token'
         ])
         && isStringOrUndefined(value?.id)
         && ( isUndefined(value?.model) || isAgentAccountModel(value?.model) )
         && isStringOrUndefined(value?.password)
+        && isStringOrUndefined(value?.access_token)
     );
 }
 
@@ -38,11 +41,13 @@ export function isPartialAgentAccountDTO (value: any): value is Partial<AgentAcc
         && hasNoOtherKeys(value, [
             'id',
             'model',
-            'password'
+            'password',
+            'access_token'
         ])
         && isStringOrUndefined(value?.id)
         && ( isUndefined(value?.model) || isAgentAccountModel(value?.model) )
         && isStringOrUndefined(value?.password)
+        && isStringOrUndefined(value?.access_token)
     );
 }
 
@@ -55,9 +60,10 @@ export function parseAgentAccountDTO (value: any): AgentAccountDTO | undefined {
     if (value === undefined) return undefined;
 
     return {
-        id       : parseString(value?.id),
-        model    : parseAgentAccountModel(value?.model),
-        password : parseString(value?.password)
+        id           : parseString(value?.id),
+        model        : parseAgentAccountModel(value?.model),
+        password     : parseString(value?.password),
+        access_token : parseString(value?.access_token)
     };
 
 }
