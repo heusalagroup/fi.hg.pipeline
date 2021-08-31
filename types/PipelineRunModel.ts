@@ -8,6 +8,7 @@ import {
 } from "../../ts/modules/lodash";
 import PipelineModel, { isPipelineModel } from "./PipelineModel";
 import PipelineRunType, { isPipelineRunType } from "./PipelineRunType";
+import { isJsonObject, JsonObject } from "../../ts/Json";
 
 export interface PipelineRunModel {
 
@@ -29,6 +30,11 @@ export interface PipelineRunModel {
     /** Optional. The pipeline model. */
     readonly model   ?: PipelineModel;
 
+    /**
+     * Optional variables.
+     */
+    readonly variables ?: JsonObject;
+
 }
 
 export function isPipelineRunModel (value: any): value is PipelineRunModel {
@@ -38,12 +44,14 @@ export function isPipelineRunModel (value: any): value is PipelineRunModel {
             'pipelineId',
             'type',
             'agentPoolIdList',
-            'pipelineModel'
+            'pipelineModel',
+            'variables'
         ])
         && isPipelineRunType(value?.type)
         && isString(value?.pipelineId)
         && isArrayOf<string>(value?.agentPoolIdList, isString)
         && ( isUndefined(value?.pipelineModel) || isPipelineModel(value?.pipelineModel) )
+        && ( isUndefined(value?.variables) || isJsonObject(value?.variables) )
     );
 }
 
