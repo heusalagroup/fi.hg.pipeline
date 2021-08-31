@@ -1,14 +1,14 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import PipelineModel, { isPipelineModel } from "../types/PipelineModel";
 import {
-    hasNoOtherKeys,
+    hasNoOtherKeys, isArrayOf,
     isRegularObject
 } from "../../ts/modules/lodash";
+import PipelineDTO, { isPipelineDTO } from "./PipelineDTO";
 
 export interface PipelineListDTO {
 
-    readonly list : PipelineModel[];
+    readonly list  : PipelineDTO[];
 
 }
 
@@ -18,7 +18,7 @@ export function isPipelineListDTO (value: any): value is PipelineListDTO {
         && hasNoOtherKeys(value, [
             'list'
         ])
-        && isPipelineModel(value?.list)
+        && isArrayOf<PipelineDTO>(value?.list, isPipelineDTO)
     );
 }
 

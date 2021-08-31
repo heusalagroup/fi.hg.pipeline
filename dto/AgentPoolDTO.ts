@@ -1,16 +1,29 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import {
+    filter,
     hasNoOtherKeys,
+    isArray,
+    isArrayOrUndefinedOf,
     isRegularObject,
-    isUndefined
+    isStringOrUndefined,
+    isUndefined,
+    map,
+    parseString
 } from "../../ts/modules/lodash";
 
 import AgentPoolModel, { isAgentPoolModel, parseAgentPoolModel } from "../types/AgentPoolModel";
+import AgentAccountModel, {
+    isAgentAccountModel,
+    parseAgentAccountModel
+} from "../types/AgentAccountModel";
+import AgentAccountDTO from "./AgentAccountDTO";
 
 export interface AgentPoolDTO {
 
-    readonly model : AgentPoolModel;
+    readonly id       ?: string;
+    readonly model     : AgentPoolModel;
+    readonly accounts ?: AgentAccountDTO[];
 
 }
 
@@ -18,9 +31,13 @@ export function isAgentPoolDTO (value: any): value is AgentPoolDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
-            'model'
+            'id',
+            'model',
+            'accounts'
         ])
+        && isStringOrUndefined(value?.id)
         && isAgentPoolModel(value?.model)
+        && isArrayOrUndefinedOf<AgentAccountModel>(value?.accounts, isAgentAccountModel)
     );
 }
 
@@ -28,9 +45,13 @@ export function isPartialAgentPoolDTO (value: any): value is Partial<AgentPoolDT
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
-            'model'
+            'id',
+            'model',
+            'accounts'
         ])
+        && isStringOrUndefined(value?.id)
         && ( isUndefined(value?.model) || isAgentPoolModel(value?.model) )
+        && isArrayOrUndefinedOf<AgentAccountModel>(value?.accounts, isAgentAccountModel)
     );
 }
 
@@ -39,9 +60,25 @@ export function stringifyAgentPoolDTO (value: AgentPoolDTO): string {
 }
 
 export function parseAgentPoolDTO (value: any): AgentPoolDTO | undefined {
+
+    const id = parseString(value?.id);
+
     const model : AgentPoolModel | undefined = parseAgentPoolModel(value?.model);
     if (model === undefined) return undefined;
-    return {model};
+
+    let accounts : any = value?.accounts;
+
+    if (isArray(accounts)) {
+        accounts = filter(map(accounts, item => parseAgentAccountModel(item)), item => !!item);
+        if (accounts.length === 0) {
+            accounts = undefined;
+        }
+    } else {
+        accounts = undefined;
+    }
+
+    return {id, model, accounts};
+
 }
 
 export default AgentPoolDTO;

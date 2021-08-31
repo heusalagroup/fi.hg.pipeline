@@ -4,23 +4,24 @@ import PipelineModel, { isPipelineModel, parsePipelineModel } from "../types/Pip
 import {
     hasNoOtherKeys,
     isRegularObject,
-    isString,
     isStringOrUndefined,
-    isUndefined
+    isUndefined, parseString
 } from "../../ts/modules/lodash";
 import ControllerStateDTO, { isControllerStateDTO } from "../controllers/types/ControllerStateDTO";
 
 export interface PipelineRunDTO {
 
+    readonly id             ?: string;
+
     /**
      * Which pipeline this run originated from
      */
-    readonly pipelineId      : string;
+    readonly pipelineId     ?: string;
 
     /**
      * The ID of agent (room), which may contain multiple agents to process the pipeline.
      */
-    readonly agentId         : string;
+    readonly agentPoolId    ?: string;
 
     /**
      * The model which will be executed
@@ -47,14 +48,16 @@ export function isPipelineRunDTO (value: any): value is PipelineRunDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
+            'id',
             'pipelineId',
-            'agentId',
+            'agentPoolId',
             'agentAccountId',
             'model',
             'state'
         ])
-        && isString(value?.pipelineId)
-        && isString(value?.agentId)
+        && isStringOrUndefined(value?.id)
+        && isStringOrUndefined(value?.pipelineId)
+        && isStringOrUndefined(value?.agentPoolId)
         && isStringOrUndefined(value?.agentAccountId)
         && isPipelineModel(value?.model)
         && ( isUndefined(value?.state) || isControllerStateDTO(value?.state) )
@@ -67,14 +70,10 @@ export function stringifyPipelineRunDTO (value: PipelineRunDTO): string {
 
 export function parsePipelineRunDTO (value: any): PipelineRunDTO | undefined {
 
-    const pipelineId = value?.pipelineId;
-    if (!isString(pipelineId)) return undefined;
-
-    const agentId = value?.agentId;
-    if (!isString(agentId)) return undefined;
-
-    const agentAccountId = value?.agentAccountId;
-    if (!isStringOrUndefined(agentAccountId)) return undefined;
+    const id             = parseString(value?.id);
+    const pipelineId     = parseString(value?.pipelineId);
+    const agentPoolId    = parseString(value?.agentPoolId);
+    const agentAccountId = parseString(value?.agentAccountId);
 
     const model = parsePipelineModel(value?.model);
     if (model === undefined) return undefined;
@@ -82,8 +81,9 @@ export function parsePipelineRunDTO (value: any): PipelineRunDTO | undefined {
     const state = isControllerStateDTO(value?.model) ? value?.model : undefined;
 
     return {
+        id,
         pipelineId,
-        agentId,
+        agentPoolId,
         agentAccountId,
         model,
         state

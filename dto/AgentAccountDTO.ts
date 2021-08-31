@@ -3,14 +3,17 @@
 import {
     hasNoOtherKeys,
     isRegularObject,
-    isUndefined
+    isStringOrUndefined,
+    isUndefined,
+    parseString
 } from "../../ts/modules/lodash";
 
 import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "../types/AgentAccountModel";
 
 export interface AgentAccountDTO {
 
-    readonly model : AgentAccountModel;
+    readonly id    ?: string;
+    readonly model  : AgentAccountModel;
 
 }
 
@@ -18,8 +21,10 @@ export function isAgentAccountDTO (value: any): value is AgentAccountDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
+            'id',
             'model'
         ])
+        && isStringOrUndefined(value?.id)
         && isAgentAccountModel(value?.model)
     );
 }
@@ -28,8 +33,10 @@ export function isPartialAgentAccountDTO (value: any): value is Partial<AgentAcc
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
+            'id',
             'model'
         ])
+        && isStringOrUndefined(value?.id)
         && ( isUndefined(value?.model) || isAgentAccountModel(value?.model) )
     );
 }
@@ -39,9 +46,14 @@ export function stringifyAgentAccountDTO (value: AgentAccountDTO): string {
 }
 
 export function parseAgentAccountDTO (value: any): AgentAccountDTO | undefined {
+
+    const id = parseString(value?.id);
+
     const model : AgentAccountModel | undefined = parseAgentAccountModel(value?.model);
     if (model === undefined) return undefined;
-    return {model};
+
+    return {id, model};
+
 }
 
 export default AgentAccountDTO;
