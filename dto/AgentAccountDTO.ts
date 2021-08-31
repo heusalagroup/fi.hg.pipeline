@@ -13,7 +13,7 @@ import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "
 export interface AgentAccountDTO {
 
     readonly id       ?: string;
-    readonly model     : AgentAccountModel;
+    readonly model    ?: AgentAccountModel;
     readonly password ?: string;
 
 }
@@ -27,7 +27,7 @@ export function isAgentAccountDTO (value: any): value is AgentAccountDTO {
             'password'
         ])
         && isStringOrUndefined(value?.id)
-        && isAgentAccountModel(value?.model)
+        && ( isUndefined(value?.model) || isAgentAccountModel(value?.model) )
         && isStringOrUndefined(value?.password)
     );
 }
@@ -52,16 +52,12 @@ export function stringifyAgentAccountDTO (value: AgentAccountDTO): string {
 
 export function parseAgentAccountDTO (value: any): AgentAccountDTO | undefined {
 
-    const id = parseString(value?.id);
-    const password = parseString(value?.password);
-
-    const model : AgentAccountModel | undefined = parseAgentAccountModel(value?.model);
-    if (model === undefined) return undefined;
+    if (value === undefined) return undefined;
 
     return {
-        id,
-        model,
-        password
+        id       : parseString(value?.id),
+        model    : parseAgentAccountModel(value?.model),
+        password : parseString(value?.password)
     };
 
 }
