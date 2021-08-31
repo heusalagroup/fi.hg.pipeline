@@ -7,13 +7,13 @@ import {
     isStringOrUndefined
 } from "../../ts/modules/lodash";
 
-export interface AgentModel {
+export interface AgentPoolModel {
 
     readonly name : string;
 
 }
 
-export function isAgentModel (value: any): value is AgentModel {
+export function isAgentPoolModel (value: any): value is AgentPoolModel {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
@@ -23,7 +23,7 @@ export function isAgentModel (value: any): value is AgentModel {
     );
 }
 
-export function isPartialAgentModel (value: any): value is Partial<AgentModel> {
+export function isPartialAgentPoolModel (value: any): value is Partial<AgentPoolModel> {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
@@ -33,13 +33,13 @@ export function isPartialAgentModel (value: any): value is Partial<AgentModel> {
     );
 }
 
-export function stringifyAgentModel (value: AgentModel): string {
+export function stringifyAgentPoolModel (value: AgentPoolModel): string {
     return `AgentModel(${value})`;
 }
 
-export function parseAgentModel (value: any): AgentModel | undefined {
+export function parseAgentPoolModel (value: any): AgentPoolModel | undefined {
     const name = `${value?.name}`;
     return {name};
 }
 
-export default AgentModel;
+export default AgentPoolModel;
