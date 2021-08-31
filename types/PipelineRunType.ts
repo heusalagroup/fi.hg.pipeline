@@ -5,19 +5,19 @@ export enum PipelineRunType {
     /**
      * No pipeline runs will be created by the system.
      */
-    NONE = 0,
+    NONE = "NONE",
 
     /**
      * Schedule single run to be executed by the first available agent.
      *
      * Only one pipeline instance will be created and added to every configured agent room.
      */
-    ONCE = 1,
+    ONCE = "ONCE",
 
     /**
      * Schedule multiple runs, one for every agent room configured.
      */
-    ONCE_PER_POOL = 2
+    ONCE_PER_POOL = "ONCE_POOL"
 
 }
 
@@ -50,8 +50,19 @@ export function parsePipelineRunType (value: any): PipelineRunType | undefined {
 
     switch (`${value}`.toUpperCase()) {
 
+        case 'FALSE':
+        case 'DISABlED':
+        case 'NEVER':
         case 'NONE' : return PipelineRunType.NONE;
-        case 'ONCE' : return PipelineRunType.ONCE;
+
+        case 'TRUE':
+        case 'ENABLED':
+        case 'ONCE' :
+        case 'ONCE_RUN' :
+        case 'ONCE_PER_RUN' :
+            return PipelineRunType.ONCE;
+
+        case 'ONCE_POOL':
         case 'ONCE_PER_POOL' : return PipelineRunType.ONCE_PER_POOL;
         default    :
             return undefined;
