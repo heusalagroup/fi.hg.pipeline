@@ -6,11 +6,11 @@ import {
     isUndefined
 } from "../../ts/modules/lodash";
 
-import AgentPoolModel, { isAgentPoolModel, parseAgentPoolModel } from "../types/AgentPoolModel";
+import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "../types/AgentAccountModel";
 
 export interface AgentAccountDTO {
 
-    readonly model : AgentPoolModel;
+    readonly model : AgentAccountModel;
 
 }
 
@@ -20,7 +20,7 @@ export function isAgentAccountDTO (value: any): value is AgentAccountDTO {
         && hasNoOtherKeys(value, [
             'model'
         ])
-        && isAgentPoolModel(value?.model)
+        && isAgentAccountModel(value?.model)
     );
 }
 
@@ -30,7 +30,7 @@ export function isPartialAgentAccountDTO (value: any): value is Partial<AgentAcc
         && hasNoOtherKeys(value, [
             'model'
         ])
-        && ( isUndefined(value?.model) || isAgentPoolModel(value?.model) )
+        && ( isUndefined(value?.model) || isAgentAccountModel(value?.model) )
     );
 }
 
@@ -39,7 +39,7 @@ export function stringifyAgentAccountDTO (value: AgentAccountDTO): string {
 }
 
 export function parseAgentAccountDTO (value: any): AgentAccountDTO | undefined {
-    const model : AgentPoolModel | undefined = parseAgentPoolModel(value?.model);
+    const model : AgentAccountModel | undefined = parseAgentAccountModel(value?.model);
     if (model === undefined) return undefined;
     return {model};
 }
