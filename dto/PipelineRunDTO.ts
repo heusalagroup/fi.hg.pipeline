@@ -19,6 +19,11 @@ export interface PipelineRunDTO {
     readonly pipelineId     ?: string;
 
     /**
+     * Which pipeline version this run originated from
+     */
+    readonly pipelineVersion ?: number;
+
+    /**
      * The ID of agent (room), which may contain multiple agents to process the pipeline.
      */
     readonly agentPoolId    ?: string;
