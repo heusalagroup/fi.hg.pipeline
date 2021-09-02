@@ -6,11 +6,13 @@ import Name from "../../../types/Name";
 import ScriptController from "../script/ScriptController";
 import Controller, { isController } from "../../types/Controller";
 import ControllerState from "../../types/ControllerState";
+import PipelineContext from "../../../PipelineContext";
 
 export interface StepController extends Controller {
 
     getState () : ControllerState;
     getName () : Name;
+    getContext () : PipelineContext;
 
     isRunning ()    : boolean;
     isStarted ()    : boolean;

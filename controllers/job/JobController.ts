@@ -11,6 +11,7 @@ import ControllerState from "../types/ControllerState";
 import StepControllerStateDTO from "../step/types/StepControllerStateDTO";
 import JobControllerStateDTO from "./JobControllerStateDTO";
 import ControllerType from "../types/ControllerType";
+import PipelineContext from "../../PipelineContext";
 
 const LOG = LogService.createLogger('JobController');
 
@@ -30,6 +31,7 @@ export type JobControllerDestructor = ObserverDestructor;
 
 export class JobController implements Controller {
 
+    private readonly _context         : PipelineContext;
     private readonly _observer        : Observer<JobControllerEvent>;
     private readonly _name            : Name;
     private readonly _steps           : StepController[];
@@ -40,6 +42,7 @@ export class JobController implements Controller {
     private _current         : number;
 
     public constructor (
+        context : PipelineContext,
         name  : Name,
         steps : StepController[] = []
     ) {
@@ -47,6 +50,7 @@ export class JobController implements Controller {
         if ( !isName(name) ) throw new TypeError(`Job name invalid: ${name}`);
         if ( !isArrayOf(steps, isStepController, 1) ) throw new TypeError(`Job#${name} must have at least one step`);
 
+        this._context         = context;
         this._current         = 0;
         this._name            = name;
         this._steps           = steps;
@@ -55,6 +59,10 @@ export class JobController implements Controller {
         this._changedCallback = this._onChanged.bind(this);
         this._stepDestructors = map(steps, item => item.onChanged(this._changedCallback));
 
+    }
+
+    public getContext () : PipelineContext {
+        return this._context;
     }
 
     public getState () : ControllerState {

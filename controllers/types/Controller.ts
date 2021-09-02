@@ -6,11 +6,13 @@ import Json from "../../../ts/Json";
 import { isFunction, isObject } from "../../../ts/modules/lodash";
 import ControllerState from "./ControllerState";
 import ControllerStateDTO from "./ControllerStateDTO";
+import PipelineContext from "../../PipelineContext";
 
 export interface Controller {
 
     getState () : ControllerState;
     getName () : Name;
+    getContext () : PipelineContext;
 
     isRunning ()    : boolean;
     isStarted ()    : boolean;

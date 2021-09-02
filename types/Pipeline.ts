@@ -1,9 +1,14 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Stage, { isStage } from "./Stage";
-import { hasNoOtherKeys, isArrayOf, isRegularObject } from "../../ts/modules/lodash";
+import { concat, hasNoOtherKeys, isArrayOf, isRegularObject } from "../../ts/modules/lodash";
 import { isName } from "./Name";
-import BasePipelineModel, { isBasePipelineModel } from "./BasePipelineModel";
+import BasePipelineModel, { BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
+
+export const PIPELINE_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
+    'name',
+    'stages'
+]);
 
 
 export interface Pipeline extends BasePipelineModel {
@@ -19,7 +24,7 @@ export function isPipeline (value: any): value is Pipeline {
         isBasePipelineModel(value)
         && isName(value?.name)
         && isArrayOf(value?.stages, isStage, 1)
-        && hasNoOtherKeys(value, ['name', 'stages'])
+        && hasNoOtherKeys(value, PIPELINE_STEP_KEYS)
     );
 }
 

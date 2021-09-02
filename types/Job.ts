@@ -1,10 +1,14 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Step, { isStep } from "./Step";
-import { hasNoOtherKeys, isArrayOf } from "../../ts/modules/lodash";
+import { concat, hasNoOtherKeys, isArrayOf } from "../../ts/modules/lodash";
 import { isName } from "./Name";
-import BasePipelineModel, { isBasePipelineModel } from "./BasePipelineModel";
+import BasePipelineModel, { BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
 
+export const JOB_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
+    'name',
+    'steps'
+]);
 
 export interface Job extends BasePipelineModel {
 
@@ -19,7 +23,7 @@ export function isJob (value: any): value is Job {
         isBasePipelineModel(value)
         && isName(value?.name)
         && isArrayOf(value?.steps, isStep, 1)
-        && hasNoOtherKeys(value, ['name', 'steps'])
+        && hasNoOtherKeys(value, JOB_STEP_KEYS)
     );
 }
 

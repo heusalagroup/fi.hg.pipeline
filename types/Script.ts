@@ -2,13 +2,21 @@
 
 import Step from "./Step";
 import {
+    concat,
     hasNoOtherKeys,
     isArrayOrUndefinedOf,
     isRegularObjectOrUndefinedOf,
     isString
 } from "../../ts/modules/lodash";
 import Name, { isName } from "./Name";
-import { isBasePipelineModel } from "./BasePipelineModel";
+import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
+
+export const SCRIPT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
+    'name',
+    'command',
+    'args',
+    'env'
+]);
 
 export interface Script extends Step {
 
@@ -26,7 +34,7 @@ export function isScript (value: any): value is Script {
         && isString(value?.command)
         && isArrayOrUndefinedOf(value?.args, isString)
         && isRegularObjectOrUndefinedOf<string, string>(value?.env, isString, isString)
-        && hasNoOtherKeys(value, ['name', 'command', 'args', 'env'])
+        && hasNoOtherKeys(value, SCRIPT_STEP_KEYS)
     );
 }
 

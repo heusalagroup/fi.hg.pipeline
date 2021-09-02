@@ -10,6 +10,7 @@ import LogService from "../../../../ts/LogService";
 import ControllerState from "../../types/ControllerState";
 import ScriptControllerStateDTO from "./ScriptControllerStateDTO";
 import ControllerType from "../../types/ControllerType";
+import PipelineContext from "../../../PipelineContext";
 
 const LOG = LogService.createLogger('ScriptController');
 
@@ -31,6 +32,7 @@ export type ScriptControllerDestructor = ObserverDestructor;
 
 export class ScriptController implements StepController {
 
+    private readonly _context         : PipelineContext;
     private readonly _observer       : Observer<ScriptControllerEvent>;
     private readonly _name           : Name;
     private readonly _command        : string;
@@ -40,12 +42,17 @@ export class ScriptController implements StepController {
     private readonly _stdoutCallback : ((data: Buffer) => void);
     private readonly _stderrCallback : ((data: Buffer) => void);
 
+    private _compiledCommand        : string | undefined;
+    private _compiledArgs           : readonly string[] | undefined;
+    private _compiledEnv            : {[key: string]: string} | undefined;
+
     private _state   : ControllerState;
     private _process : ChildProcessWithoutNullStreams | undefined;
     private _stdoutChunks : Buffer[];
     private _stderrChunks : Buffer[];
 
     public constructor (
+        context  : PipelineContext,
         name     : Name,
         command  : string,
         args     : string[] = [],
@@ -57,6 +64,7 @@ export class ScriptController implements StepController {
         if ( !isArrayOf(args, isString, 0) ) throw new TypeError(`Script#${name} must have a valid args: ${JSON.stringify(args)}`);
         if ( !isRegularObjectOf<string, string>(env, isString, isString) ) throw new TypeError(`Script#${name} must have a valid env: ${JSON.stringify(env)}`);
 
+        this._context        = context;
         this._state          = ControllerState.CONSTRUCTED;
         this._name           = name;
         this._command        = command;
@@ -68,6 +76,9 @@ export class ScriptController implements StepController {
         this._stderrCallback = this._onStdErr.bind(this);
         this._stdoutChunks   = [];
         this._stderrChunks   = [];
+        this._compiledCommand = undefined;
+        this._compiledArgs    = undefined;
+        this._compiledEnv     = undefined;
 
     }
 
@@ -81,6 +92,10 @@ export class ScriptController implements StepController {
             this.stop();
         }
 
+    }
+
+    public getContext () : PipelineContext {
+        return this._context;
     }
 
     public getState () : ControllerState {
@@ -233,7 +248,27 @@ export class ScriptController implements StepController {
 
         this._state = ControllerState.STARTED;
 
-        this._process = spawn(this._command, this._args);
+        const compiledCommand = this._context.compileModel(this._command);
+        if (!isString(compiledCommand)) {
+            throw new Error(`Script#${this._name} failed to compile the command: ${this._command}`);
+        }
+        this._compiledCommand = compiledCommand;
+
+        const compiledArgs = this._context.compileModel(this._args);
+        if (!isArrayOf<string>(compiledArgs, isString)) {
+            throw new Error(`Script#${this._name} failed to compile args: ${this._args.join(' ')}`);
+        }
+        this._compiledArgs = compiledArgs;
+
+        const compiledEnv = this._context.compileModel(this._env);
+        if (!isRegularObjectOf<string, string>(compiledEnv, isString, isString)) {
+            throw new Error(`Script#${this._name} failed to compile environment: ${JSON.stringify(this._env, null, 2)}`);
+        }
+        this._compiledEnv = compiledEnv;
+
+        this._process = spawn(this._compiledCommand, this._compiledArgs, {
+            env: this._compiledEnv
+        });
         this._process.stdout.on('data', this._stdoutCallback);
         this._process.stderr.on('data', this._stderrCallback);
         this._process.on('close', this._closeCallback);

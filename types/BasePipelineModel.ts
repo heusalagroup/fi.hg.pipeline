@@ -14,6 +14,11 @@ export interface BasePipelineModel {
 
 }
 
+export const BASE_PIPELINE_KEYS = [
+    'parameters',
+    'variables'
+];
+
 export function isBasePipelineModel (value: any): value is BasePipelineModel {
     return (
         isRegularObject(value)

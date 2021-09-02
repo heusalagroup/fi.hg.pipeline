@@ -1,6 +1,5 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Json from "../ts/Json";
 import Pipeline, { isPipeline } from "./types/Pipeline";
 import Stage, { isStage } from "./types/Stage";
 import Step from "./types/Step";
@@ -16,15 +15,20 @@ import ScriptController from "./controllers/step/script/ScriptController";
 import Controller from "./controllers/types/Controller";
 import { ObserverDestructor } from "../ts/Observer";
 import { PipelineModel } from "./types/PipelineModel";
+import PipelineContext from "./PipelineContext";
 
 const LOG = LogService.createLogger('PipelineRunner');
 
 export class PipelineRunner {
 
-    public static createStepController (step: Step) : StepController {
+    public static createStepController (
+        step    : Step,
+        context : PipelineContext
+    ) : StepController {
 
         if (isScript(step)) {
             return new ScriptController(
+                context,
                 step.name,
                 step.command,
                 step.args,
@@ -36,54 +40,69 @@ export class PipelineRunner {
 
     }
 
-    public static createJobController (job: Job) : JobController {
+    public static createJobController (
+        job     : Job,
+        context : PipelineContext
+    ) : JobController {
 
         return new JobController(
+            context,
             job.name,
-            map(job.steps, (step: Step) : StepController => this.createStepController(step))
+            map(job.steps, (step: Step) : StepController => this.createStepController(step, context))
         );
 
     }
 
-    public static createStageController (stage: Stage) : StageController {
+    public static createStageController (
+        stage   : Stage,
+        context : PipelineContext
+    ) : StageController {
 
         return new StageController(
+            context,
             stage.name,
-            map(stage.jobs, (job : Job) : JobController => this.createJobController(job))
+            map(stage.jobs, (job : Job) : JobController => this.createJobController(job, context))
         );
 
     }
 
-    public static createPipelineController (model: Pipeline) : PipelineController {
+    public static createPipelineController (
+        model   : Pipeline,
+        context : PipelineContext
+    ) : PipelineController {
 
         return new PipelineController(
+            context,
             model.name,
-            map(model.stages, (stage : Stage) : StageController => this.createStageController(stage))
+            map(model.stages, (stage : Stage) : StageController => this.createStageController(stage, context))
         );
 
     }
 
-    public static createController (model: PipelineModel) : Controller {
+    public static createController (
+        model   : PipelineModel,
+        context : PipelineContext
+    ) : Controller {
 
         if ( isPipeline(model) ) {
 
             LOG.debug(`Starting pipeline ${model.name}`);
-            return this.createPipelineController(model);
+            return this.createPipelineController(model, context);
 
         } else if ( isStage(model) ) {
 
             LOG.debug(`Starting stage ${model.name}`);
-            return this.createStageController(model);
+            return this.createStageController(model, context);
 
         } else if ( isJob(model) ) {
 
             LOG.debug(`Starting job ${model.name}`);
-            return this.createJobController(model);
+            return this.createJobController(model, context);
 
         }
 
         LOG.debug(`Starting step ${model.name}`);
-        return this.createStepController(model);
+        return this.createStepController(model, context);
 
     }
 
