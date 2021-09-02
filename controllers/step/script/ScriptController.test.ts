@@ -56,7 +56,19 @@ describe('ScriptController', () => {
     describe('#toJSON', () => {
 
         test('can turn class to JSON', () => {
-            expect( (new ScriptController("npm_build", "npm", ["run", "build"])).toJSON() ).toStrictEqual({type: 'ScriptController', args: ["run", "build"], env: {}, name: 'npm_build'});
+            expect(
+                (
+                    new ScriptController(
+                        "npm_build",
+                        "npm",
+                        ["run", "build"]
+                    )
+                ).toJSON()
+            ).toStrictEqual({
+                type: 'fi.nor.pipeline.step.script',
+                state: 0,
+                name: 'npm_build'
+            });
         });
 
     });

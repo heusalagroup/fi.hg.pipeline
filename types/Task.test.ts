@@ -1,6 +1,6 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Task, { isTask, parseTask, stringifyTask } from "./Task";
+import Task, { copyTask, isTask, parseTask, stringifyTask } from "./Task";
 
 describe('isTask', () => {
 

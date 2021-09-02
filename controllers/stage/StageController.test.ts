@@ -75,18 +75,19 @@ describe('StageController', () => {
                     ])
                 ])).toJSON()
             ).toStrictEqual({
-                type: 'StageController',
+                type: 'fi.nor.pipeline.stage',
                 name: 'build',
+                state: 0,
                 jobs: [
                     {
-                        type: 'JobController',
+                        type: 'fi.nor.pipeline.job',
                         name: 'build',
+                        state: 0,
                         steps: [
                             {
-                                type: "ScriptController",
+                                type: "fi.nor.pipeline.step.script",
                                 name: "build_npm",
-                                args: [ "run", "build" ],
-                                env: {}
+                                state: 0
                             }
                         ]
                     }
@@ -100,11 +101,13 @@ describe('StageController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect((new StageController("build", [
-            new JobController("build", [
-                new ScriptController("build_npm", "npm", ["run", "build"])
-            ])
-        ])).toString()).toBe('StageController');
+            expect(
+                (new StageController("build", [
+                    new JobController("build", [
+                        new ScriptController("build_npm", "npm", ["run", "build"])
+                    ])
+                ])).toString()
+            ).toBe('StageController#build');
         });
 
     });

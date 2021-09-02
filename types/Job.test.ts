@@ -1,6 +1,6 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Job, { isJob, parseJob, stringifyJob } from "./Job";
+import { isJob, parseJob, stringifyJob } from "./Job";
 import Script from "./Script";
 
 describe('isJob', () => {

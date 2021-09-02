@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Job, { isJob } from "./Job";
-import { hasNoOtherKeys, isArrayOf, isRegularObject } from "../../ts/modules/lodash";
+import { hasNoOtherKeys, isArrayOf } from "../../ts/modules/lodash";
 import Name, { isName } from "./Name";
 import BasePipelineModel, { isBasePipelineModel } from "./BasePipelineModel";
 

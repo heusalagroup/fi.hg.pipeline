@@ -84,22 +84,24 @@ describe('PipelineController', () => {
                     ])
                 ).toJSON()
             ).toStrictEqual({
-                type: 'PipelineController',
+                type: 'fi.nor.pipeline',
                 name: 'foo',
+                state: 0,
                 stages: [
                     {
-                        type: 'StageController',
+                        type: 'fi.nor.pipeline.stage',
                         name: 'build',
+                        state: 0,
                         jobs: [
                             {
-                                type: 'JobController',
+                                type: 'fi.nor.pipeline.job',
                                 name: 'build',
+                                state: 0,
                                 steps: [
                                     {
-                                        type: "ScriptController",
+                                        type: "fi.nor.pipeline.step.script",
                                         name: "build_npm",
-                                        args: [ "run", "build" ],
-                                        env: {}
+                                        state: 0
                                     }
                                 ]
                             }

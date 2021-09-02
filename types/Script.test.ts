@@ -1,6 +1,6 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Script, { isScript, parseScript, stringifyScript } from "./Script";
+import { isScript, parseScript, stringifyScript } from "./Script";
 
 describe('isScript', () => {
 

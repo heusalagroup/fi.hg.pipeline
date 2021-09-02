@@ -7,10 +7,10 @@ import { ReadonlyJsonAny } from "../../ts/Json";
 
 export interface BasePipelineModel {
 
-    readonly parameters ?: ParametersModel;
-    readonly variables  ?: VariablesModel;
+    readonly parameters ?: ParametersModel | undefined;
+    readonly variables  ?: VariablesModel | undefined;
 
-    readonly [key: string]: ReadonlyJsonAny;
+    readonly [key: string]: ReadonlyJsonAny | undefined;
 
 }
 

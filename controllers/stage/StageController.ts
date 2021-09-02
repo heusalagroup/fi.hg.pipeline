@@ -92,12 +92,7 @@ export class StageController implements Controller {
     }
 
     public toJSON (): Json {
-        return {
-            type: 'StageController',
-            state : this._state,
-            name: this._name,
-            jobs : map(this._jobs, (item: JobController) : Json => item.toJSON())
-        };
+        return this.getStateDTO() as unknown as Json;
     }
 
 

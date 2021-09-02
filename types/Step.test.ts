@@ -1,6 +1,6 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Step, { isStep, stringifyStep } from "./Step";
+import { isStep, stringifyStep } from "./Step";
 import Script from "./Script";
 import { parseStep } from "./parseStep";
 
@@ -52,7 +52,7 @@ describe('stringifyStep', () => {
 
     test( 'can stringify values', () => {
 
-        expect( Step.stringify({
+        expect( stringifyStep({
             name: 'get_date',
             command: 'date'
         } as Script) ).toBe('Script#get_date');
