@@ -4,24 +4,24 @@ import Step from "./Step";
 import {
     hasNoOtherKeys,
     isArrayOrUndefinedOf,
-    isRegularObject,
     isRegularObjectOrUndefinedOf,
     isString
 } from "../../ts/modules/lodash";
 import Name, { isName } from "./Name";
+import { isBasePipelineModel } from "./BasePipelineModel";
 
 export interface Script extends Step {
 
     readonly name     : Name;
     readonly command  : string;
     readonly args    ?: string[];
-    readonly env     ?: {[key: string]: string};
+    readonly env     ?: {readonly [key: string]: string};
 
 }
 
 export function isScript (value: any): value is Script {
     return (
-        isRegularObject(value)
+        isBasePipelineModel(value)
         && isName(value?.name)
         && isString(value?.command)
         && isArrayOrUndefinedOf(value?.args, isString)

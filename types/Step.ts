@@ -2,22 +2,18 @@
 
 import { isScript, stringifyScript } from "./Script";
 import { isTask, stringifyTask } from "./Task";
+import BasePipelineModel, { isBasePipelineModel } from "./BasePipelineModel";
 
-export interface Step {
+export interface Step extends BasePipelineModel {
 
     readonly name : string;
 
 }
 
-
 export function isStep (value: any): value is Step {
-
-    if ( isScript(value) ) {
-        return true;
-    }
-
+    if (!isBasePipelineModel(value)) return false;
+    if ( isScript(value) ) return true;
     return !!isTask(value);
-
 }
 
 export function stringifyStep (value: Step): string {

@@ -1,8 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Step from "./Step";
-import { isRegularObject } from "../../ts/modules/lodash";
 import { isName } from "./Name";
+import { isBasePipelineModel } from "./BasePipelineModel";
+import { isRegularObject } from "../../ts/modules/lodash";
 
 export interface Task extends Step {
 
@@ -12,7 +13,8 @@ export interface Task extends Step {
 
 export function isTask (value: any): value is Task {
     return (
-        isRegularObject(value)
+        isBasePipelineModel(value)
+        && isRegularObject(value)
         && isName(value?.name)
     );
 }

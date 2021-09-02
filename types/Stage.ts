@@ -3,8 +3,9 @@
 import Job, { isJob } from "./Job";
 import { hasNoOtherKeys, isArrayOf, isRegularObject } from "../../ts/modules/lodash";
 import Name, { isName } from "./Name";
+import BasePipelineModel, { isBasePipelineModel } from "./BasePipelineModel";
 
-export interface Stage {
+export interface Stage extends BasePipelineModel {
 
     readonly name : Name;
     readonly jobs : readonly Job[];
@@ -13,7 +14,7 @@ export interface Stage {
 
 export function isStage (value: any): value is Stage {
     return (
-        isRegularObject(value)
+        isBasePipelineModel(value)
         && isName(value?.name)
         && isArrayOf(value?.jobs, isJob, 1)
         && hasNoOtherKeys(value, ['name', 'jobs'])
