@@ -2,12 +2,16 @@
 
 import JobController, { isJobController } from "./JobController";
 import ScriptController from "../step/script/ScriptController";
+import PipelineContext from "../../PipelineContext";
 
 describe('isJobController', () => {
 
     test('can detect JobControllers', () => {
 
-        expect( isJobController( new JobController("build", [new ScriptController("build_npm", "npm", ["run", "build"])]) ) ).toBe(true);
+        const context = new PipelineContext();
+        expect( isJobController( new JobController(context,"build", [
+            new ScriptController(context,"build_npm", "npm", ["run", "build"])
+        ]) ) ).toBe(true);
 
     });
 
@@ -50,7 +54,10 @@ describe('JobController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new JobController("build", [new ScriptController("build_npm", "npm", ["run", "build"])])).not.toThrow();
+            const context = new PipelineContext();
+            expect(() => new JobController(context, "build", [
+                new ScriptController(context, "build_npm", "npm", ["run", "build"])
+            ])).not.toThrow();
         });
 
     });
@@ -59,11 +66,13 @@ describe('JobController', () => {
 
         test('can turn class to JSON', () => {
 
+            const context = new PipelineContext();
+
             expect(
-                (new JobController(
+                (new JobController(context,
                     "build",
                     [
-                        new ScriptController(
+                        new ScriptController(context,
                             "build_npm",
                             "npm",
                             [ "run", "build" ]
@@ -90,7 +99,10 @@ describe('JobController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect( ( new JobController("build", [new ScriptController("build_npm", "npm", ["run", "build"])]) ).toString() ).toBe('JobController#build');
+            const context = new PipelineContext();
+            expect( ( new JobController(context,"build", [
+                new ScriptController(context,"build_npm", "npm", ["run", "build"])
+            ]) ).toString() ).toBe('JobController#build');
         });
 
     });

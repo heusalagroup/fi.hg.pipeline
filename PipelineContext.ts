@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import VariablesModel from "./types/VariablesModel";
-import ParametersModel from "./types/ParametersModel";
+import PipelineParametersModel from "./types/PipelineParametersModel";
 import Json, { JsonObject, parseJson, ReadonlyJsonAny } from "../ts/Json";
 import JsonAny from "../ts/Json";
 import { get, set } from "../ts/modules/lodash";
@@ -9,18 +9,19 @@ import StringUtils, { VariableResolverCallback } from "../ts/StringUtils";
 
 export class PipelineContext {
 
-    private readonly _variables  : VariablesModel  | undefined;
-    private readonly _parameters : ParametersModel | undefined;
+    private readonly _variables      : VariablesModel          | undefined;
+    private readonly _parameters     : PipelineParametersModel | undefined;
     private readonly _variablePrefix : string;
     private readonly _variableSuffix : string;
     private readonly _lookupVariable : VariableResolverCallback;
 
     public constructor (
-        parameters : ParametersModel | undefined,
-        variables  : VariablesModel | undefined,
-        variablePrefix : string,
-        variableSuffix : string
+        parameters     : PipelineParametersModel | undefined = undefined,
+        variables      : VariablesModel | undefined = undefined,
+        variablePrefix : string = '${',
+        variableSuffix : string = '}'
     ) {
+
         this._variables  = variables;
         this._parameters = parameters;
 
@@ -42,7 +43,7 @@ export class PipelineContext {
         );
     }
 
-    public getParametersModel () : ParametersModel {
+    public getParametersModel () : PipelineParametersModel {
         return this._parameters ?? {};
     }
 
@@ -58,7 +59,7 @@ export class PipelineContext {
         path  : string,
         value : JsonAny | ReadonlyJsonAny
     ) : PipelineContext {
-        set(this._variables, path, value);
+        set(this._variables as object, path, value);
         return this;
     }
 

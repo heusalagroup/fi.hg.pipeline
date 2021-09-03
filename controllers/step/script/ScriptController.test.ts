@@ -1,12 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import ScriptController, { isScriptController } from "./ScriptController";
+import PipelineContext from "../../../PipelineContext";
 
 describe('isScriptController', () => {
 
     test('can detect ScriptControllers', () => {
 
-        expect(isScriptController(new ScriptController("npm_build", "npm", ["run", "build"]))).toBe(true);
+        const context = new PipelineContext();
+
+        expect(isScriptController(new ScriptController(context,"npm_build", "npm", ["run", "build"]))).toBe(true);
 
     });
 
@@ -48,7 +51,8 @@ describe('ScriptController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new ScriptController("npm_build", "npm", ["run", "build"])).not.toThrow();
+            const context = new PipelineContext();
+            expect(() => new ScriptController(context,"npm_build", "npm", ["run", "build"])).not.toThrow();
         });
 
     });
@@ -59,6 +63,7 @@ describe('ScriptController', () => {
             expect(
                 (
                     new ScriptController(
+                        new PipelineContext(),
                         "npm_build",
                         "npm",
                         ["run", "build"]
@@ -76,7 +81,12 @@ describe('ScriptController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect( (new ScriptController("npm_build", "npm", ["run", "build"])).toString() ).toBe('ScriptController#npm_build');
+            expect( (new ScriptController(
+                new PipelineContext(),
+                "npm_build",
+                "npm",
+                ["run", "build"]
+            )).toString() ).toBe('ScriptController#npm_build');
         });
 
     });

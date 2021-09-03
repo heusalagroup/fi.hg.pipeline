@@ -3,14 +3,17 @@
 import StageController, { isStageController } from "./StageController";
 import JobController from "../job/JobController";
 import ScriptController from "../step/script/ScriptController";
+import PipelineContext from "../../PipelineContext";
 
 describe('isStageController', () => {
 
     test('can detect StageControllers', () => {
 
-        expect( isStageController( new StageController("build", [
-            new JobController("build", [
-                new ScriptController("build_npm", "npm", ["run", "build"])
+        const context = new PipelineContext();
+
+        expect( isStageController( new StageController(context,"build", [
+            new JobController(context, "build", [
+                new ScriptController(context,"build_npm", "npm", ["run", "build"])
             ])
         ]) ) ).toBe(true);
 
@@ -55,9 +58,11 @@ describe('StageController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new StageController("build", [
-            new JobController("build", [
-                new ScriptController("build_npm", "npm", ["run", "build"])
+            const context = new PipelineContext();
+
+            expect(() => new StageController(context,"build", [
+            new JobController(context,"build", [
+                new ScriptController(context,"build_npm", "npm", ["run", "build"])
             ])
         ])).not.toThrow();
         });
@@ -68,10 +73,11 @@ describe('StageController', () => {
 
         test('can turn class to JSON', () => {
 
+            const context = new PipelineContext();
             expect(
-                (new StageController("build", [
-                    new JobController("build", [
-                        new ScriptController("build_npm", "npm", [ "run", "build" ])
+                (new StageController(context,"build", [
+                    new JobController(context,"build", [
+                        new ScriptController(context,"build_npm", "npm", [ "run", "build" ])
                     ])
                 ])).toJSON()
             ).toStrictEqual({
@@ -101,10 +107,11 @@ describe('StageController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
+            const context = new PipelineContext();
             expect(
-                (new StageController("build", [
-                    new JobController("build", [
-                        new ScriptController("build_npm", "npm", ["run", "build"])
+                (new StageController(context, "build", [
+                    new JobController(context, "build", [
+                        new ScriptController(context, "build_npm", "npm", ["run", "build"])
                     ])
                 ])).toString()
             ).toBe('StageController#build');

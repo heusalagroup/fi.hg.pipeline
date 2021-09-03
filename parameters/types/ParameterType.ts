@@ -1,10 +1,14 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 export enum ParameterType {
-    STRING = "string"
+    JSON    = "json",
+    STRING  = "string",
+    BOOLEAN = "boolean",
+    NUMBER  = "number",
+    INTEGER = "integer"
 }
 
-export function isParameterPropertyType (value: any): value is ParameterType {
+export function isParameterType (value: any): value is ParameterType {
     switch (value) {
 
         case ParameterType.STRING:
@@ -16,7 +20,7 @@ export function isParameterPropertyType (value: any): value is ParameterType {
     }
 }
 
-export function stringifyParameterPropertyType (value: ParameterType): string {
+export function stringifyParameterType (value: ParameterType): string {
     switch (value) {
 
         case ParameterType.STRING: return 'STRING';
@@ -25,7 +29,7 @@ export function stringifyParameterPropertyType (value: ParameterType): string {
     throw new TypeError(`Unsupported ParameterPropertyType value: ${value}`);
 }
 
-export function parseParameterPropertyType (value: any): ParameterType | undefined {
+export function parseParameterType (value: any): ParameterType | undefined {
 
     switch (`${value}`.toUpperCase()) {
 

@@ -4,15 +4,17 @@ import PipelineController, { isPipelineController } from "./PipelineController";
 import StageController from "../stage/StageController";
 import JobController from "../job/JobController";
 import ScriptController from "../step/script/ScriptController";
+import PipelineContext from "../../PipelineContext";
 
 describe('isPipelineController', () => {
 
     test('can detect PipelineControllers', () => {
 
-        expect( isPipelineController( new PipelineController("foo", [
-            new StageController("build", [
-                new JobController("build", [
-                    new ScriptController("build_npm", "npm", ["run", "build"])
+        const context = new PipelineContext();
+        expect( isPipelineController( new PipelineController(context,"foo", [
+            new StageController(context, "build", [
+                new JobController(context, "build", [
+                    new ScriptController(context, "build_npm", "npm", ["run", "build"])
                 ])
             ])
         ]) ) ).toBe(true);
@@ -58,10 +60,11 @@ describe('PipelineController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            expect(() => new PipelineController("foo", [
-            new StageController("build", [
-                new JobController("build", [
-                    new ScriptController("build_npm", "npm", ["run", "build"])
+            const context = new PipelineContext();
+            expect(() => new PipelineController(context, "foo", [
+            new StageController(context, "build", [
+                new JobController(context, "build", [
+                    new ScriptController(context, "build_npm", "npm", ["run", "build"])
                 ])
             ])
         ])).not.toThrow();
@@ -73,12 +76,13 @@ describe('PipelineController', () => {
 
         test('can turn class to JSON', () => {
 
+            const context = new PipelineContext();
             expect(
                 (
-                    new PipelineController("foo", [
-                        new StageController("build", [
-                            new JobController("build", [
-                                new ScriptController("build_npm", "npm", ["run", "build"])
+                    new PipelineController(context,"foo", [
+                        new StageController(context,"build", [
+                            new JobController(context,"build", [
+                                new ScriptController(context,"build_npm", "npm", ["run", "build"])
                             ])
                         ])
                     ])
@@ -117,10 +121,11 @@ describe('PipelineController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            expect((new PipelineController("foo", [
-            new StageController("build", [
-                new JobController("build", [
-                    new ScriptController("build_npm", "npm", ["run", "build"])
+            const context = new PipelineContext();
+            expect((new PipelineController(context,"foo", [
+            new StageController(context,"build", [
+                new JobController(context,"build", [
+                    new ScriptController(context,"build_npm", "npm", ["run", "build"])
                 ])
             ])
         ])).toString()).toBe('PipelineController#foo');

@@ -16,6 +16,8 @@ export enum PipelineRunType {
 
     /**
      * Schedule multiple runs, one for every agent room configured.
+     *
+     * *Note!* Not implemented yet.
      */
     ONCE_PER_POOL = "ONCE_POOL"
 
