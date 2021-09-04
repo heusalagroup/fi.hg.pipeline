@@ -1,7 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Stage, { isStage } from "./Stage";
-import { concat, hasNoOtherKeys, isArrayOf, isRegularObject } from "../../ts/modules/lodash";
+import {
+    concat,
+    hasNoOtherKeys,
+    isArrayOf
+} from "../../ts/modules/lodash";
 import { isName } from "./Name";
 import BasePipelineModel, { BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
 
