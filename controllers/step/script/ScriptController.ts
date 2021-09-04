@@ -1,11 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Observer, { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
-import Json from "../../../../ts/Json";
+import Json, { ReadonlyJsonAny } from "../../../../ts/Json";
 import Name, { isName } from "../../../types/Name";
 import StepController from "../types/StepController";
 import { isArrayOf, isRegularObjectOf, isString } from "../../../../ts/modules/lodash";
-import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { ChildProcessWithoutNullStreams, spawn, SpawnOptions } from 'child_process';
 import LogService from "../../../../ts/LogService";
 import ControllerState from "../../types/ControllerState";
 import ScriptControllerStateDTO from "./ScriptControllerStateDTO";
@@ -44,7 +44,7 @@ export class ScriptController implements StepController {
 
     private _compiledCommand        : string | undefined;
     private _compiledArgs           : readonly string[] | undefined;
-    private _compiledEnv            : {[key: string]: string} | undefined;
+    private _compiledEnv            : {readonly [key: string]: string} | undefined;
 
     private _state   : ControllerState;
     private _process : ChildProcessWithoutNullStreams | undefined;
@@ -254,21 +254,26 @@ export class ScriptController implements StepController {
         }
         this._compiledCommand = compiledCommand;
 
-        const compiledArgs = this._context.compileModel(this._args);
+        const compiledArgs : ReadonlyJsonAny | undefined = this._context.compileModel(this._args);
         if (!isArrayOf<string>(compiledArgs, isString)) {
             throw new Error(`Script#${this._name} failed to compile args: ${this._args.join(' ')}`);
         }
         this._compiledArgs = compiledArgs;
 
-        const compiledEnv = this._context.compileModel(this._env);
+        const compiledEnv : ReadonlyJsonAny | undefined = this._context.compileModel(this._env);
         if (!isRegularObjectOf<string, string>(compiledEnv, isString, isString)) {
             throw new Error(`Script#${this._name} failed to compile environment: ${JSON.stringify(this._env, null, 2)}`);
         }
         this._compiledEnv = compiledEnv;
 
-        this._process = spawn(this._compiledCommand, this._compiledArgs, {
-            env: this._compiledEnv
-        });
+        const options : SpawnOptions = {};
+
+        if (this._compiledEnv) {
+            // @ts-ignore
+            options.env = this._compiledEnv;
+        }
+
+        this._process = spawn(this._compiledCommand, this._compiledArgs, options);
         this._process.stdout.on('data', this._stdoutCallback);
         this._process.stderr.on('data', this._stderrCallback);
         this._process.on('close', this._closeCallback);
