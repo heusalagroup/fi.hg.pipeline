@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import VariablesModel from "./types/VariablesModel";
-import PipelineParametersModel from "./types/PipelineParametersModel";
+import PipelineParameterArray from "./types/PipelineParameterArray";
 import Json, { JsonObject, parseJson, ReadonlyJsonAny } from "../ts/Json";
 import JsonAny from "../ts/Json";
 import { get, set } from "../ts/modules/lodash";
@@ -12,14 +12,14 @@ export class PipelineContext {
 
     private readonly _system         : System;
     private readonly _variables      : VariablesModel          | undefined;
-    private readonly _parameters     : PipelineParametersModel | undefined;
+    private readonly _parameters     : PipelineParameterArray | undefined;
     private readonly _variablePrefix : string;
     private readonly _variableSuffix : string;
     private readonly _lookupVariable : VariableResolverCallback;
 
     public constructor (
         system         : System,
-        parameters     : PipelineParametersModel | undefined = undefined,
+        parameters     : PipelineParameterArray | undefined = undefined,
         variables      : VariablesModel | undefined = undefined,
         variablePrefix : string = '${',
         variableSuffix : string = '}'
@@ -51,7 +51,7 @@ export class PipelineContext {
         );
     }
 
-    public getParametersModel () : PipelineParametersModel {
+    public getParametersModel () : PipelineParameterArray {
         return this._parameters ?? {};
     }
 
