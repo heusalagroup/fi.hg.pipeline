@@ -27,7 +27,7 @@ export interface PipelineRunModel {
      */
     readonly agentPoolIdList  : string[];
 
-    /** Optional. The pipeline model. */
+    /** Optional. The precompiled pipeline model without the parameters property. */
     readonly model   ?: PipelineModel;
 
     /**
