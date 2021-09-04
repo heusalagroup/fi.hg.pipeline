@@ -6,9 +6,11 @@ import Json, { JsonObject, parseJson, ReadonlyJsonAny } from "../ts/Json";
 import JsonAny from "../ts/Json";
 import { get, set } from "../ts/modules/lodash";
 import StringUtils, { VariableResolverCallback } from "../ts/StringUtils";
+import System from "./systems/types/System";
 
 export class PipelineContext {
 
+    private readonly _system         : System;
     private readonly _variables      : VariablesModel          | undefined;
     private readonly _parameters     : PipelineParametersModel | undefined;
     private readonly _variablePrefix : string;
@@ -16,12 +18,14 @@ export class PipelineContext {
     private readonly _lookupVariable : VariableResolverCallback;
 
     public constructor (
+        system         : System,
         parameters     : PipelineParametersModel | undefined = undefined,
         variables      : VariablesModel | undefined = undefined,
         variablePrefix : string = '${',
         variableSuffix : string = '}'
     ) {
 
+        this._system     = system;
         this._variables  = variables;
         this._parameters = parameters;
 
@@ -30,6 +34,10 @@ export class PipelineContext {
 
         this._lookupVariable = this.getVariable.bind(this);
 
+    }
+
+    public getSystem () : System {
+        return this._system;
     }
 
     public compileModel<T extends ReadonlyJsonAny> (

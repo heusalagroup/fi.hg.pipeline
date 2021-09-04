@@ -4,13 +4,25 @@ import Observer, { ObserverCallback, ObserverDestructor } from "../../../../ts/O
 import Json, { ReadonlyJsonAny } from "../../../../ts/Json";
 import Name, { isName } from "../../../types/Name";
 import StepController from "../types/StepController";
-import { isArrayOf, isRegularObjectOf, isString } from "../../../../ts/modules/lodash";
-import { ChildProcessWithoutNullStreams, spawn, SpawnOptions } from 'child_process';
+import {
+    isArrayOf,
+    isRegularObjectOf,
+    isString
+} from "../../../../ts/modules/lodash";
 import LogService from "../../../../ts/LogService";
 import ControllerState from "../../types/ControllerState";
 import ScriptControllerStateDTO from "./ScriptControllerStateDTO";
 import ControllerType from "../../types/ControllerType";
 import PipelineContext from "../../../PipelineContext";
+import SystemProcess, {
+    SystemProcessEvent,
+    SystemProcessEventCallback
+} from "../../../systems/types/SystemProcess";
+import System, {
+    isSystemArgumentList, isSystemEnvironment,
+    SystemArgumentList,
+    SystemEnvironment
+} from "../../../systems/types/System";
 
 const LOG = LogService.createLogger('ScriptController');
 
@@ -32,50 +44,41 @@ export type ScriptControllerDestructor = ObserverDestructor;
 
 export class ScriptController implements StepController {
 
-    private readonly _context         : PipelineContext;
+    private readonly _context        : PipelineContext;
     private readonly _observer       : Observer<ScriptControllerEvent>;
     private readonly _name           : Name;
     private readonly _command        : string;
-    private readonly _args           : string[];
-    private readonly _env            : {[key: string]: string};
-    private readonly _closeCallback  : ((close: number) => void);
-    private readonly _stdoutCallback : ((data: Buffer) => void);
-    private readonly _stderrCallback : ((data: Buffer) => void);
+    private readonly _args           : SystemArgumentList;
+    private readonly _env            : SystemEnvironment;
+    private readonly _closeCallback  : SystemProcessEventCallback;
 
-    private _compiledCommand        : string | undefined;
-    private _compiledArgs           : readonly string[] | undefined;
-    private _compiledEnv            : {readonly [key: string]: string} | undefined;
-
-    private _state   : ControllerState;
-    private _process : ChildProcessWithoutNullStreams | undefined;
-    private _stdoutChunks : Buffer[];
-    private _stderrChunks : Buffer[];
+    private _compiledCommand        : string             | undefined;
+    private _compiledArgs           : SystemArgumentList | undefined;
+    private _compiledEnv            : SystemEnvironment  | undefined;
+    private _state                  : ControllerState;
+    private _systemProcess          : SystemProcess;
 
     public constructor (
         context  : PipelineContext,
         name     : Name,
         command  : string,
-        args     : string[] = [],
-        env      : {[key: string]: string} = {}
+        args     : SystemArgumentList = [],
+        env      : SystemEnvironment  = {}
     ) {
 
         if ( !isName(name) ) throw new TypeError(`Script name invalid: ${name}`);
         if ( !isString(command) ) throw new TypeError(`Script#${name} must have a valid command: ${command}`);
-        if ( !isArrayOf(args, isString, 0) ) throw new TypeError(`Script#${name} must have a valid args: ${JSON.stringify(args)}`);
-        if ( !isRegularObjectOf<string, string>(env, isString, isString) ) throw new TypeError(`Script#${name} must have a valid env: ${JSON.stringify(env)}`);
+        if ( !isSystemArgumentList(args) ) throw new TypeError(`Script#${name} must have a valid args: ${JSON.stringify(args)}`);
+        if ( !isSystemEnvironment(env) ) throw new TypeError(`Script#${name} must have a valid env: ${JSON.stringify(env)}`);
 
-        this._context        = context;
-        this._state          = ControllerState.CONSTRUCTED;
-        this._name           = name;
-        this._command        = command;
-        this._args           = args;
-        this._env            = env;
-        this._observer       = new Observer<ScriptControllerEvent>(`ScriptController#${name}`);
-        this._closeCallback  = this._onClose.bind(this);
-        this._stdoutCallback = this._onStdOut.bind(this);
-        this._stderrCallback = this._onStdErr.bind(this);
-        this._stdoutChunks   = [];
-        this._stderrChunks   = [];
+        this._context         = context;
+        this._state           = ControllerState.CONSTRUCTED;
+        this._name            = name;
+        this._command         = command;
+        this._args            = args;
+        this._env             = env;
+        this._observer        = new Observer<ScriptControllerEvent>(`ScriptController#${name}`);
+        this._closeCallback   = this._onClose.bind(this);
         this._compiledCommand = undefined;
         this._compiledArgs    = undefined;
         this._compiledEnv     = undefined;
@@ -266,18 +269,20 @@ export class ScriptController implements StepController {
         }
         this._compiledEnv = compiledEnv;
 
-        const options : SpawnOptions = {};
+        const system : System = this._context.getSystem();
 
-        if (this._compiledEnv) {
-            // @ts-ignore
-            options.env = this._compiledEnv;
-        }
+        this._systemProcess = system.createProcess(
+            compiledCommand,
+            compiledArgs,
+            this._compiledEnv
+        );
 
-        // FIXME: Implementation specific NodeJS API should be refactored under environment based plugin & subdirectory
-        this._process = spawn(this._compiledCommand, this._compiledArgs, options);
-        this._process.stdout.on('data', this._stdoutCallback);
-        this._process.stderr.on('data', this._stderrCallback);
-        this._process.on('close', this._closeCallback);
+        this._systemProcess.on(
+            SystemProcessEvent.ON_EXIT,
+            this._closeCallback
+        )
+
+        this._systemProcess.start();
 
         if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_STARTED)) {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_STARTED, this);
@@ -297,13 +302,13 @@ export class ScriptController implements StepController {
             throw new Error(`Script#${this._name} was not running`);
         }
 
-        if ( !this._process ) throw new Error(`No process initialized`);
+        if ( !this._systemProcess ) throw new Error(`No process initialized`);
 
         LOG.info(`Pausing command "${this._command} ${this._args.join(' ')}"`);
 
         this._state = ControllerState.PAUSED;
 
-        this._process.kill('SIGSTOP');
+        this._systemProcess.pause();
 
         if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_PAUSED)) {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_PAUSED, this);
@@ -322,7 +327,7 @@ export class ScriptController implements StepController {
             throw new Error(`Script#${this._name} was not paused`);
         }
 
-        if ( !this._process ) {
+        if ( !this._systemProcess ) {
             throw new Error(`No process initialized`);
         }
 
@@ -330,7 +335,7 @@ export class ScriptController implements StepController {
 
         this._state = ControllerState.STARTED;
 
-        this._process.kill('SIGCONT');
+        this._systemProcess.resume();
 
         if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_RESUMED)) {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_RESUMED, this);
@@ -349,13 +354,13 @@ export class ScriptController implements StepController {
             throw new Error(`Script#${this._name} was not started`);
         }
 
-        if ( !this._process ) throw new Error(`No process initialized`);
+        if ( !this._systemProcess ) throw new Error(`No process initialized`);
 
         LOG.debug(`Cancelling command "${this._command} ${this._args.join(' ')}"`);
 
         this._state = ControllerState.CANCELLED;
 
-        this._process.kill('SIGTERM');
+        this._systemProcess.stop();
 
         if (this._observer.hasCallbacks(ScriptControllerEvent.SCRIPT_CANCELLED)) {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_CANCELLED, this);
@@ -398,18 +403,20 @@ export class ScriptController implements StepController {
     }
 
     public getErrorString () : string {
-        return Buffer.concat(this._stderrChunks).toString('utf8');
+        return this._systemProcess.getErrorString();
     }
 
     public getOutputString () : string {
-        return Buffer.concat(this._stdoutChunks).toString('utf8');
+        return this._systemProcess.getOutputString();
     }
 
     public static Event = ScriptControllerEvent;
     public static State = ControllerState;
 
 
-    private _onClose (code: number) {
+    private _onClose (event: SystemProcessEvent, child: SystemProcess) {
+
+        const code = child.getExitStatus();
 
         LOG.debug(`Child process stopped with exit status ${code}`);
 
@@ -433,16 +440,6 @@ export class ScriptController implements StepController {
             this._observer.triggerEvent(ScriptControllerEvent.SCRIPT_CHANGED, this);
         }
 
-    }
-
-    private _onStdOut (chunk: Buffer) {
-        this._stdoutChunks.push(chunk);
-        process.stdout.write(chunk);
-    }
-
-    private _onStdErr (chunk: Buffer) {
-        this._stderrChunks.push(chunk);
-        process.stderr.write(chunk);
     }
 
 }
