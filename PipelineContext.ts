@@ -51,8 +51,8 @@ export class PipelineContext {
         );
     }
 
-    public getParametersModel () : PipelineParameterArray {
-        return this._parameters ?? {};
+    public getParametersArray () : PipelineParameterArray {
+        return this._parameters ?? [];
     }
 
     public getVariablesModel () : VariablesModel {
