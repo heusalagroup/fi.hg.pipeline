@@ -273,6 +273,7 @@ export class ScriptController implements StepController {
             options.env = this._compiledEnv;
         }
 
+        // FIXME: Implementation specific NodeJS API should be refactored under environment based plugin & subdirectory
         this._process = spawn(this._compiledCommand, this._compiledArgs, options);
         this._process.stdout.on('data', this._stdoutCallback);
         this._process.stderr.on('data', this._stderrCallback);
