@@ -17,8 +17,8 @@ import { SystemArgumentList, SystemEnvironment } from "../types/System";
 export class PureSystemProcess implements SystemProcess {
 
     private readonly _command   : string;
-    private readonly _args      : SystemArgumentList;
-    private readonly _env       : SystemEnvironment;
+    private readonly _args      : SystemArgumentList | undefined;
+    private readonly _env       : SystemEnvironment  | undefined;
     private readonly _observer  : Observer<SystemProcessEvent>;
 
     public constructor (

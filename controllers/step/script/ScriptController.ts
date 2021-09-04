@@ -55,8 +55,8 @@ export class ScriptController implements StepController {
     private _compiledCommand        : string             | undefined;
     private _compiledArgs           : SystemArgumentList | undefined;
     private _compiledEnv            : SystemEnvironment  | undefined;
+    private _systemProcess          : SystemProcess      | undefined;
     private _state                  : ControllerState;
-    private _systemProcess          : SystemProcess;
 
     public constructor (
         context  : PipelineContext,
@@ -82,6 +82,7 @@ export class ScriptController implements StepController {
         this._compiledCommand = undefined;
         this._compiledArgs    = undefined;
         this._compiledEnv     = undefined;
+        this._systemProcess   = undefined;
 
     }
 
@@ -403,11 +404,11 @@ export class ScriptController implements StepController {
     }
 
     public getErrorString () : string {
-        return this._systemProcess.getErrorString();
+        return this._systemProcess ? this._systemProcess.getErrorString() : "";
     }
 
     public getOutputString () : string {
-        return this._systemProcess.getOutputString();
+        return this._systemProcess ? this._systemProcess.getOutputString() : "";
     }
 
     public static Event = ScriptControllerEvent;

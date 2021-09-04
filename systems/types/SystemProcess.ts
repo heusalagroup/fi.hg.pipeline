@@ -11,7 +11,7 @@ export enum SystemProcessEvent {
 }
 
 export interface SystemProcessEventCallback {
-    (event: SystemProcessEvent, process?: SystemProcess): void;
+    (event: SystemProcessEvent, process: SystemProcess): void;
 }
 
 export type SystemProcessDestructor = ObserverDestructor;

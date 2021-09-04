@@ -3,12 +3,13 @@
 import JobController, { isJobController } from "./JobController";
 import ScriptController from "../step/script/ScriptController";
 import PipelineContext from "../../PipelineContext";
+import PureSystem from "../../systems/pure/PureSystem";
 
 describe('isJobController', () => {
 
     test('can detect JobControllers', () => {
 
-        const context = new PipelineContext();
+        const context = new PipelineContext(new PureSystem());
         expect( isJobController( new JobController(context,"build", [
             new ScriptController(context,"build_npm", "npm", ["run", "build"])
         ]) ) ).toBe(true);
@@ -54,7 +55,7 @@ describe('JobController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
             expect(() => new JobController(context, "build", [
                 new ScriptController(context, "build_npm", "npm", ["run", "build"])
             ])).not.toThrow();
@@ -66,7 +67,7 @@ describe('JobController', () => {
 
         test('can turn class to JSON', () => {
 
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
 
             expect(
                 (new JobController(context,
@@ -99,7 +100,7 @@ describe('JobController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
             expect( ( new JobController(context,"build", [
                 new ScriptController(context,"build_npm", "npm", ["run", "build"])
             ]) ).toString() ).toBe('JobController#build');

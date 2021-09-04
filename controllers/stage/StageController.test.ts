@@ -4,12 +4,13 @@ import StageController, { isStageController } from "./StageController";
 import JobController from "../job/JobController";
 import ScriptController from "../step/script/ScriptController";
 import PipelineContext from "../../PipelineContext";
+import PureSystem from "../../systems/pure/PureSystem";
 
 describe('isStageController', () => {
 
     test('can detect StageControllers', () => {
 
-        const context = new PipelineContext();
+        const context = new PipelineContext(new PureSystem());
 
         expect( isStageController( new StageController(context,"build", [
             new JobController(context, "build", [
@@ -58,7 +59,7 @@ describe('StageController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
 
             expect(() => new StageController(context,"build", [
             new JobController(context,"build", [
@@ -73,7 +74,7 @@ describe('StageController', () => {
 
         test('can turn class to JSON', () => {
 
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
             expect(
                 (new StageController(context,"build", [
                     new JobController(context,"build", [
@@ -107,7 +108,7 @@ describe('StageController', () => {
     describe('#toString', () => {
 
         test('can turn class to string', () => {
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
             expect(
                 (new StageController(context, "build", [
                     new JobController(context, "build", [

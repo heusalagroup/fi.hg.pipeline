@@ -2,12 +2,13 @@
 
 import ScriptController, { isScriptController } from "./ScriptController";
 import PipelineContext from "../../../PipelineContext";
+import PureSystem from "../../../systems/pure/PureSystem";
 
 describe('isScriptController', () => {
 
     test('can detect ScriptControllers', () => {
 
-        const context = new PipelineContext();
+        const context = new PipelineContext(new PureSystem());
 
         expect(isScriptController(new ScriptController(context,"npm_build", "npm", ["run", "build"]))).toBe(true);
 
@@ -51,7 +52,7 @@ describe('ScriptController', () => {
     describe('#constructor', () => {
 
         test('can create objects', () => {
-            const context = new PipelineContext();
+            const context = new PipelineContext(new PureSystem());
             expect(() => new ScriptController(context,"npm_build", "npm", ["run", "build"])).not.toThrow();
         });
 
@@ -63,7 +64,7 @@ describe('ScriptController', () => {
             expect(
                 (
                     new ScriptController(
-                        new PipelineContext(),
+                        new PipelineContext(new PureSystem()),
                         "npm_build",
                         "npm",
                         ["run", "build"]
@@ -82,7 +83,7 @@ describe('ScriptController', () => {
 
         test('can turn class to string', () => {
             expect( (new ScriptController(
-                new PipelineContext(),
+                new PipelineContext(new PureSystem()),
                 "npm_build",
                 "npm",
                 ["run", "build"]
