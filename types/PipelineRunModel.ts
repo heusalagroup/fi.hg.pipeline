@@ -9,6 +9,8 @@ import {
 import PipelineModel, { isPipelineModel } from "./PipelineModel";
 import PipelineRunType, { isPipelineRunType } from "./PipelineRunType";
 import { isJsonObject, JsonObject } from "../../ts/Json";
+import ParameterBindingMap, { isParameterBindingMap } from "../parameters/types/ParameterBindingMap";
+import ParameterBindingString, { isParameterBindingString } from "../parameters/types/ParameterBindingString";
 
 export interface PipelineRunModel {
 
@@ -35,6 +37,12 @@ export interface PipelineRunModel {
      */
     readonly variables ?: JsonObject;
 
+    /**
+     * Possible bindings of parameters in the PipelineModel to values outside of the pipeline (eg.
+     * the form) and/or static values
+     */
+    readonly bindings ?: ParameterBindingMap<ParameterBindingString>;
+
 }
 
 export function isPipelineRunModel (value: any): value is PipelineRunModel {
@@ -45,13 +53,15 @@ export function isPipelineRunModel (value: any): value is PipelineRunModel {
             'type',
             'agentPoolIdList',
             'pipelineModel',
-            'variables'
+            'variables',
+            'bindings'
         ])
         && isPipelineRunType(value?.type)
         && isString(value?.pipelineId)
         && isArrayOf<string>(value?.agentPoolIdList, isString)
         && ( isUndefined(value?.pipelineModel) || isPipelineModel(value?.pipelineModel) )
         && ( isUndefined(value?.variables) || isJsonObject(value?.variables) )
+        && ( isUndefined(value?.bindings) || isParameterBindingMap<ParameterBindingString>(value?.bindings, isParameterBindingString) )
     );
 }
 

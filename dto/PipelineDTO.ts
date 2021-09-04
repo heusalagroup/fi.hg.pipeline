@@ -8,8 +8,8 @@ import {
 
 export interface PipelineDTO {
 
-    readonly id    ?: string;
-    readonly model  : PipelineModel;
+    readonly id          ?: string;
+    readonly model        : PipelineModel;
 
 }
 
