@@ -2,8 +2,11 @@
 
 import {
     isRegularObject,
+    isString,
     isStringOrUndefined,
     isUndefined,
+    keys,
+    reduce,
     trim
 } from "../../../ts/modules/lodash";
 import ParameterBindingType, {
@@ -11,7 +14,7 @@ import ParameterBindingType, {
     parseParameterBindingType
 } from "./ParameterBindingType";
 import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../ts/Json";
-import { isParameterBindingString } from "./ParameterBindingString";
+import ParameterBindingMap from "./ParameterBindingMap";
 
 /**
  * Binding configuration for a resource outside of the Pipeline model.
@@ -49,7 +52,7 @@ export function stringifyParameterBindingObject (value: ParameterBindingObject):
 
 export function parseParameterBindingObject (value: any): ParameterBindingObject | undefined {
 
-    if (isParameterBindingString(value)) {
+    if (isString(value)) {
 
         const type : ParameterBindingType | undefined = parseParameterBindingType( value.substr(0, 1) );
 
@@ -94,6 +97,38 @@ export function parseParameterBindingObject (value: any): ParameterBindingObject
     if ( isParameterBindingObject(value) ) return value;
 
     return undefined;
+
+}
+
+export function parseParameterBindingObjectMap (value : any) : ParameterBindingMap<ParameterBindingObject> | undefined {
+
+    if (!isRegularObject(value)) {
+        return undefined;
+    }
+
+    return reduce(
+        keys<string>(value, isString),
+        (
+            ret         : ParameterBindingMap<ParameterBindingObject> | undefined,
+            propertyKey : string
+        ) : ParameterBindingMap<ParameterBindingObject> | undefined => {
+
+            if (ret === undefined) return undefined;
+
+            const parsedValue = parseParameterBindingObject(value[propertyKey]);
+            if (parsedValue) {
+                return {
+                    ...ret,
+                    [propertyKey] : parsedValue
+                };
+            } else {
+                return undefined;
+            }
+
+        },
+        {} as ParameterBindingMap<ParameterBindingObject>
+    );
+
 }
 
 export default ParameterBindingObject;
