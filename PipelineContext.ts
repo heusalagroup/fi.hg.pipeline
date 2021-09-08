@@ -2,37 +2,39 @@
 
 import VariablesModel from "./types/VariablesModel";
 import PipelineParameterArray from "./types/PipelineParameterArray";
-import Json, { JsonObject, parseJson, ReadonlyJsonAny } from "../ts/Json";
+import Json, { isJsonObject, parseJson, ReadonlyJsonAny } from "../ts/Json";
 import JsonAny from "../ts/Json";
 import { get, set } from "../ts/modules/lodash";
 import StringUtils, { VariableResolverCallback } from "../ts/StringUtils";
 import System from "./systems/types/System";
+import LogService from "../ts/LogService";
+
+const LOG = LogService.createLogger('PipelineContext');
 
 export class PipelineContext {
 
     private readonly _system         : System;
-    private readonly _variables      : VariablesModel          | undefined;
     private readonly _parameters     : PipelineParameterArray | undefined;
     private readonly _variablePrefix : string;
     private readonly _variableSuffix : string;
     private readonly _lookupVariable : VariableResolverCallback;
 
+    private _variables               : VariablesModel;
+
     public constructor (
         system         : System,
         parameters     : PipelineParameterArray | undefined = undefined,
-        variables      : VariablesModel | undefined = undefined,
+        variables      : VariablesModel         | undefined = undefined,
         variablePrefix : string = '${',
         variableSuffix : string = '}'
     ) {
 
-        this._system     = system;
-        this._variables  = variables;
-        this._parameters = parameters;
-
+        this._system         = system;
+        this._variables      = variables ?? {};
+        this._parameters     = parameters;
         this._variablePrefix = variablePrefix;
         this._variableSuffix = variableSuffix;
-
-        this._lookupVariable = this.getVariable.bind(this);
+        this._lookupVariable = this._onLookupVariable.bind(this);
 
     }
 
@@ -43,12 +45,15 @@ export class PipelineContext {
     public compileModel<T extends ReadonlyJsonAny> (
         model : T
     ) : ReadonlyJsonAny | undefined {
-        return StringUtils.processVariables(
+        LOG.debug(`Compiling model using: `, model, this._variablePrefix, this._variableSuffix);
+        const result = StringUtils.processVariables(
             model,
             this._lookupVariable,
             this._variablePrefix,
             this._variableSuffix
         );
+        LOG.debug(`Compiled as: `, result);
+        return result;
     }
 
     public getParametersArray () : PipelineParameterArray {
@@ -56,19 +61,33 @@ export class PipelineContext {
     }
 
     public getVariablesModel () : VariablesModel {
-        return this._variables ?? {};
+        return this._variables;
     }
 
     public getVariable (path: string) : ReadonlyJsonAny | undefined {
         return get(this._variables, path);
     }
 
+    private _onLookupVariable (path: string) : ReadonlyJsonAny | undefined {
+        const value = this.getVariable(path);
+        LOG.debug(`lookup variable "${path}": `, value, this._variables);
+        return value;
+    }
+
     public setVariable (
         path  : string,
         value : JsonAny | ReadonlyJsonAny
     ) : PipelineContext {
+
+        if (!isJsonObject(this._variables)) {
+            this._variables = {};
+        }
+
         set(this._variables as object, path, value);
+        LOG.debug(`setVariable "${path}": `, value, this._variables);
+
         return this;
+
     }
 
     public toString (): string {

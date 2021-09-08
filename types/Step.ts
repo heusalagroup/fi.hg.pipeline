@@ -3,6 +3,7 @@
 import { isScript, stringifyScript } from "./Script";
 import { isTask, stringifyTask } from "./Task";
 import BasePipelineModel, { isBasePipelineModel } from "./BasePipelineModel";
+import { isJsonStep, stringifyJsonStep } from "./JsonStep";
 
 export interface Step extends BasePipelineModel {
 
@@ -22,6 +23,10 @@ export function stringifyStep (value: Step): string {
 
     if ( isScript(value) ) {
         return stringifyScript(value);
+    }
+
+    if ( isJsonStep(value) ) {
+        return stringifyJsonStep(value);
     }
 
     if ( isTask(value) ) {

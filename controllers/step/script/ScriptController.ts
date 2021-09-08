@@ -248,8 +248,6 @@ export class ScriptController implements StepController {
             throw new Error(`Script#${this._name} was already started`);
         }
 
-        LOG.info(`Starting command "${this._command} ${this._args.join(' ')}"`);
-
         this._state = ControllerState.STARTED;
 
         const compiledCommand = this._context.compileModel(this._command);
@@ -269,6 +267,8 @@ export class ScriptController implements StepController {
             throw new Error(`Script#${this._name} failed to compile environment: ${JSON.stringify(this._env, null, 2)}`);
         }
         this._compiledEnv = compiledEnv;
+
+        LOG.info(`Starting command "${this._compiledCommand}" with args: "${this._compiledArgs.join('\", \"')}"`);
 
         const system : System = this._context.getSystem();
 

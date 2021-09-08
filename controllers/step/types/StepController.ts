@@ -3,7 +3,6 @@
 import { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
 import Json from "../../../../ts/Json";
 import Name from "../../../types/Name";
-import ScriptController from "../script/ScriptController";
 import Controller, { isController } from "../../types/Controller";
 import ControllerState from "../../types/ControllerState";
 import PipelineContext from "../../../PipelineContext";
@@ -22,10 +21,10 @@ export interface StepController extends Controller {
     isFailed ()     : boolean;
     isSuccessful () : boolean;
 
-    start ()   : ScriptController;
-    pause ()   : ScriptController;
-    resume ()  : ScriptController;
-    stop ()    : ScriptController;
+    start ()   : StepController;
+    pause ()   : StepController;
+    resume ()  : StepController;
+    stop ()    : StepController;
     destroy () : void;
 
     onStarted (

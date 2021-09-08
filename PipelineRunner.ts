@@ -16,6 +16,11 @@ import Controller from "./controllers/types/Controller";
 import { ObserverDestructor } from "../ts/Observer";
 import { PipelineModel } from "./types/PipelineModel";
 import PipelineContext from "./PipelineContext";
+import JsonControllerAction from "./controllers/step/json/JsonControllerAction";
+import { isJsonStep } from "./types/JsonStep";
+import JsonController from "./controllers/step/json/JsonController";
+import Name from "./types/Name";
+import { ReadonlyJsonAny } from "../ts/Json";
 
 const LOG = LogService.createLogger('PipelineRunner');
 
@@ -25,6 +30,16 @@ export class PipelineRunner {
         step    : Step,
         context : PipelineContext
     ) : StepController {
+
+        if (isJsonStep(step)) {
+            return new JsonController(
+                context,
+                step.name,
+                step.json,
+                step.action,
+                step.output
+            );
+        }
 
         if (isScript(step)) {
             return new ScriptController(
