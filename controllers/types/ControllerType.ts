@@ -7,7 +7,8 @@ export enum ControllerType {
     TASK          = 'fi.nor.pipeline.task',
     STEP          = 'fi.nor.pipeline.step',
     SCRIPT_STEP   = 'fi.nor.pipeline.step.script',
-    JSON_STEP     = 'fi.nor.pipeline.step.json'
+    JSON_STEP     = 'fi.nor.pipeline.step.json',
+    CSV_STEP      = 'fi.nor.pipeline.step.csv'
 }
 
 export function isControllerType (value: any): value is ControllerType {
@@ -20,6 +21,7 @@ export function isControllerType (value: any): value is ControllerType {
         case ControllerType.STEP:
         case ControllerType.SCRIPT_STEP:
         case ControllerType.JSON_STEP:
+        case ControllerType.CSV_STEP:
             return true;
 
         default:
@@ -37,6 +39,7 @@ export function stringifyControllerType (value: ControllerType): string {
         case ControllerType.STEP        : return 'STEP';
         case ControllerType.SCRIPT_STEP : return 'SCRIPT_STEP';
         case ControllerType.JSON_STEP   : return 'JSON_STEP';
+        case ControllerType.CSV_STEP    : return 'CSV_STEP';
     }
     throw new TypeError(`Unsupported ControllerType value: ${value}`);
 }
@@ -54,6 +57,7 @@ export function parseControllerType (value: any): ControllerType | undefined {
         case 'STEP'        : return ControllerType.STEP;
         case 'SCRIPT_STEP' : return ControllerType.SCRIPT_STEP;
         case 'JSON_STEP'   : return ControllerType.JSON_STEP;
+        case 'CSV_STEP'    : return ControllerType.CSV_STEP;
 
         default:
             return undefined;

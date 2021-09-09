@@ -21,6 +21,8 @@ import { isJsonStep } from "./types/JsonStep";
 import JsonController from "./controllers/step/json/JsonController";
 import Name from "./types/Name";
 import { ReadonlyJsonAny } from "../ts/Json";
+import { isCsvStep } from "./types/CsvStep";
+import CsvController from "./controllers/step/csv/CsvController";
 
 const LOG = LogService.createLogger('PipelineRunner');
 
@@ -36,6 +38,16 @@ export class PipelineRunner {
                 context,
                 step.name,
                 step.json,
+                step.action,
+                step.output
+            );
+        }
+
+        if (isCsvStep(step)) {
+            return new CsvController(
+                context,
+                step.name,
+                step.csv,
                 step.action,
                 step.output
             );
