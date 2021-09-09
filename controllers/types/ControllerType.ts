@@ -10,7 +10,8 @@ export enum ControllerType {
     SCRIPT   = 'fi.nor.pipeline.step.script',
     VARIABLE = 'fi.nor.pipeline.step.variable',
     JSON     = 'fi.nor.pipeline.step.json',
-    CSV      = 'fi.nor.pipeline.step.csv'
+    CSV      = 'fi.nor.pipeline.step.csv',
+    GIT      = 'fi.nor.pipeline.step.git'
 }
 
 export function isControllerType (value: any): value is ControllerType {
