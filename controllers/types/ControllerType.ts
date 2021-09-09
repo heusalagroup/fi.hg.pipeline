@@ -8,6 +8,7 @@ export enum ControllerType {
     STEP     = 'fi.nor.pipeline.step',
     FILE     = 'fi.nor.pipeline.step.file',
     SCRIPT   = 'fi.nor.pipeline.step.script',
+    VARIABLE = 'fi.nor.pipeline.step.variable',
     JSON     = 'fi.nor.pipeline.step.json',
     CSV      = 'fi.nor.pipeline.step.csv'
 }

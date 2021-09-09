@@ -5,10 +5,12 @@ import JsonController from "./controllers/step/json/JsonController";
 import CsvController from "./controllers/step/csv/CsvController";
 import ScriptController from "./controllers/step/script/ScriptController";
 import FileController from "./controllers/step/file/FileController";
+import VariableController from "./controllers/step/variable/VariableController";
 
 export class PipelineDefaults {
 
     public static registerControllers () {
+        PipelineRunner.registerController(VariableController);
         PipelineRunner.registerController(FileController);
         PipelineRunner.registerController(JsonController);
         PipelineRunner.registerController(CsvController);
