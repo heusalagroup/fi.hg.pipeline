@@ -1,14 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 export enum ControllerType {
-    PIPELINE      = 'fi.nor.pipeline',
-    JOB           = 'fi.nor.pipeline.job',
-    STAGE         = 'fi.nor.pipeline.stage',
-    TASK          = 'fi.nor.pipeline.task',
-    STEP          = 'fi.nor.pipeline.step',
-    SCRIPT_STEP   = 'fi.nor.pipeline.step.script',
-    JSON_STEP     = 'fi.nor.pipeline.step.json',
-    CSV_STEP      = 'fi.nor.pipeline.step.csv'
+    PIPELINE = 'fi.nor.pipeline',
+    JOB      = 'fi.nor.pipeline.job',
+    STAGE    = 'fi.nor.pipeline.stage',
+    TASK     = 'fi.nor.pipeline.task',
+    STEP     = 'fi.nor.pipeline.step',
+    FILE     = 'fi.nor.pipeline.step.file',
+    SCRIPT   = 'fi.nor.pipeline.step.script',
+    JSON     = 'fi.nor.pipeline.step.json',
+    CSV      = 'fi.nor.pipeline.step.csv'
 }
 
 export function isControllerType (value: any): value is ControllerType {
@@ -19,9 +20,9 @@ export function isControllerType (value: any): value is ControllerType {
         case ControllerType.STAGE:
         case ControllerType.TASK:
         case ControllerType.STEP:
-        case ControllerType.SCRIPT_STEP:
-        case ControllerType.JSON_STEP:
-        case ControllerType.CSV_STEP:
+        case ControllerType.SCRIPT:
+        case ControllerType.JSON:
+        case ControllerType.CSV:
             return true;
 
         default:
@@ -37,9 +38,9 @@ export function stringifyControllerType (value: ControllerType): string {
         case ControllerType.STAGE       : return 'STAGE';
         case ControllerType.TASK        : return 'TASK';
         case ControllerType.STEP        : return 'STEP';
-        case ControllerType.SCRIPT_STEP : return 'SCRIPT_STEP';
-        case ControllerType.JSON_STEP   : return 'JSON_STEP';
-        case ControllerType.CSV_STEP    : return 'CSV_STEP';
+        case ControllerType.SCRIPT : return 'SCRIPT_STEP';
+        case ControllerType.JSON   : return 'JSON_STEP';
+        case ControllerType.CSV    : return 'CSV_STEP';
     }
     throw new TypeError(`Unsupported ControllerType value: ${value}`);
 }
@@ -55,9 +56,9 @@ export function parseControllerType (value: any): ControllerType | undefined {
         case 'STAGE'       : return ControllerType.STAGE;
         case 'TASK'        : return ControllerType.TASK;
         case 'STEP'        : return ControllerType.STEP;
-        case 'SCRIPT_STEP' : return ControllerType.SCRIPT_STEP;
-        case 'JSON_STEP'   : return ControllerType.JSON_STEP;
-        case 'CSV_STEP'    : return ControllerType.CSV_STEP;
+        case 'SCRIPT_STEP' : return ControllerType.SCRIPT;
+        case 'JSON_STEP'   : return ControllerType.JSON;
+        case 'CSV_STEP'    : return ControllerType.CSV;
 
         default:
             return undefined;

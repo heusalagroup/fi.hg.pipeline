@@ -9,23 +9,36 @@ import {
 import SystemProcess from "./SystemProcess";
 
 export type SystemArgumentList = readonly string[];
-export type SystemEnvironment  = {readonly [key: string]: string};
+export type SystemEnvironment = {readonly [key: string]: string};
 
-export function isSystemArgumentList (value : any) : value is SystemArgumentList {
+export function isSystemArgumentList (value: any): value is SystemArgumentList {
     return isArrayOf(value, isString, 0);
 }
 
-export function isSystemEnvironment (value : any) : value is SystemEnvironment {
+export function isSystemEnvironment (value: any): value is SystemEnvironment {
     return isRegularObjectOf<string, string>(value, isString, isString);
 }
 
 export interface System {
 
-    createProcess(
-        command : string,
-        args    : SystemArgumentList | undefined,
-        env     : SystemEnvironment  | undefined
-    ) : SystemProcess;
+    destroy () : void;
+
+    createProcess (
+        command: string,
+        args: SystemArgumentList | undefined,
+        env: SystemEnvironment | undefined
+    ): SystemProcess;
+
+    getWorkingDirectory () : string;
+
+    createDirectory (
+        target: string
+    ): System;
+
+    /**
+     * Implementation should make sure these are cleaned on destroy.
+     */
+    createTemporaryFile (): string;
 
 }
 

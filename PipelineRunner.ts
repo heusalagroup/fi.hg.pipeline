@@ -10,60 +10,36 @@ import { map } from "../ts/modules/lodash";
 import StageController from "./controllers/stage/StageController";
 import JobController from "./controllers/job/JobController";
 import StepController from "./controllers/step/types/StepController";
-import { isScript } from "./types/Script";
-import ScriptController from "./controllers/step/script/ScriptController";
 import Controller from "./controllers/types/Controller";
 import { ObserverDestructor } from "../ts/Observer";
-import { PipelineModel } from "./types/PipelineModel";
+import PipelineModel from "./types/PipelineModel";
 import PipelineContext from "./PipelineContext";
-import JsonControllerAction from "./controllers/step/json/JsonControllerAction";
-import { isJsonStep } from "./types/JsonStep";
-import JsonController from "./controllers/step/json/JsonController";
-import Name from "./types/Name";
-import { ReadonlyJsonAny } from "../ts/Json";
-import { isCsvStep } from "./types/CsvStep";
-import CsvController from "./controllers/step/csv/CsvController";
+import ControllerFactory from "./controllers/types/ControllerFactory";
+import PipelineRegistry from "./PipelineRegistry";
 
 const LOG = LogService.createLogger('PipelineRunner');
 
 export class PipelineRunner {
+
+    public static registerController (controller : ControllerFactory) {
+        PipelineRegistry.registerController(controller);
+    }
 
     public static createStepController (
         step    : Step,
         context : PipelineContext
     ) : StepController {
 
-        if (isJsonStep(step)) {
-            return new JsonController(
-                context,
-                step.name,
-                step.json,
-                step.action,
-                step.output
-            );
+        const controller : ControllerFactory | undefined = PipelineRegistry.findController(step);
+
+        if ( controller === undefined ) {
+            throw new TypeError(`Unknown step type: ${step.name}`);
         }
 
-        if (isCsvStep(step)) {
-            return new CsvController(
-                context,
-                step.name,
-                step.csv,
-                step.action,
-                step.output
-            );
-        }
-
-        if (isScript(step)) {
-            return new ScriptController(
-                context,
-                step.name,
-                step.command,
-                step.args,
-                step.env
-            );
-        }
-
-        throw new TypeError(`Unknown step type: ${step.name}`);
+        return controller.createController(
+            context,
+            step
+        );
 
     }
 

@@ -5,7 +5,7 @@ import ControllerState from "../../types/ControllerState";
 import { hasNoOtherKeys, isRegularObject } from "../../../../ts/modules/lodash";
 import StepControllerStateDTO from "../types/StepControllerStateDTO";
 
-export interface ScriptControllerStateDTO extends StepControllerStateDTO {
+export interface BaseStepControllerStateDTO extends StepControllerStateDTO {
 
     readonly type  : ControllerType;
     readonly state : ControllerState;
@@ -13,7 +13,7 @@ export interface ScriptControllerStateDTO extends StepControllerStateDTO {
 
 }
 
-export function isScriptControllerStateDTO (value: any): value is ScriptControllerStateDTO {
+export function isBaseStepControllerStateDTO (value: any): value is BaseStepControllerStateDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
@@ -24,12 +24,12 @@ export function isScriptControllerStateDTO (value: any): value is ScriptControll
     );
 }
 
-export function stringifyScriptControllerStateDTO (value: ScriptControllerStateDTO): string {
-    return `ScriptStepStateDTO(${value})`;
+export function stringifyBaseStepControllerStateDTO (value: BaseStepControllerStateDTO): string {
+    return `BaseStepStepStateDTO(${value})`;
 }
 
-export function parseScriptControllerStateDTO (value: any): ScriptControllerStateDTO | undefined {
-    return isScriptControllerStateDTO(value) ? value : undefined;
+export function parseBaseStepControllerStateDTO (value: any): BaseStepControllerStateDTO | undefined {
+    return isBaseStepControllerStateDTO(value) ? value : undefined;
 }
 
-export default ScriptControllerStateDTO;
+export default BaseStepControllerStateDTO;

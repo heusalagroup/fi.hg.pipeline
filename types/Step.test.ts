@@ -1,8 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isStep, stringifyStep } from "./Step";
-import Script from "./Script";
-import { parseStep } from "./parseStep";
+import { isStep } from "./Step";
+import { parseStep } from "../parseStep";
 
 describe('isStep', () => {
 
@@ -43,76 +42,6 @@ describe('isStep', () => {
         expect( isStep({}) ).toBe(false);
         expect( isStep({"foo":"bar"}) ).toBe(false);
         expect( isStep({"foo":1234}) ).toBe(false);
-
-    });
-
-});
-
-describe('stringifyStep', () => {
-
-    test( 'can stringify values', () => {
-
-        expect( stringifyStep({
-            name: 'get_date',
-            command: 'date'
-        } as Script) ).toBe('Script#get_date');
-
-    });
-
-    test( 'throws TypeError on incorrect values', () => {
-
-        // @ts-ignore
-        expect( () => stringifyStep(undefined) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(null) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(false) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(true) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(NaN) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(() => {}) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(0) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(Symbol()) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(1628078651664) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(new Date('2021-08-04T12:04:00.844Z')) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(1) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(12) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(-12) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(123) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(123.99999) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(-123.99999) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep("123") ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep("hello") ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep("") ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep([]) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep([123]) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(["123"]) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep(["Hello world", "foo"]) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep({}) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep({"foo":"bar"}) ).toThrow(TypeError);
-        // @ts-ignore
-        expect( () => stringifyStep({"foo":1234}) ).toThrow(TypeError);
 
     });
 

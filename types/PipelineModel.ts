@@ -2,7 +2,7 @@ import Pipeline, { isPipeline, parsePipeline } from "./Pipeline";
 import Stage, { isStage, parseStage } from "./Stage";
 import Job, { isJob, parseJob } from "./Job";
 import Step, { isStep } from "./Step";
-import { parseStep } from "./parseStep";
+import { parseStep } from "../parseStep";
 
 export type PipelineModel = Pipeline | Stage | Job | Step;
 

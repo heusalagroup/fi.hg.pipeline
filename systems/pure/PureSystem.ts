@@ -5,6 +5,19 @@ import PureSystemProcess from "./PureSystemProcess";
 
 export class PureSystem implements System {
 
+    private _tempFileCounter : number = 0;
+
+    public destroy () {}
+
+    getWorkingDirectory () : string {
+        return "/tmp";
+    }
+
+    createTemporaryFile () : string {
+        this._tempFileCounter += 1;
+        return `/tmp/tempfile.${this._tempFileCounter}.tmp`;
+    }
+
     /**
      *
      * @param command
@@ -17,6 +30,17 @@ export class PureSystem implements System {
         env: {[p: string]: string} | undefined
     ): PureSystemProcess {
         return new PureSystemProcess(command, args, env);
+    }
+
+    public createDirectory (
+        target : string
+    ) : System {
+        this._notImplementedYet();
+        return this;
+    }
+
+    private _notImplementedYet () {
+        throw new Error(`No pure JavaScript implementation to run scripts exists yet`);
     }
 
 }

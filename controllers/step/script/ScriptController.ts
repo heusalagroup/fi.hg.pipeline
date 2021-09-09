@@ -23,6 +23,8 @@ import System, {
     SystemArgumentList,
     SystemEnvironment
 } from "../../../systems/types/System";
+import Controller from "../../types/Controller";
+import Script, { isScript, parseScript } from "./Script";
 
 const LOG = LogService.createLogger('ScriptController');
 
@@ -43,6 +45,28 @@ export type ScriptControllerEventCallback = ObserverCallback<ScriptControllerEve
 export type ScriptControllerDestructor = ObserverDestructor;
 
 export class ScriptController implements StepController {
+
+    public static parseControllerModel (model: any) : Script {
+        return parseScript(model);
+    }
+
+    public static isControllerModel (model: any) : model is Script {
+        return isScript(model);
+    }
+
+    public static createController (
+        context : PipelineContext,
+        model   : Script
+    ) : Controller {
+        return new ScriptController(
+            context,
+            model.name,
+            model.command,
+            model.args,
+            model.env
+        );
+    }
+
 
     private readonly _context        : PipelineContext;
     private readonly _observer       : Observer<ScriptControllerEvent>;
@@ -120,7 +144,7 @@ export class ScriptController implements StepController {
 
     public getStateDTO (): ScriptControllerStateDTO {
         return {
-            type: ControllerType.SCRIPT_STEP,
+            type: ControllerType.SCRIPT,
             state : this._state,
             name: this._name
         };

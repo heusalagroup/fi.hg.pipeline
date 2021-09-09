@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { isJob, parseJob, stringifyJob } from "./Job";
-import Script from "./Script";
+import Script from "../controllers/step/script/Script";
 
 describe('isJob', () => {
 

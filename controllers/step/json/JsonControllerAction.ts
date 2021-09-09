@@ -2,7 +2,7 @@
 
 export enum JsonControllerAction {
     STRINGIFY = "stringify",
-    PARSE = "parse"
+    PARSE     = "parse"
 }
 
 export function isJsonControllerAction (value: any): value is JsonControllerAction {

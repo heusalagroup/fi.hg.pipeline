@@ -1,12 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isRegularObject, isUndefined } from "../../ts/modules/lodash";
+import { isRegularObject, isString, isUndefined } from "../../ts/modules/lodash";
 import PipelineParameterArray, { isPipelineParameterArray } from "./PipelineParameterArray";
 import VariablesModel, { isVariablesModel } from "./VariablesModel";
 import { ReadonlyJsonAny } from "../../ts/Json";
 
 export interface BasePipelineModel {
 
+    readonly name        : string;
     readonly parameters ?: PipelineParameterArray | undefined;
     readonly variables  ?: VariablesModel | undefined;
 
@@ -15,6 +16,7 @@ export interface BasePipelineModel {
 }
 
 export const BASE_PIPELINE_KEYS = [
+    'name',
     'parameters',
     'variables'
 ];
@@ -22,6 +24,7 @@ export const BASE_PIPELINE_KEYS = [
 export function isBasePipelineModel (value: any): value is BasePipelineModel {
     return (
         isRegularObject(value)
+        && ( isString(value?.name) )
         && ( isUndefined(value?.parameters) || isPipelineParameterArray(value?.parameters) )
         && ( isUndefined(value?.variables)  || isVariablesModel(value?.variables)   )
     );

@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { isStage, parseStage, stringifyStage } from "./Stage";
-import Script from "./Script";
+import Script from "../controllers/step/script/Script";
 
 describe('isStage', () => {
 
