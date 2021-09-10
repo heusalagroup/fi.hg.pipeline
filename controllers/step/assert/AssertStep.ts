@@ -12,7 +12,8 @@ import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../ts/Json";
 export const ASSERT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',
     'assert',
-    'equals'
+    'equals',
+    'output'
 ]);
 
 export interface AssertStep extends Step {

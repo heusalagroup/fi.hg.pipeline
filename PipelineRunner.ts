@@ -33,6 +33,7 @@ export class PipelineRunner {
         const controller : ControllerFactory | undefined = PipelineRegistry.findController(step);
 
         if ( controller === undefined ) {
+            LOG.debug('step = ', step);
             throw new TypeError(`Unknown step type: ${step.name}`);
         }
 
