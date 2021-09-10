@@ -7,7 +7,7 @@ import StepController from "../types/StepController";
 import {
     isArrayOf,
     isRegularObjectOf,
-    isString
+    isString, isStringOrUndefined
 } from "../../../../ts/modules/lodash";
 import LogService from "../../../../ts/LogService";
 import ControllerState from "../../types/ControllerState";
@@ -55,10 +55,12 @@ export abstract class BaseScriptController implements StepController {
     private readonly _stepName       : string;
     private readonly _name           : Name;
     private readonly _command        : string;
+    private readonly _cwd            : string;
     private readonly _args           : SystemArgumentList;
     private readonly _env            : SystemEnvironment;
     private readonly _closeCallback  : SystemProcessEventCallback;
 
+    private _compiledCwd            : string             | undefined;
     private _compiledCommand        : string             | undefined;
     private _compiledArgs           : SystemArgumentList | undefined;
     private _compiledEnv            : SystemEnvironment  | undefined;
@@ -73,15 +75,17 @@ export abstract class BaseScriptController implements StepController {
         name     : Name,
         command  : string,
         args     : SystemArgumentList = [],
-        env      : SystemEnvironment  = {}
+        env      : SystemEnvironment  = {},
+        cwd      : string | undefined = undefined
     ) {
 
-        if ( !isString(controllerName) ) throw new TypeError(`[${stepName}] invalid controller identifier: ${controllerName}`);
-        if ( !isString(stepName)       ) throw new TypeError(`[${stepName}] invalid step identifier: ${stepName}`);
-        if ( !isName(name) ) throw new TypeError(`[${stepName}] name invalid: ${name}`);
-        if ( !isString(command) ) throw new TypeError(`[${stepName}#${name}] must have a valid command: ${command}`);
-        if ( !isSystemArgumentList(args) ) throw new TypeError(`${stepName}#${name} must have a valid args: ${JSON.stringify(args)}`);
-        if ( !isSystemEnvironment(env) ) throw new TypeError(`${stepName}#${name} must have a valid env: ${JSON.stringify(env)}`);
+        if ( !isString(controllerName) )       throw new TypeError(`[${stepName}] invalid controller identifier: ${controllerName}`);
+        if ( !isString(stepName)       )       throw new TypeError(`[${stepName}] invalid step identifier: ${stepName}`);
+        if ( !isName(name) )                   throw new TypeError(`[${stepName}] name invalid: ${name}`);
+        if ( !isString(command) )              throw new TypeError(`[${stepName}#${name}] must have a valid command: ${command}`);
+        if ( !isSystemArgumentList(args) )     throw new TypeError(`[${stepName}#${name}] must have a valid args: ${JSON.stringify(args)}`);
+        if ( !isSystemEnvironment(env) )       throw new TypeError(`[${stepName}#${name}] must have a valid env: ${JSON.stringify(env)}`);
+        if ( !isStringOrUndefined(cwd)       ) throw new TypeError(`[${stepName}#${name}] invalid cwd: ${cwd}`);
 
         this._controllerType  = controllerType;
         this._controllerName  = controllerName;
@@ -89,6 +93,7 @@ export abstract class BaseScriptController implements StepController {
         this._context         = context;
         this._state           = ControllerState.CONSTRUCTED;
         this._name            = name;
+        this._cwd            = cwd;
         this._command         = command;
         this._args            = args;
         this._env             = env;
@@ -271,6 +276,12 @@ export abstract class BaseScriptController implements StepController {
         }
         this._compiledCommand = compiledCommand;
 
+        const compiledCwd = this._context.compileModel(this._cwd);
+        if (!isStringOrUndefined(compiledCwd)) {
+            throw new Error(`${this._stepName}#${this._name} failed to compile the cwd: ${this._cwd}`);
+        }
+        this._compiledCwd = compiledCwd;
+
         const compiledArgs : ReadonlyJsonAny | undefined = this._context.compileModel(this._args);
         if (!isArrayOf<string>(compiledArgs, isString)) {
             throw new Error(`${this._stepName}#${this._name} failed to compile args: ${this._args.join(' ')}`);
@@ -290,7 +301,8 @@ export abstract class BaseScriptController implements StepController {
         this._systemProcess = system.createProcess(
             compiledCommand,
             compiledArgs,
-            this._compiledEnv
+            this._compiledEnv,
+            this._compiledCwd
         );
 
         this._systemProcess.on(

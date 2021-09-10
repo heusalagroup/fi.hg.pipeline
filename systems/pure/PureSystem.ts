@@ -23,13 +23,15 @@ export class PureSystem implements System {
      * @param command
      * @param args
      * @param env
+     * @param cwd
      */
     public createProcess (
         command: string,
         args: readonly string[] | undefined,
-        env: {[p: string]: string} | undefined
+        env: {[p: string]: string} | undefined,
+        cwd     : string | undefined
     ): PureSystemProcess {
-        return new PureSystemProcess(command, args, env);
+        return new PureSystemProcess(command, args, env, cwd);
     }
 
     public createDirectory (

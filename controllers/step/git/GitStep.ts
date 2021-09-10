@@ -14,7 +14,9 @@ export const GIT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',
     'git',
     'url',
-    'target'
+    'target',
+    'message',
+    'cwd'
 ]);
 
 export interface GitStep extends Step {
@@ -23,6 +25,8 @@ export interface GitStep extends Step {
     readonly git      : ReadonlyJsonAny;
     readonly url     ?: string;
     readonly target  ?: string;
+    readonly message ?: string;
+    readonly cwd     ?: string;
 
 }
 
@@ -33,6 +37,8 @@ export function isGitStep (value: any): value is GitStep {
         && isReadonlyJsonAny(value?.git)
         && isStringOrUndefined(value?.url)
         && isStringOrUndefined(value?.target)
+        && isStringOrUndefined(value?.message)
+        && isStringOrUndefined(value?.cwd)
         && hasNoOtherKeys(value, GIT_STEP_KEYS)
     );
 }

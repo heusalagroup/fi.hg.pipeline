@@ -19,16 +19,19 @@ export class PureSystemProcess implements SystemProcess {
     private readonly _command   : string;
     private readonly _args      : SystemArgumentList | undefined;
     private readonly _env       : SystemEnvironment  | undefined;
+    private readonly _cwd       : string  | undefined;
     private readonly _observer  : Observer<SystemProcessEvent>;
 
     public constructor (
         command  : string,
         args     : SystemArgumentList | undefined,
         env      : SystemEnvironment  | undefined,
+        cwd     : string | undefined
     ) {
         this._command  = command;
         this._args     = args;
         this._env      = env;
+        this._cwd      = cwd;
         this._observer = new Observer<SystemProcessEvent>("PureSystemProcess");
     }
 

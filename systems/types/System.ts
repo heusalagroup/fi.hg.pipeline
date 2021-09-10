@@ -24,9 +24,10 @@ export interface System {
     destroy () : void;
 
     createProcess (
-        command: string,
-        args: SystemArgumentList | undefined,
-        env: SystemEnvironment | undefined
+        command : string,
+        args    : SystemArgumentList | undefined,
+        env     : SystemEnvironment | undefined,
+        cwd     : string | undefined
     ): SystemProcess;
 
     getWorkingDirectory () : string;

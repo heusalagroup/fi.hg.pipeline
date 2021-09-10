@@ -30,7 +30,7 @@ export class GitController extends BaseScriptController {
         if ( model.git === GitControllerAction.CLONE ) {
 
             const target = model.target;
-            const url    = model.url;
+            const url = model.url;
 
             return new GitController(
                 context,
@@ -40,6 +40,43 @@ export class GitController extends BaseScriptController {
                     'clone',
                     url,
                     target
+                ],
+                {
+                    GIT_TERMINAL_PROMPT: "0",
+                    GIT_ASKPASS: "/bin/echo"
+                }
+            );
+
+        } else if ( model.git === GitControllerAction.ADD ) {
+
+            const target = model?.target;
+
+            return new GitController(
+                context,
+                model.name,
+                'git',
+                [
+                    'add',
+                    target
+                ],
+                {
+                    GIT_TERMINAL_PROMPT: "0",
+                    GIT_ASKPASS: "/bin/echo"
+                }
+            );
+
+        } else if ( model.git === GitControllerAction.COMMIT ) {
+
+            const message = model?.message ?? 'Pipeline commit';
+
+            return new GitController(
+                context,
+                model.name,
+                'git',
+                [
+                    'commit',
+                    '-m',
+                    message
                 ],
                 {
                     GIT_TERMINAL_PROMPT: "0",
