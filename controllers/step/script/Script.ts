@@ -6,7 +6,7 @@ import {
     hasNoOtherKeys,
     isArrayOrUndefinedOf,
     isRegularObjectOrUndefinedOf,
-    isString
+    isString, isStringOrUndefined
 } from "../../../../ts/modules/lodash";
 import Name, { isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
@@ -15,7 +15,8 @@ export const SCRIPT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',
     'command',
     'args',
-    'env'
+    'env',
+    'cwd'
 ]);
 
 export interface Script extends Step {
@@ -24,6 +25,7 @@ export interface Script extends Step {
     readonly command  : string;
     readonly args    ?: string[];
     readonly env     ?: {readonly [key: string]: string};
+    readonly cwd     ?: string;
 
 }
 
@@ -34,6 +36,7 @@ export function isScript (value: any): value is Script {
         && isString(value?.command)
         && isArrayOrUndefinedOf(value?.args, isString)
         && isRegularObjectOrUndefinedOf<string, string>(value?.env, isString, isString)
+        && isStringOrUndefined(value?.cwd)
         && hasNoOtherKeys(value, SCRIPT_STEP_KEYS)
     );
 }

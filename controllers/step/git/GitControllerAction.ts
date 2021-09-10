@@ -3,7 +3,10 @@
 export enum GitControllerAction {
     CLONE  = "clone",
     COMMIT = "commit",
-    ADD    = "add"
+    ADD    = "add",
+    CONFIG = "config",
+    PUSH   = "push",
+    PULL   = "pull"
 }
 
 export function isGitControllerAction (value: any): value is GitControllerAction {
@@ -11,6 +14,9 @@ export function isGitControllerAction (value: any): value is GitControllerAction
         case GitControllerAction.CLONE:
         case GitControllerAction.COMMIT:
         case GitControllerAction.ADD:
+        case GitControllerAction.CONFIG:
+        case GitControllerAction.PUSH:
+        case GitControllerAction.PULL:
             return true;
     }
     return false;

@@ -30,7 +30,8 @@ export class ScriptController extends BaseScriptController {
             model.name,
             model.command,
             model.args,
-            model.env
+            model.env,
+            model.cwd
         );
     }
 
@@ -40,7 +41,8 @@ export class ScriptController extends BaseScriptController {
         name     : Name,
         command  : string,
         args     : SystemArgumentList = [],
-        env      : SystemEnvironment  = {}
+        env      : SystemEnvironment  = {},
+        cwd      : string | undefined = undefined
     ) {
 
         super(
@@ -51,7 +53,8 @@ export class ScriptController extends BaseScriptController {
             name,
             command,
             args,
-            env
+            env,
+            cwd
         );
 
     }

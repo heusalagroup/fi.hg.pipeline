@@ -44,7 +44,8 @@ export class GitController extends BaseScriptController {
                 {
                     GIT_TERMINAL_PROMPT: "0",
                     GIT_ASKPASS: "/bin/echo"
-                }
+                },
+                model.cwd
             );
 
         } else if ( model.git === GitControllerAction.ADD ) {
@@ -62,7 +63,107 @@ export class GitController extends BaseScriptController {
                 {
                     GIT_TERMINAL_PROMPT: "0",
                     GIT_ASKPASS: "/bin/echo"
-                }
+                },
+                model.cwd
+            );
+
+        } else if ( model.git === GitControllerAction.PUSH ) {
+
+            const target = model?.target;
+
+            if (target !== undefined) {
+
+                return new GitController(
+                    context,
+                    model.name,
+                    'git',
+                    [
+                        'push',
+                        target
+                    ],
+                    {
+                        GIT_TERMINAL_PROMPT: "0",
+                        GIT_ASKPASS: "/bin/echo"
+                    },
+                    model.cwd
+                );
+
+            } else {
+
+                return new GitController(
+                    context,
+                    model.name,
+                    'git',
+                    [
+                        'push'
+                    ],
+                    {
+                        GIT_TERMINAL_PROMPT: "0",
+                        GIT_ASKPASS: "/bin/echo"
+                    },
+                    model.cwd
+                );
+
+            }
+
+        } else if ( model.git === GitControllerAction.PULL ) {
+
+            const target = model?.target;
+
+            if (target !== undefined) {
+
+                return new GitController(
+                    context,
+                    model.name,
+                    'git',
+                    [
+                        'pull',
+                        target
+                    ],
+                    {
+                        GIT_TERMINAL_PROMPT: "0",
+                        GIT_ASKPASS: "/bin/echo"
+                    },
+                    model.cwd
+                );
+
+            } else {
+
+                return new GitController(
+                    context,
+                    model.name,
+                    'git',
+                    [
+                        'pull'
+                    ],
+                    {
+                        GIT_TERMINAL_PROMPT: "0",
+                        GIT_ASKPASS: "/bin/echo"
+                    },
+                    model.cwd
+                );
+
+            }
+
+        } else if ( model.git === GitControllerAction.CONFIG ) {
+
+            const propertyName  = model?.set ?? '';
+            const propertyValue = model?.value ?? '';
+
+            return new GitController(
+                context,
+                model.name,
+                'git',
+                [
+                    'config',
+                    propertyName,
+                    propertyValue
+                ],
+                {
+                    GIT_TERMINAL_PROMPT: "0",
+                    GIT_ASKPASS: "/bin/echo"
+                },
+                model.cwd
             );
 
         } else if ( model.git === GitControllerAction.COMMIT ) {
@@ -81,7 +182,8 @@ export class GitController extends BaseScriptController {
                 {
                     GIT_TERMINAL_PROMPT: "0",
                     GIT_ASKPASS: "/bin/echo"
-                }
+                },
+                model.cwd
             );
 
         } else {
@@ -96,8 +198,17 @@ export class GitController extends BaseScriptController {
         name     : Name,
         command  : string,
         args     : SystemArgumentList = [],
-        env      : SystemEnvironment  = {}
+        env      : SystemEnvironment  = {},
+        cwd      : string | undefined = undefined
     ) {
+
+        const SSH_AUTH_SOCK = process.env?.SSH_AUTH_SOCK;
+        if (SSH_AUTH_SOCK && !env?.SSH_AUTH_SOCK) {
+            env = {
+                ...env,
+                SSH_AUTH_SOCK: SSH_AUTH_SOCK
+            };
+        }
 
         super(
             context,
@@ -107,7 +218,8 @@ export class GitController extends BaseScriptController {
             name,
             command,
             args,
-            env
+            env,
+            cwd
         );
 
     }
