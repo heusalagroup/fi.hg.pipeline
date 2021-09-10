@@ -1,6 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 export enum ControllerType {
+    NONE     = 'fi.nor.pipeline.none',
     PIPELINE = 'fi.nor.pipeline',
     JOB      = 'fi.nor.pipeline.job',
     STAGE    = 'fi.nor.pipeline.stage',
