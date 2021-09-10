@@ -8,10 +8,12 @@ import FileController from "./controllers/step/file/FileController";
 import VariableController from "./controllers/step/variable/VariableController";
 import GitController from "./controllers/step/git/GitController";
 import AssertController from "./controllers/step/assert/AssertController";
+import ConcatController from "./controllers/step/concat/ConcatController";
 
 export class PipelineDefaults {
 
     public static registerControllers () {
+        PipelineRunner.registerController(ConcatController);
         PipelineRunner.registerController(AssertController);
         PipelineRunner.registerController(VariableController);
         PipelineRunner.registerController(GitController);

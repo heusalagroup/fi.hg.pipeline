@@ -4,7 +4,7 @@ import Step from "../../../types/Step";
 import {
     concat,
     hasNoOtherKeys,
-    isStringOrUndefined
+    isStringOrUndefined, isUndefined
 } from "../../../../ts/modules/lodash";
 import Name, { isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
@@ -14,7 +14,9 @@ export const SCRIPT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',
     'file',
     'target',
-    'output'
+    'content',
+    'output',
+    'default'
 ]);
 
 export interface FileStep extends Step {
@@ -22,7 +24,9 @@ export interface FileStep extends Step {
     readonly name     : Name;
     readonly file     : ReadonlyJsonAny;
     readonly target  ?: string;
+    readonly content ?: ReadonlyJsonAny;
     readonly output  ?: string;
+    readonly default ?: string;
 
 }
 
@@ -31,8 +35,10 @@ export function isFileStep (value: any): value is FileStep {
         isBasePipelineModel(value)
         && isName(value?.name)
         && isReadonlyJsonAny(value?.file)
+        && ( isUndefined(value?.content) || isReadonlyJsonAny(value?.content) )
         && isStringOrUndefined(value?.target)
         && isStringOrUndefined(value?.output)
+        && isStringOrUndefined(value?.default)
         && hasNoOtherKeys(value, SCRIPT_STEP_KEYS)
     );
 }

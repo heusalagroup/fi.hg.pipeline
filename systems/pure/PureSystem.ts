@@ -39,6 +39,25 @@ export class PureSystem implements System {
         return this;
     }
 
+    public readFile (
+        target : string
+    ) : string {
+        this._notImplementedYet();
+        return '';
+    }
+
+    pathExists (path: string) : boolean {
+        return false;
+    }
+
+    public writeFile (
+        target : string,
+        content : string
+    ) : System {
+        this._notImplementedYet();
+        return this;
+    }
+
     private _notImplementedYet () {
         throw new Error(`No pure JavaScript implementation to run scripts exists yet`);
     }

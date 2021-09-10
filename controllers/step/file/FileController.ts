@@ -2,7 +2,7 @@
 
 import { ReadonlyJsonAny } from "../../../../ts/Json";
 import Name from "../../../types/Name";
-import { isStringOrUndefined } from "../../../../ts/modules/lodash";
+import { isString, isStringOrUndefined } from "../../../../ts/modules/lodash";
 import LogService from "../../../../ts/LogService";
 import ControllerType from "../../types/ControllerType";
 import PipelineContext from "../../../PipelineContext";
@@ -31,7 +31,7 @@ export class FileController extends BaseStepController {
         return new FileController(
             context,
             model.name,
-            model.target,
+            model,
             model.file,
             model.output
         );
@@ -41,7 +41,7 @@ export class FileController extends BaseStepController {
      *
      * @param context The context object, which contains variables, etc.
      * @param name The user defined name of the step
-     * @param target This is usually the primary argument for the action.
+     * @param input This should be FileStep model
      * @param action This is usually the value for the property which defines the type of the
      *     step, eg. `"file"` or `"command"`.
      * @param outputVariable The variable name where to save successful results of this step
@@ -49,7 +49,7 @@ export class FileController extends BaseStepController {
     public constructor (
         context        : PipelineContext,
         name           : Name,
-        target         : ReadonlyJsonAny | undefined,
+        input          : ReadonlyJsonAny | undefined,
         action         : ReadonlyJsonAny,
         outputVariable : string | undefined = undefined
     ) {
@@ -60,7 +60,7 @@ export class FileController extends BaseStepController {
             `FileController#${name}`,
             `file#${name}`,
             name,
-            target,
+            input,
             action,
             outputVariable
         );
@@ -69,7 +69,7 @@ export class FileController extends BaseStepController {
 
     public run (
         action : ReadonlyJsonAny | undefined,
-        target : ReadonlyJsonAny | undefined
+        input : ReadonlyJsonAny | undefined
     ) : ReadonlyJsonAny | undefined {
 
         const context = this.getContext();
@@ -81,13 +81,19 @@ export class FileController extends BaseStepController {
             throw new TypeError(`[file#${this.getName()}] failed to compile the action property: ${StringUtils.toString(action)}`);
         }
 
+        if (!isFileStep(input)) {
+            LOG.debug(`run: input = `, input);
+            throw new TypeError(`[file#${this.getName()}] failed to compile the input property: ${StringUtils.toString(input)}`);
+        }
+
+        let target = input?.target;
+        if (!isStringOrUndefined(target)) {
+            throw new TypeError(`[file#${this.getName()}] failed to compile the target property: ${StringUtils.toString(target)}`);
+        }
+
         if ( action === FileControllerAction.MKDIR ) {
 
-            if (!isStringOrUndefined(target)) {
-                throw new TypeError(`[file#${this.getName()}] failed to compile the target property: ${StringUtils.toString(target)}`);
-            }
-
-            if (target === undefined) {
+            if ( target === undefined ) {
                 target = system.createTemporaryFile();
                 system.createDirectory(target);
                 LOG.info(`Created temporary directory: ${target}`);
@@ -95,6 +101,53 @@ export class FileController extends BaseStepController {
                 system.createDirectory(target);
                 LOG.info(`Created directory: ${target}`);
             }
+
+            return target;
+
+        } else if ( action === FileControllerAction.READ ) {
+
+            if (target === undefined) {
+                throw new TypeError(`[file#${this.getName()}] No file to read defined`);
+            }
+
+            return system.readFile(target);
+
+        } else if ( action === FileControllerAction.READ_OR_CREATE ) {
+
+            if (target === undefined) {
+                throw new TypeError(`[file#${this.getName()}] No file to read defined`);
+            }
+
+            if (system.pathExists(target)) {
+
+                return system.readFile(target);
+
+            } else {
+
+                let defaultValue : ReadonlyJsonAny | undefined = input?.default;
+                if (!isString(defaultValue)) {
+                    defaultValue = JSON.stringify(defaultValue, null, 2);
+                }
+
+                system.writeFile(target, defaultValue);
+
+                return defaultValue;
+
+            }
+
+        } else if ( action === FileControllerAction.WRITE ) {
+
+            if (target === undefined) {
+                throw new TypeError(`[file#${this.getName()}] No file to read defined`);
+            }
+
+            let content : ReadonlyJsonAny | undefined = input?.content;
+
+            if (!isString(content)) {
+                content = JSON.stringify(content, null, 2);
+            }
+
+            system.writeFile(target, content);
 
             return target;
 

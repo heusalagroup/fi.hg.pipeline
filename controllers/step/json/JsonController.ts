@@ -83,7 +83,7 @@ export class JsonController extends BaseStepController {
                 throw new TypeError(`JSON#${this.getName()} failed to compile the input property as JSON: ${StringUtils.toString(input)}`);
             }
 
-            const result : ReadonlyJsonAny | JsonAny | undefined = JSON.stringify(input);
+            const result : ReadonlyJsonAny | JsonAny | undefined = JSON.stringify(input, null, 2);
 
             if (!isString(result)) {
                 LOG.debug(`run: result = `, result);

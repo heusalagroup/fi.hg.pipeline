@@ -35,6 +35,17 @@ export interface System {
         target: string
     ): System;
 
+    pathExists (path: string) : boolean;
+
+    readFile (
+        target: string
+    ): string;
+
+    writeFile (
+        target  : string,
+        content : string
+    ) : System;
+
     /**
      * Implementation should make sure these are cleaned on destroy.
      */
