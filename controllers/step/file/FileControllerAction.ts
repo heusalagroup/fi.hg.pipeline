@@ -4,7 +4,7 @@ export enum FileControllerAction {
     MKDIR          = "mkdir",
     READ           = "read",
     READ_OR_CREATE = "read/create",
-    WRITE          = "write",
+    WRITE          = "write"
 }
 
 export function isFileControllerAction (value: any): value is FileControllerAction {
