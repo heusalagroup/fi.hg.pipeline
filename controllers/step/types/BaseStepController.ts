@@ -82,7 +82,7 @@ export abstract class BaseStepController implements StepController {
         if ( !isName(name)             ) throw new TypeError(`[${stepName}] invalid name: ${name}`);
         if ( !isString(action)         ) throw new TypeError(`[${stepName}] must have a valid string: ${action}`);
         if ( !(isUndefined(input) || isReadonlyJsonAny(input)) ) throw new TypeError(`[${stepName}] must have a valid input property: ${JSON.stringify(input)}`);
-        if ( !isString(outputVariable) ) throw new TypeError(`[${stepName}] must have a valid output property: ${JSON.stringify(outputVariable)}`);
+        if ( !(isUndefined(outputVariable) || isString(outputVariable)) ) throw new TypeError(`[${stepName}] must have a valid output property: ${JSON.stringify(outputVariable)}`);
 
         this._controllerType  = controllerType;
         this._controllerName  = controllerName;
