@@ -51,8 +51,8 @@ export function isPipelineRunModel (value: any): value is PipelineRunModel {
         && hasNoOtherKeys(value, [
             'pipelineId',
             'type',
+            'model',
             'agentPoolIdList',
-            'pipelineModel',
             'variables',
             'bindings'
         ])
