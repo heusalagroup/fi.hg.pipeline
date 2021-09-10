@@ -3,7 +3,7 @@
 import Step from "../../../types/Step";
 import {
     concat,
-    hasNoOtherKeys
+    hasNoOtherKeys, isUndefined
 } from "../../../../ts/modules/lodash";
 import Name, { isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
@@ -20,7 +20,7 @@ export interface AssertStep extends Step {
 
     readonly name      : Name;
     readonly assert    : ReadonlyJsonAny;
-    readonly equals    : ReadonlyJsonAny;
+    readonly equals   ?: ReadonlyJsonAny | undefined;
     readonly output   ?: string | undefined;
 
 }
@@ -30,7 +30,7 @@ export function isAssertStep (value: any): value is AssertStep {
         isBasePipelineModel(value)
         && isName(value?.name)
         && isReadonlyJsonAny(value?.assert)
-        && isReadonlyJsonAny(value?.equals)
+        && (isUndefined(value?.equals) || isReadonlyJsonAny(value?.equals))
         && hasNoOtherKeys(value, ASSERT_STEP_KEYS)
     );
 }
