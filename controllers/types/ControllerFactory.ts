@@ -8,7 +8,7 @@ export interface ControllerFactory {
 
     isControllerModel (model: any) : boolean;
 
-    parseControllerModel (model: any) : Step;
+    parseControllerModel (model: any) : Step | undefined;
 
     createController (
         context : PipelineContext,

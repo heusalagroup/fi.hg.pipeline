@@ -17,7 +17,7 @@ const LOG = LogService.createLogger('CsvController');
 
 export class CsvController extends BaseStepController {
 
-    public static parseControllerModel (model: any) : CsvStep {
+    public static parseControllerModel (model: any) : CsvStep | undefined {
         return parseCsvStep(model);
     }
 

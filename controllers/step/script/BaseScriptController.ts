@@ -55,7 +55,7 @@ export abstract class BaseScriptController implements StepController {
     private readonly _stepName       : string;
     private readonly _name           : Name;
     private readonly _command        : string;
-    private readonly _cwd            : string;
+    private readonly _cwd            : string | undefined;
     private readonly _args           : SystemArgumentList;
     private readonly _env            : SystemEnvironment;
     private readonly _closeCallback  : SystemProcessEventCallback;
@@ -93,7 +93,7 @@ export abstract class BaseScriptController implements StepController {
         this._context         = context;
         this._state           = ControllerState.CONSTRUCTED;
         this._name            = name;
-        this._cwd            = cwd;
+        this._cwd             = cwd;
         this._command         = command;
         this._args            = args;
         this._env             = env;
@@ -161,6 +161,7 @@ export abstract class BaseScriptController implements StepController {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -177,6 +178,7 @@ export abstract class BaseScriptController implements StepController {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -193,6 +195,7 @@ export abstract class BaseScriptController implements StepController {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -209,6 +212,7 @@ export abstract class BaseScriptController implements StepController {
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
             case ControllerState.PAUSED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -225,6 +229,7 @@ export abstract class BaseScriptController implements StepController {
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
             case ControllerState.PAUSED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -241,6 +246,7 @@ export abstract class BaseScriptController implements StepController {
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
             case ControllerState.PAUSED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -250,6 +256,7 @@ export abstract class BaseScriptController implements StepController {
         switch (this._state) {
 
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return true;
 
             case ControllerState.CANCELLED:
@@ -276,7 +283,7 @@ export abstract class BaseScriptController implements StepController {
         }
         this._compiledCommand = compiledCommand;
 
-        const compiledCwd = this._context.compileModel(this._cwd);
+        const compiledCwd = this._cwd ? this._context.compileModel(this._cwd) : undefined;
         if (!isStringOrUndefined(compiledCwd)) {
             throw new Error(`${this._stepName}#${this._name} failed to compile the cwd: ${this._cwd}`);
         }
@@ -294,7 +301,7 @@ export abstract class BaseScriptController implements StepController {
         }
         this._compiledEnv = compiledEnv;
 
-        LOG.info(`Starting command "${this._compiledCommand}" with args: "${this._compiledArgs.join('\", \"')}"`);
+        LOG.info(`Starting command "${this._compiledCommand}" with args: "${this._compiledArgs.join('", "')}"`);
 
         const system : System = this._context.getSystem();
 

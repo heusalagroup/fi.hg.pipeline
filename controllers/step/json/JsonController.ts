@@ -16,7 +16,7 @@ const LOG = LogService.createLogger('JsonController');
 
 export class JsonController extends BaseStepController {
 
-    public static parseControllerModel (model: any) : JsonStep {
+    public static parseControllerModel (model: any) : JsonStep | undefined {
         return parseJsonStep(model);
     }
 

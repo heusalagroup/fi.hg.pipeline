@@ -45,7 +45,7 @@ export abstract class BaseStepController implements StepController {
     private readonly _stepName       : string;
     private readonly _name           : Name;
     private readonly _action         : ReadonlyJsonAny;
-    private readonly _input          : ReadonlyJsonAny;
+    private readonly _input          : ReadonlyJsonAny | undefined;
     private readonly _output         : string | undefined;
 
     private _state              : ControllerState;
@@ -158,6 +158,7 @@ export abstract class BaseStepController implements StepController {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -174,6 +175,7 @@ export abstract class BaseStepController implements StepController {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -190,6 +192,7 @@ export abstract class BaseStepController implements StepController {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -206,6 +209,7 @@ export abstract class BaseStepController implements StepController {
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
             case ControllerState.PAUSED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -222,6 +226,7 @@ export abstract class BaseStepController implements StepController {
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
             case ControllerState.PAUSED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -238,6 +243,7 @@ export abstract class BaseStepController implements StepController {
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
             case ControllerState.PAUSED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -247,6 +253,7 @@ export abstract class BaseStepController implements StepController {
         switch (this._state) {
 
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return true;
 
             case ControllerState.CANCELLED:

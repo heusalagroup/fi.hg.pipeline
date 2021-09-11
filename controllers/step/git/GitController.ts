@@ -14,7 +14,7 @@ import ControllerType from "../../types/ControllerType";
 
 export class GitController extends BaseScriptController {
 
-    public static parseControllerModel (model: any) : GitStep {
+    public static parseControllerModel (model: any) : GitStep | undefined {
         return parseGitStep(model);
     }
 
@@ -31,16 +31,22 @@ export class GitController extends BaseScriptController {
 
             const target = model.target;
             const url = model.url;
+            if (!url) throw new TypeError(`url is required for git clone`);
+
+            const args : SystemArgumentList = target ? [
+                'clone',
+                url,
+                target
+            ]: [
+                'clone',
+                url
+            ];
 
             return new GitController(
                 context,
                 model.name,
                 'git',
-                [
-                    'clone',
-                    url,
-                    target
-                ],
+                args,
                 {
                     GIT_TERMINAL_PROMPT: "0",
                     GIT_ASKPASS: "/bin/echo"
@@ -50,7 +56,7 @@ export class GitController extends BaseScriptController {
 
         } else if ( model.git === GitControllerAction.ADD ) {
 
-            const target = model?.target;
+            const target = model?.target ?? '.';
 
             return new GitController(
                 context,

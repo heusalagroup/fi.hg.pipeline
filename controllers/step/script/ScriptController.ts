@@ -13,7 +13,7 @@ import ControllerType from "../../types/ControllerType";
 
 export class ScriptController extends BaseScriptController {
 
-    public static parseControllerModel (model: any) : Script {
+    public static parseControllerModel (model: any) : Script | undefined {
         return parseScript(model);
     }
 

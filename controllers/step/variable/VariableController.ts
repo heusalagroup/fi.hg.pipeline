@@ -15,7 +15,7 @@ const LOG = LogService.createLogger('VariableController');
 
 export class VariableController extends BaseStepController {
 
-    public static parseControllerModel (model: any) : VariableStep {
+    public static parseControllerModel (model: any) : VariableStep | undefined {
         return parseVariableStep(model);
     }
 

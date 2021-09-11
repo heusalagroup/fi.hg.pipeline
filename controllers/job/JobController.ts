@@ -124,6 +124,7 @@ export class JobController implements Controller {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -140,6 +141,7 @@ export class JobController implements Controller {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -156,6 +158,7 @@ export class JobController implements Controller {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -165,6 +168,7 @@ export class JobController implements Controller {
         switch (this._state) {
 
             case ControllerState.CANCELLED:
+            case ControllerState.UNCONSTRUCTED:
                 return true;
 
             case ControllerState.PAUSED:
@@ -188,6 +192,7 @@ export class JobController implements Controller {
             case ControllerState.CONSTRUCTED:
             case ControllerState.PAUSED:
             case ControllerState.STARTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -197,6 +202,7 @@ export class JobController implements Controller {
         switch (this._state) {
 
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return true;
 
             case ControllerState.CONSTRUCTED:
@@ -220,6 +226,7 @@ export class JobController implements Controller {
             case ControllerState.PAUSED:
             case ControllerState.STARTED:
             case ControllerState.CANCELLED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }

@@ -22,7 +22,7 @@ const LOG = LogService.createLogger('ConcatController');
 
 export class ConcatController extends BaseStepController {
 
-    public static parseControllerModel (model: any) : ConcatStep {
+    public static parseControllerModel (model: any) : ConcatStep | undefined {
         return parseConcatStep(model);
     }
 

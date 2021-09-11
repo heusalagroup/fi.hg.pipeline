@@ -16,7 +16,7 @@ const LOG = LogService.createLogger('FileController');
 
 export class FileController extends BaseStepController {
 
-    public static parseControllerModel (model: any) : FileStep {
+    public static parseControllerModel (model: any) : FileStep | undefined {
         return parseFileStep(model);
     }
 

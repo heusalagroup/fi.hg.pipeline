@@ -1,6 +1,6 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../ts/Json";
+import { ReadonlyJsonAny } from "../../../../ts/Json";
 import Name from "../../../types/Name";
 import LogService from "../../../../ts/LogService";
 import ControllerType from "../../types/ControllerType";
@@ -15,7 +15,7 @@ const LOG = LogService.createLogger('AssertController');
 
 export class AssertController extends BaseStepController {
 
-    public static parseControllerModel (model: any) : AssertStep {
+    public static parseControllerModel (model: any) : AssertStep | undefined {
         return parseAssertStep(model);
     }
 

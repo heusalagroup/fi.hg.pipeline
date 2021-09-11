@@ -117,6 +117,7 @@ export class StageController implements Controller {
             case ControllerState.CONSTRUCTED:
             case ControllerState.PAUSED:
             case ControllerState.STARTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -126,6 +127,7 @@ export class StageController implements Controller {
         switch (this._state) {
 
             case ControllerState.FAILED:
+            case ControllerState.UNCONSTRUCTED:
                 return true;
 
             case ControllerState.CANCELLED:
@@ -149,6 +151,7 @@ export class StageController implements Controller {
             case ControllerState.CONSTRUCTED:
             case ControllerState.PAUSED:
             case ControllerState.STARTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -165,6 +168,7 @@ export class StageController implements Controller {
             case ControllerState.FINISHED:
             case ControllerState.CONSTRUCTED:
             case ControllerState.STARTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -181,6 +185,7 @@ export class StageController implements Controller {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.CONSTRUCTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -197,6 +202,7 @@ export class StageController implements Controller {
             case ControllerState.CANCELLED:
             case ControllerState.FINISHED:
             case ControllerState.CONSTRUCTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
@@ -213,6 +219,7 @@ export class StageController implements Controller {
             case ControllerState.FAILED:
             case ControllerState.CANCELLED:
             case ControllerState.CONSTRUCTED:
+            case ControllerState.UNCONSTRUCTED:
                 return false;
 
         }
