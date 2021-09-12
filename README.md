@@ -4,6 +4,8 @@ This is our Pipeline Processor Library written in TypeScript.
 
 For the installable Pipeline Runner, check out [@sendanor/pipeline-runner](https://github.com/sendanor/pipeline-runner).
 
+For the documentation about our pipeline format, see [Getting started with Pipeline model](https://www.sendanor.com/pipelines/model/).
+
 ### It's MIT licenced
 
 ### It doesn't have many runtime dependencies
