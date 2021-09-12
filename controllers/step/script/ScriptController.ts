@@ -31,18 +31,20 @@ export class ScriptController extends BaseScriptController {
             model.command,
             model.args,
             model.env,
-            model.cwd
+            model.cwd,
+            model.output
         );
     }
 
 
     public constructor (
-        context  : PipelineContext,
-        name     : Name,
-        command  : string,
-        args     : SystemArgumentList = [],
-        env      : SystemEnvironment  = {},
-        cwd      : string | undefined = undefined
+        context        : PipelineContext,
+        name           : Name,
+        command        : string,
+        args           : SystemArgumentList = [],
+        env            : SystemEnvironment  = {},
+        cwd            : string | undefined = undefined,
+        outputVariable : string | undefined = undefined,
     ) {
 
         super(
@@ -54,7 +56,8 @@ export class ScriptController extends BaseScriptController {
             command,
             args,
             env,
-            cwd
+            cwd,
+            outputVariable
         );
 
     }

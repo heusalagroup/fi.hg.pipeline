@@ -16,6 +16,7 @@ export const SCRIPT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'command',
     'args',
     'env',
+    'output',
     'cwd'
 ]);
 
@@ -26,6 +27,7 @@ export interface Script extends Step {
     readonly args    ?: string[];
     readonly env     ?: {readonly [key: string]: string};
     readonly cwd     ?: string;
+    readonly output  ?: string;
 
 }
 
@@ -37,6 +39,7 @@ export function isScript (value: any): value is Script {
         && isArrayOrUndefinedOf(value?.args, isString)
         && isRegularObjectOrUndefinedOf<string, string>(value?.env, isString, isString)
         && isStringOrUndefined(value?.cwd)
+        && isStringOrUndefined(value?.output)
         && hasNoOtherKeys(value, SCRIPT_STEP_KEYS)
     );
 }

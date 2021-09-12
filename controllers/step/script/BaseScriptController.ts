@@ -56,6 +56,7 @@ export abstract class BaseScriptController implements StepController {
     private readonly _name           : Name;
     private readonly _command        : string;
     private readonly _cwd            : string | undefined;
+    private readonly _outputVariable : string | undefined;
     private readonly _args           : SystemArgumentList;
     private readonly _env            : SystemEnvironment;
     private readonly _closeCallback  : SystemProcessEventCallback;
@@ -76,7 +77,8 @@ export abstract class BaseScriptController implements StepController {
         command  : string,
         args     : SystemArgumentList = [],
         env      : SystemEnvironment  = {},
-        cwd      : string | undefined = undefined
+        cwd      : string | undefined = undefined,
+        outputVariable : string | undefined = undefined
     ) {
 
         if ( !isString(controllerName) )       throw new TypeError(`[${stepName}] invalid controller identifier: ${controllerName}`);
@@ -86,6 +88,7 @@ export abstract class BaseScriptController implements StepController {
         if ( !isSystemArgumentList(args) )     throw new TypeError(`[${stepName}#${name}] must have a valid args: ${JSON.stringify(args)}`);
         if ( !isSystemEnvironment(env) )       throw new TypeError(`[${stepName}#${name}] must have a valid env: ${JSON.stringify(env)}`);
         if ( !isStringOrUndefined(cwd)       ) throw new TypeError(`[${stepName}#${name}] invalid cwd: ${cwd}`);
+        if ( !isStringOrUndefined(outputVariable) ) throw new TypeError(`[${stepName}#${name}] invalid output variable name: ${outputVariable}`);
 
         this._controllerType  = controllerType;
         this._controllerName  = controllerName;
@@ -94,6 +97,7 @@ export abstract class BaseScriptController implements StepController {
         this._state           = ControllerState.CONSTRUCTED;
         this._name            = name;
         this._cwd             = cwd;
+        this._outputVariable  = outputVariable;
         this._command         = command;
         this._args            = args;
         this._env             = env;
@@ -457,6 +461,10 @@ export abstract class BaseScriptController implements StepController {
             this._state = ControllerState.FINISHED;
             if (this._observer.hasCallbacks(BaseScriptControllerEvent.SCRIPT_FINISHED)) {
                 this._observer.triggerEvent(BaseScriptControllerEvent.SCRIPT_FINISHED, this);
+            }
+
+            if (this._outputVariable !== undefined) {
+                this._context.setVariable(this._outputVariable, this.getOutputString());
             }
 
         } else {
