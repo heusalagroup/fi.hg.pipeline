@@ -8,8 +8,8 @@ import {
 
 export interface PipelineDTO {
 
-    readonly id          ?: string;
-    readonly model        : PipelineModel;
+    readonly id      ?: string;
+    readonly model    : PipelineModel;
 
 }
 
@@ -17,8 +17,10 @@ export function isPipelineDTO (value: any): value is PipelineDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeys(value, [
+            'id',
             'model'
         ])
+        && isStringOrUndefined(value?.id)
         && isPipelineModel(value?.model)
     );
 }
