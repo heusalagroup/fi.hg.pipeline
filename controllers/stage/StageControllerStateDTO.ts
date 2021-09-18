@@ -1,10 +1,10 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import ControllerType from "../types/ControllerType";
-import ControllerState from "../types/ControllerState";
-import { hasNoOtherKeys, isRegularObject } from "../../../ts/modules/lodash";
+import ControllerState, { isControllerState } from "../types/ControllerState";
+import { hasNoOtherKeys, isArrayOf, isRegularObject, isString } from "../../../ts/modules/lodash";
 import ControllerStateDTO from "../types/ControllerStateDTO";
-import JobControllerStateDTO from "../job/JobControllerStateDTO";
+import JobControllerStateDTO, { isJobControllerStateDTO } from "../job/JobControllerStateDTO";
 
 export interface StageControllerStateDTO extends ControllerStateDTO {
 
@@ -21,8 +21,13 @@ export function isStageControllerStateDTO (value: any): value is StageController
         && hasNoOtherKeys(value, [
             'type',
             'state',
-            'name'
+            'name',
+            'jobs'
         ])
+        && value?.type === ControllerType.STAGE
+        && isControllerState(value?.state)
+        && isString(value?.name)
+        && isArrayOf<JobControllerStateDTO>(value?.jobs, isJobControllerStateDTO)
     );
 }
 

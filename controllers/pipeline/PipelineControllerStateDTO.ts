@@ -1,10 +1,10 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ControllerType from "../types/ControllerType";
-import ControllerState from "../types/ControllerState";
-import { hasNoOtherKeys, isRegularObject } from "../../../ts/modules/lodash";
+import ControllerType, { isControllerType } from "../types/ControllerType";
+import ControllerState, { isControllerState } from "../types/ControllerState";
+import { hasNoOtherKeys, isArrayOf, isRegularObject, isString } from "../../../ts/modules/lodash";
 import ControllerStateDTO from "../types/ControllerStateDTO";
-import StageControllerStateDTO from "../stage/StageControllerStateDTO";
+import StageControllerStateDTO, { isStageControllerStateDTO } from "../stage/StageControllerStateDTO";
 
 export interface PipelineControllerStateDTO extends ControllerStateDTO {
 
@@ -21,8 +21,13 @@ export function isPipelineControllerStateDTO (value: any): value is PipelineCont
         && hasNoOtherKeys(value, [
             'type',
             'state',
-            'name'
+            'name',
+            'stages'
         ])
+        && value?.type === ControllerType.PIPELINE
+        && isControllerState(value?.state)
+        && isString(value?.name)
+        && isArrayOf<StageControllerStateDTO>(value?.stages, isStageControllerStateDTO)
     );
 }
 
