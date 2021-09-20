@@ -2,12 +2,12 @@
 
 export enum ControllerState {
     UNCONSTRUCTED = -1,
-    CONSTRUCTED,
-    STARTED,
-    PAUSED,
-    CANCELLED,
-    FINISHED,
-    FAILED
+    CONSTRUCTED   = 0,
+    STARTED       = 1,
+    PAUSED        = 2,
+    CANCELLED     = 3,
+    FINISHED      = 4,
+    FAILED        = 5
 }
 
 export function isControllerState (value: any): value is ControllerState {
