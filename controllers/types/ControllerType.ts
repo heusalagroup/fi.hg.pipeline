@@ -18,6 +18,8 @@ export enum ControllerType {
 export function isControllerType (value: any): value is ControllerType {
     switch (value) {
 
+        case 'none':
+        case ControllerType.NONE:
         case ControllerType.PIPELINE:
         case ControllerType.JOB:
         case ControllerType.STAGE:
@@ -36,6 +38,7 @@ export function isControllerType (value: any): value is ControllerType {
 
 export function stringifyControllerType (value: ControllerType): string {
     switch (value) {
+        case ControllerType.NONE        : return 'NONE';
         case ControllerType.PIPELINE    : return 'PIPELINE';
         case ControllerType.JOB         : return 'JOB';
         case ControllerType.STAGE       : return 'STAGE';
@@ -54,6 +57,7 @@ export function parseControllerType (value: any): ControllerType | undefined {
 
     switch (`${value}`.toUpperCase()) {
 
+        case 'NONE'        : return ControllerType.NONE;
         case 'PIPELINE'    : return ControllerType.PIPELINE;
         case 'JOB'         : return ControllerType.JOB;
         case 'STAGE'       : return ControllerType.STAGE;

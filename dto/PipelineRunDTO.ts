@@ -2,7 +2,7 @@
 
 import PipelineModel, { isPipelineModel, parsePipelineModel } from "../types/PipelineModel";
 import {
-    hasNoOtherKeys,
+    hasNoOtherKeys, isNumberOrUndefined,
     isRegularObject,
     isStringOrUndefined,
     isUndefined, parseString
@@ -55,6 +55,7 @@ export function isPipelineRunDTO (value: any): value is PipelineRunDTO {
         && hasNoOtherKeys(value, [
             'id',
             'pipelineId',
+            'pipelineVersion',
             'agentPoolId',
             'agentAccountId',
             'model',
@@ -63,6 +64,7 @@ export function isPipelineRunDTO (value: any): value is PipelineRunDTO {
         && isStringOrUndefined(value?.id)
         && isStringOrUndefined(value?.pipelineId)
         && isStringOrUndefined(value?.agentPoolId)
+        && isNumberOrUndefined(value?.pipelineVersion)
         && isStringOrUndefined(value?.agentAccountId)
         && isPipelineModel(value?.model)
         && ( isUndefined(value?.state) || isControllerStateDTO(value?.state) )
