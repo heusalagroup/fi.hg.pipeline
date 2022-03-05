@@ -9,7 +9,7 @@ import {
     isUndefined,
     parseInteger,
     parseString
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 import ControllerStateDTO, { isControllerStateDTO } from "../controllers/types/ControllerStateDTO";
 
 export interface PublicPipelineRunDTO {

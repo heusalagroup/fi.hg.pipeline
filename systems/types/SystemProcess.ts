@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isRegularObject } from "../../../ts/modules/lodash";
-import { ObserverDestructor } from "../../../ts/Observer";
+import { isRegularObject } from "../../../core/modules/lodash";
+import { ObserverDestructor } from "../../../core/Observer";
 
 /**
  * The instance of SystemProcess will be provided as the second parameter to callbacks

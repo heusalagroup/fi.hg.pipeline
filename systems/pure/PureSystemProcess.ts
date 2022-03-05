@@ -4,8 +4,8 @@ import SystemProcess, {
     SystemProcessDestructor,
     SystemProcessEvent, SystemProcessEventCallback
 } from "../types/SystemProcess";
-import Json from "../../../ts/Json";
-import Observer from "../../../ts/Observer";
+import Json from "../../../core/Json";
+import Observer from "../../../core/Observer";
 import { SystemArgumentList, SystemEnvironment } from "../types/System";
 
 /**

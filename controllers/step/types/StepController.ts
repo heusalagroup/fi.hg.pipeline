@@ -1,7 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
-import Json from "../../../../ts/Json";
+import { ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
+import Json from "../../../../core/Json";
 import Name from "../../../types/Name";
 import Controller, { isController } from "../../types/Controller";
 import ControllerState from "../../types/ControllerState";

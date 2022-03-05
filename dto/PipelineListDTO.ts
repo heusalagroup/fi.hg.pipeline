@@ -3,7 +3,7 @@
 import {
     hasNoOtherKeys, isArrayOf,
     isRegularObject
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 import PipelineDTO, { isPipelineDTO } from "./PipelineDTO";
 
 export interface PipelineListDTO {

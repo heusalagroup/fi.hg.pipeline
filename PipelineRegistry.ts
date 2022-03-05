@@ -2,7 +2,7 @@
 
 import Step from "./types/Step";
 import ControllerFactory from "./controllers/types/ControllerFactory";
-import { find, reduce } from "../ts/modules/lodash";
+import { find, reduce } from "../core/modules/lodash";
 
 export class PipelineRegistry {
 

@@ -10,7 +10,7 @@ import {
     isUndefined,
     map,
     parseString
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 
 import AgentPoolModel, { isAgentPoolModel, parseAgentPoolModel } from "../types/AgentPoolModel";
 import AgentAccountDTO, { isAgentAccountDTO, parseAgentAccountDTO } from "./AgentAccountDTO";

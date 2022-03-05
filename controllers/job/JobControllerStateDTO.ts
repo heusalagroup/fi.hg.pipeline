@@ -2,7 +2,7 @@
 
 import ControllerType from "../types/ControllerType";
 import ControllerState, { isControllerState } from "../types/ControllerState";
-import { hasNoOtherKeys, isArrayOf, isRegularObject, isString } from "../../../ts/modules/lodash";
+import { hasNoOtherKeys, isArrayOf, isRegularObject, isString } from "../../../core/modules/lodash";
 import ControllerStateDTO from "../types/ControllerStateDTO";
 import StepControllerStateDTO, { isStepControllerStateDTO } from "../step/types/StepControllerStateDTO";
 

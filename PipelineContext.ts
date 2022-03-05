@@ -2,12 +2,12 @@
 
 import VariablesModel from "./types/VariablesModel";
 import PipelineParameterArray from "./types/PipelineParameterArray";
-import Json, { isJsonObject, parseJson, ReadonlyJsonAny } from "../ts/Json";
-import JsonAny from "../ts/Json";
-import { get, set } from "../ts/modules/lodash";
-import StringUtils, { VariableResolverCallback } from "../ts/StringUtils";
+import Json, { isJsonObject, parseJson, ReadonlyJsonAny } from "../core/Json";
+import JsonAny from "../core/Json";
+import { get, set } from "../core/modules/lodash";
+import StringUtils, { VariableResolverCallback } from "../core/StringUtils";
 import System from "./systems/types/System";
-import LogService from "../ts/LogService";
+import LogService from "../core/LogService";
 
 const LOG = LogService.createLogger('PipelineContext');
 

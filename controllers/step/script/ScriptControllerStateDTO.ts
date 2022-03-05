@@ -2,7 +2,7 @@
 
 import ControllerType from "../../types/ControllerType";
 import ControllerState from "../../types/ControllerState";
-import { hasNoOtherKeys, isRegularObject } from "../../../../ts/modules/lodash";
+import { hasNoOtherKeys, isRegularObject } from "../../../../core/modules/lodash";
 import StepControllerStateDTO from "../types/StepControllerStateDTO";
 
 export interface ScriptControllerStateDTO extends StepControllerStateDTO {

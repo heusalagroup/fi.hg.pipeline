@@ -5,7 +5,7 @@ import {
     concat,
     hasNoOtherKeys,
     isArrayOf
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 import { isName } from "./Name";
 import BasePipelineModel, { BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
 

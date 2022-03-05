@@ -7,8 +7,8 @@ import {
     isString,
     isStringOrUndefined,
     isUndefined
-} from "../../../ts/modules/lodash";
-import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../ts/Json";
+} from "../../../core/modules/lodash";
+import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../core/Json";
 import BaseParameterModel from "../types/BaseParameterModel";
 
 export interface JsonParameterModel extends BaseParameterModel {

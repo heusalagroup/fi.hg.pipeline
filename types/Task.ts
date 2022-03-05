@@ -3,7 +3,7 @@
 import Step from "./Step";
 import { isName } from "./Name";
 import { isBasePipelineModel } from "./BasePipelineModel";
-import { isRegularObject } from "../../ts/modules/lodash";
+import { isRegularObject } from "../../core/modules/lodash";
 
 export interface Task extends Step {
 

@@ -1,17 +1,17 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
-import Json from "../../../../ts/Json";
-import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../ts/Json";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
+import Json from "../../../../core/Json";
+import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 import Name, { isName } from "../../../types/Name";
 import StepController from "../types/StepController";
-import { isFunction, isPromise, isString, isUndefined } from "../../../../ts/modules/lodash";
-import LogService from "../../../../ts/LogService";
+import { isFunction, isPromise, isString, isUndefined } from "../../../../core/modules/lodash";
+import LogService from "../../../../core/LogService";
 import ControllerState from "../../types/ControllerState";
 import BaseStepControllerStateDTO from "./BaseStepControllerStateDTO";
 import ControllerType from "../../types/ControllerType";
 import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../ts/StringUtils";
+import StringUtils from "../../../../core/StringUtils";
 
 const LOG = LogService.createLogger('BaseStepController');
 

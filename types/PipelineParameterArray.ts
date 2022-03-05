@@ -2,7 +2,7 @@
 
 import {
     isArrayOf
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 
 import ParameterModel, { isParameterModel } from "../parameters/ParameterModel";
 

@@ -1,13 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ReadonlyJsonAny } from "../../../../ts/Json";
+import { ReadonlyJsonAny } from "../../../../core/Json";
 import Name from "../../../types/Name";
-import { isString } from "../../../../ts/modules/lodash";
-import LogService from "../../../../ts/LogService";
+import { isString } from "../../../../core/modules/lodash";
+import LogService from "../../../../core/LogService";
 import ControllerType from "../../types/ControllerType";
 import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../ts/StringUtils";
-import { isCsv, parseCsv, stringifyCsv } from "../../../../ts/Csv";
+import StringUtils from "../../../../core/StringUtils";
+import { isCsv, parseCsv, stringifyCsv } from "../../../../core/Csv";
 import Controller from "../../types/Controller";
 import { isCsvControllerAction, CsvControllerAction } from "./CsvControllerAction";
 import BaseStepController from "../types/BaseStepController";

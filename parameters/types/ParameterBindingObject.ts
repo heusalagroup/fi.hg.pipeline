@@ -8,12 +8,12 @@ import {
     keys,
     reduce,
     trim
-} from "../../../ts/modules/lodash";
+} from "../../../core/modules/lodash";
 import ParameterBindingType, {
     isParameterBindingType,
     parseParameterBindingType
 } from "./ParameterBindingType";
-import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../ts/Json";
+import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../core/Json";
 import ParameterBindingMap from "./ParameterBindingMap";
 
 /**

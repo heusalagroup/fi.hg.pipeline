@@ -4,10 +4,10 @@ import Step from "../../../types/Step";
 import {
     concat,
     hasNoOtherKeys, isUndefined
-} from "../../../../ts/modules/lodash";
+} from "../../../../core/modules/lodash";
 import Name, { isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
-import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../ts/Json";
+import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 
 export const ASSERT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',

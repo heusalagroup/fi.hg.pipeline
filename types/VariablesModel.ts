@@ -4,7 +4,7 @@ import {
     isJsonObject,
     parseJson,
     ReadonlyJsonObject
-} from "../../ts/Json";
+} from "../../core/Json";
 
 export type VariablesModel = ReadonlyJsonObject;
 

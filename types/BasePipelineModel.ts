@@ -1,9 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isRegularObject, isString, isUndefined } from "../../ts/modules/lodash";
+import { isRegularObject, isString, isUndefined } from "../../core/modules/lodash";
 import PipelineParameterArray, { isPipelineParameterArray } from "./PipelineParameterArray";
 import VariablesModel, { isVariablesModel } from "./VariablesModel";
-import { ReadonlyJsonAny } from "../../ts/Json";
+import { ReadonlyJsonAny } from "../../core/Json";
 
 export interface BasePipelineModel {
 

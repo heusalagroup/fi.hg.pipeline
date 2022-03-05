@@ -1,12 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
-import Json from "../../../ts/Json";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
+import Json from "../../../core/Json";
 import Name, { isName } from "../../types/Name";
 import StageController, { isStageController, StageControllerDestructor } from "../stage/StageController";
-import { isArrayOf, map } from "../../../ts/modules/lodash";
+import { isArrayOf, map } from "../../../core/modules/lodash";
 import Controller from "../types/Controller";
-import LogService from "../../../ts/LogService";
+import LogService from "../../../core/LogService";
 import ControllerState from "../types/ControllerState";
 import PipelineControllerStateDTO from "./PipelineControllerStateDTO";
 import ControllerType from "../types/ControllerType";

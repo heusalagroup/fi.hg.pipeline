@@ -6,7 +6,7 @@ import {
     isStringOrUndefined,
     isUndefined,
     parseString
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 
 import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "../types/AgentAccountModel";
 

@@ -4,7 +4,7 @@ import {
     isRegularObjectOf,
     isString,
     TestCallbackNonStandardOf
-} from "../../../ts/modules/lodash";
+} from "../../../core/modules/lodash";
 
 /**
  * Binding configuration for a resource outside of the Pipeline model.

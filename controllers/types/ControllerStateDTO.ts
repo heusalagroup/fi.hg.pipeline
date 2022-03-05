@@ -2,7 +2,7 @@
 
 import ControllerType, { isControllerType } from "./ControllerType";
 import ControllerState, { isControllerState } from "./ControllerState";
-import { isRegularObject, isString } from "../../../ts/modules/lodash";
+import { isRegularObject, isString } from "../../../core/modules/lodash";
 
 export interface ControllerStateDTO {
 

@@ -7,7 +7,7 @@ import {
     isArrayOrUndefinedOf,
     isRegularObjectOrUndefinedOf,
     isString, isStringOrUndefined
-} from "../../../../ts/modules/lodash";
+} from "../../../../core/modules/lodash";
 import Name, { isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
 

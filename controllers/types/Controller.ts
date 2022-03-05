@@ -1,9 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Name from "../../types/Name";
-import { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
-import Json from "../../../ts/Json";
-import { isFunction, isObject } from "../../../ts/modules/lodash";
+import { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
+import Json from "../../../core/Json";
+import { isFunction, isObject } from "../../../core/modules/lodash";
 import ControllerState from "./ControllerState";
 import ControllerStateDTO from "./ControllerStateDTO";
 import PipelineContext from "../../PipelineContext";

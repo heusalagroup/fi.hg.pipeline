@@ -1,15 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../../ts/Observer";
-import Json, { ReadonlyJsonAny } from "../../../../ts/Json";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
+import Json, { ReadonlyJsonAny } from "../../../../core/Json";
 import Name, { isName } from "../../../types/Name";
 import StepController from "../types/StepController";
 import {
     isArrayOf,
     isRegularObjectOf,
     isString, isStringOrUndefined
-} from "../../../../ts/modules/lodash";
-import LogService from "../../../../ts/LogService";
+} from "../../../../core/modules/lodash";
+import LogService from "../../../../core/LogService";
 import ControllerState from "../../types/ControllerState";
 import ScriptControllerStateDTO from "./ScriptControllerStateDTO";
 import ControllerType from "../../types/ControllerType";

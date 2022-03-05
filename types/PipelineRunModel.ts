@@ -5,10 +5,10 @@ import {
     isArrayOf,
     isRegularObject,
     isString, isUndefined
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 import PipelineModel, { isPipelineModel } from "./PipelineModel";
 import PipelineRunType, { isPipelineRunType } from "./PipelineRunType";
-import { isJsonObject, JsonObject } from "../../ts/Json";
+import { isJsonObject, JsonObject } from "../../core/Json";
 import ParameterBindingMap, { isParameterBindingMap } from "../parameters/types/ParameterBindingMap";
 import ParameterBindingString, { isParameterBindingString } from "../parameters/types/ParameterBindingString";
 

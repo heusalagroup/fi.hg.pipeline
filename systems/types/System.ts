@@ -5,7 +5,7 @@ import {
     isRegularObject,
     isRegularObjectOf,
     isString
-} from "../../../ts/modules/lodash";
+} from "../../../core/modules/lodash";
 import SystemProcess from "./SystemProcess";
 
 export type SystemArgumentList = readonly string[];

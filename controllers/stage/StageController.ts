@@ -1,15 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../ts/Observer";
-import Json from "../../../ts/Json";
+import Observer, { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
+import Json from "../../../core/Json";
 import Name, { isName } from "../../types/Name";
 import JobController, {
     isJobController,
     JobControllerDestructor
 } from "../job/JobController";
-import { every, filter, isArrayOf, map, some } from "../../../ts/modules/lodash";
+import { every, filter, isArrayOf, map, some } from "../../../core/modules/lodash";
 import Controller from "../types/Controller";
-import LogService from "../../../ts/LogService";
+import LogService from "../../../core/LogService";
 import ControllerState from "../types/ControllerState";
 import StageControllerStateDTO from "./StageControllerStateDTO";
 import JobControllerStateDTO from "../job/JobControllerStateDTO";

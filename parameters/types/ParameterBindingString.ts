@@ -2,8 +2,8 @@
 
 import {
     isString, trim
-} from "../../../ts/modules/lodash";
-import { parseJson } from "../../../ts/Json";
+} from "../../../core/modules/lodash";
+import { parseJson } from "../../../core/Json";
 
 /**
  * Binding configuration for a resource outside of the Pipeline model.

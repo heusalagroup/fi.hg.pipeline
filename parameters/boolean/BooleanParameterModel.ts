@@ -7,8 +7,8 @@ import {
     isString,
     isStringOrUndefined,
     isBooleanOrUndefined
-} from "../../../ts/modules/lodash";
-import { parseJson } from "../../../ts/Json";
+} from "../../../core/modules/lodash";
+import { parseJson } from "../../../core/Json";
 import BaseParameterModel from "../types/BaseParameterModel";
 
 export interface BooleanParameterModel extends BaseParameterModel {

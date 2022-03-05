@@ -1,12 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import JsonAny, { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../ts/Json";
+import JsonAny, { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 import Name from "../../../types/Name";
-import { isString } from "../../../../ts/modules/lodash";
-import LogService from "../../../../ts/LogService";
+import { isString } from "../../../../core/modules/lodash";
+import LogService from "../../../../core/LogService";
 import ControllerType from "../../types/ControllerType";
 import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../ts/StringUtils";
+import StringUtils from "../../../../core/StringUtils";
 import { isJsonControllerAction, JsonControllerAction } from "./JsonControllerAction";
 import BaseStepController from "../types/BaseStepController";
 import JsonStep, { isJsonStep, parseJsonStep } from "./JsonStep";

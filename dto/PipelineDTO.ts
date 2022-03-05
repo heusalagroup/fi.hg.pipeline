@@ -4,7 +4,7 @@ import PipelineModel, { isPipelineModel, parsePipelineModel } from "../types/Pip
 import {
     hasNoOtherKeys,
     isRegularObject, isStringOrUndefined, isUndefined, parseString
-} from "../../ts/modules/lodash";
+} from "../../core/modules/lodash";
 
 export interface PipelineDTO {
 
