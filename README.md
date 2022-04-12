@@ -6,8 +6,6 @@ For the installable Pipeline Runner, check out [@heusalagroup/fi.hg.pipeline-run
 
 For the documentation about our pipeline format, see [Getting started with Pipeline model](https://www.sendanor.com/pipelines/model/).
 
-### It's MIT licenced
-
 ### It doesn't have many runtime dependencies
 
 This library expects [@heusalagroup/fi.hg.core](https://github.com/heusalagroup/fi.hg.core) to be located 
@@ -49,3 +47,7 @@ Some of our code may use reflect metadata. It's optional otherwise.
 ```
 npm install --save-dev reflect-metadata
 ```
+
+### License
+
+Copyright (c) Heusala Group. All rights reserved. Licensed under the MIT License (the "[License](./LICENSE)");
