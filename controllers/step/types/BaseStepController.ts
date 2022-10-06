@@ -1,17 +1,17 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
-import Json from "../../../../core/Json";
+import { Observer, ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
+import { JsonAny } from "../../../../core/Json";
 import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
-import Name, { isName } from "../../../types/Name";
-import StepController from "../types/StepController";
+import { Name, isName } from "../../../types/Name";
+import { StepController } from "./StepController";
 import { isFunction, isPromise, isString, isUndefined } from "../../../../core/modules/lodash";
-import LogService from "../../../../core/LogService";
-import ControllerState from "../../types/ControllerState";
-import BaseStepControllerStateDTO from "./BaseStepControllerStateDTO";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
+import { LogService } from "../../../../core/LogService";
+import { ControllerState } from "../../types/ControllerState";
+import { BaseStepControllerStateDTO } from "./BaseStepControllerStateDTO";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import { StringUtils } from "../../../../core/StringUtils";
 
 const LOG = LogService.createLogger('BaseStepController');
 
@@ -143,8 +143,8 @@ export abstract class BaseStepController implements StepController {
         };
     }
 
-    public toJSON (): Json {
-        return this.getStateDTO() as unknown as Json;
+    public toJSON (): JsonAny {
+        return this.getStateDTO() as unknown as JsonAny;
     }
 
     public isRunning () : boolean {

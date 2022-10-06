@@ -2,6 +2,8 @@
 
 import { isPipeline, parsePipeline, stringifyPipeline } from "./Pipeline";
 import Script from "../controllers/step/script/Script";
+import PipelineDefaults from "../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isPipeline', () => {
 

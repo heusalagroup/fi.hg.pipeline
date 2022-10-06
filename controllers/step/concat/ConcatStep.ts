@@ -1,11 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Step from "../../../types/Step";
+import { Step } from "../../../types/Step";
 import {
     concat,
     hasNoOtherKeys
 } from "../../../../core/modules/lodash";
-import Name, { isName } from "../../../types/Name";
+import { Name, isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
 import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 

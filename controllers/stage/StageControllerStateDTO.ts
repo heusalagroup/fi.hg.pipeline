@@ -1,10 +1,11 @@
+// Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ControllerType from "../types/ControllerType";
-import ControllerState, { isControllerState } from "../types/ControllerState";
+import { ControllerType } from "../types/ControllerType";
+import { ControllerState, isControllerState } from "../types/ControllerState";
 import { hasNoOtherKeys, isArrayOf, isRegularObject, isString } from "../../../core/modules/lodash";
-import ControllerStateDTO from "../types/ControllerStateDTO";
-import JobControllerStateDTO, { isJobControllerStateDTO } from "../job/JobControllerStateDTO";
+import { ControllerStateDTO } from "../types/ControllerStateDTO";
+import { JobControllerStateDTO, isJobControllerStateDTO } from "../job/JobControllerStateDTO";
 
 export interface StageControllerStateDTO extends ControllerStateDTO {
 

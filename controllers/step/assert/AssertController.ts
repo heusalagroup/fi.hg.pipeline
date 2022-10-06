@@ -1,15 +1,16 @@
+// Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonAny } from "../../../../core/Json";
-import Name from "../../../types/Name";
-import LogService from "../../../../core/LogService";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
-import BaseStepController from "../types/BaseStepController";
-import AssertStep, { isAssertStep, parseAssertStep } from "./AssertStep";
-import Controller from "../../types/Controller";
-import AssertControllerAction, { isAssertControllerAction } from "./AssertControllerAction";
+import { Name } from "../../../types/Name";
+import { LogService } from "../../../../core/LogService";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import { StringUtils } from "../../../../core/StringUtils";
+import { BaseStepController } from "../types/BaseStepController";
+import { AssertStep, isAssertStep, parseAssertStep } from "./AssertStep";
+import { Controller } from "../../types/Controller";
+import { AssertControllerAction, isAssertControllerAction } from "./AssertControllerAction";
 
 const LOG = LogService.createLogger('AssertController');
 

@@ -2,6 +2,8 @@
 
 import { isStage, parseStage, stringifyStage } from "./Stage";
 import Script from "../controllers/step/script/Script";
+import { PipelineDefaults } from "../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isStage', () => {
 

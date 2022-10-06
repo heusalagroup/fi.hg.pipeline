@@ -2,10 +2,10 @@
 
 import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 import Name from "../../../types/Name";
-import LogService from "../../../../core/LogService";
+import { LogService } from "../../../../core/LogService";
 import ControllerType from "../../types/ControllerType";
 import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
+import { StringUtils } from "../../../../core/StringUtils";
 import BaseStepController from "../types/BaseStepController";
 import VariableStep, { isVariableStep, parseVariableStep } from "./VariableStep";
 import Controller from "../../types/Controller";

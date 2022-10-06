@@ -1,16 +1,16 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import JsonAny, { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
-import Name from "../../../types/Name";
+import { JsonAny, isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
+import { Name } from "../../../types/Name";
 import { isString } from "../../../../core/modules/lodash";
-import LogService from "../../../../core/LogService";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
+import { LogService } from "../../../../core/LogService";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import { StringUtils } from "../../../../core/StringUtils";
 import { isJsonControllerAction, JsonControllerAction } from "./JsonControllerAction";
-import BaseStepController from "../types/BaseStepController";
-import JsonStep, { isJsonStep, parseJsonStep } from "./JsonStep";
-import Controller from "../../types/Controller";
+import { BaseStepController } from "../types/BaseStepController";
+import { JsonStep, isJsonStep, parseJsonStep } from "./JsonStep";
+import { Controller } from "../../types/Controller";
 
 const LOG = LogService.createLogger('JsonController');
 

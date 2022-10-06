@@ -1,17 +1,17 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
-import Json from "../../../core/Json";
-import Name, { isName } from "../../types/Name";
-import StageController, { isStageController, StageControllerDestructor } from "../stage/StageController";
+import { Observer, ObserverCallback, ObserverDestructor } from "../../../core/Observer";
+import { JsonAny } from "../../../core/Json";
+import { Name,isName } from "../../types/Name";
+import { StageController, isStageController, StageControllerDestructor } from "../stage/StageController";
 import { isArrayOf, map } from "../../../core/modules/lodash";
-import Controller from "../types/Controller";
-import LogService from "../../../core/LogService";
-import ControllerState from "../types/ControllerState";
-import PipelineControllerStateDTO from "./PipelineControllerStateDTO";
-import ControllerType from "../types/ControllerType";
-import StageControllerStateDTO from "../stage/StageControllerStateDTO";
-import PipelineContext from "../../PipelineContext";
+import { Controller } from "../types/Controller";
+import { LogService } from "../../../core/LogService";
+import { ControllerState } from "../types/ControllerState";
+import { PipelineControllerStateDTO } from "./PipelineControllerStateDTO";
+import { ControllerType } from "../types/ControllerType";
+import { StageControllerStateDTO } from "../stage/StageControllerStateDTO";
+import { PipelineContext } from "../../PipelineContext";
 
 const LOG = LogService.createLogger('PipelineController');
 
@@ -97,8 +97,8 @@ export class PipelineController implements Controller {
         };
     }
 
-    public toJSON (): Json {
-        return this.getStateDTO() as unknown as Json;
+    public toJSON (): JsonAny {
+        return this.getStateDTO() as unknown as JsonAny;
     }
 
     public isCancelled (): boolean {

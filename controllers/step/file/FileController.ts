@@ -1,16 +1,16 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonAny } from "../../../../core/Json";
-import Name from "../../../types/Name";
+import { Name } from "../../../types/Name";
 import { isString, isStringOrUndefined } from "../../../../core/modules/lodash";
-import LogService from "../../../../core/LogService";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
+import { LogService } from "../../../../core/LogService";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import { StringUtils } from "../../../../core/StringUtils";
 import { isFileControllerAction, FileControllerAction } from "./FileControllerAction";
-import BaseStepController from "../types/BaseStepController";
-import FileStep, { isFileStep, parseFileStep } from "./FileStep";
-import Controller from "../../types/Controller";
+import { BaseStepController } from "../types/BaseStepController";
+import { FileStep, isFileStep, parseFileStep } from "./FileStep";
+import { Controller } from "../../types/Controller";
 
 const LOG = LogService.createLogger('FileController');
 

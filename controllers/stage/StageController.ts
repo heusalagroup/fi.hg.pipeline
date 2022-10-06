@@ -1,20 +1,21 @@
+// Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
-import Json from "../../../core/Json";
-import Name, { isName } from "../../types/Name";
+import { Observer, ObserverCallback, ObserverDestructor } from "../../../core/Observer";
+import { JsonAny } from "../../../core/Json";
+import { Name, isName } from "../../types/Name";
 import JobController, {
     isJobController,
     JobControllerDestructor
 } from "../job/JobController";
 import { every, filter, isArrayOf, map, some } from "../../../core/modules/lodash";
-import Controller from "../types/Controller";
-import LogService from "../../../core/LogService";
-import ControllerState from "../types/ControllerState";
-import StageControllerStateDTO from "./StageControllerStateDTO";
-import JobControllerStateDTO from "../job/JobControllerStateDTO";
-import ControllerType from "../types/ControllerType";
-import PipelineContext from "../../PipelineContext";
+import { Controller } from "../types/Controller";
+import { LogService } from "../../../core/LogService";
+import { ControllerState } from "../types/ControllerState";
+import { StageControllerStateDTO } from "./StageControllerStateDTO";
+import { JobControllerStateDTO } from "../job/JobControllerStateDTO";
+import { ControllerType } from "../types/ControllerType";
+import { PipelineContext } from "../../PipelineContext";
 
 const LOG = LogService.createLogger('StageController');
 
@@ -99,8 +100,8 @@ export class StageController implements Controller {
         };
     }
 
-    public toJSON (): Json {
-        return this.getStateDTO() as unknown as Json;
+    public toJSON (): JsonAny {
+        return this.getStateDTO() as unknown as JsonAny;
     }
 
 

@@ -1,10 +1,9 @@
+// Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { isString, isStringOf, trim } from "../../core/modules/lodash";
 
-
 export type Name = string;
-
 
 export function isName (value: any): value is Name {
     return isStringOf(value, 1) && value.indexOf(' ') < 0;

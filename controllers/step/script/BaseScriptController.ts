@@ -1,25 +1,28 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
-import Json, { ReadonlyJsonAny } from "../../../../core/Json";
-import Name, { isName } from "../../../types/Name";
-import StepController from "../types/StepController";
+import { Observer, ObserverCallback, ObserverDestructor } from "../../../../core/Observer";
+import { JsonAny, ReadonlyJsonAny } from "../../../../core/Json";
+import { Name, isName } from "../../../types/Name";
+import { StepController } from "../types/StepController";
 import {
     isArrayOf,
     isRegularObjectOf,
     isString, isStringOrUndefined
 } from "../../../../core/modules/lodash";
-import LogService from "../../../../core/LogService";
-import ControllerState from "../../types/ControllerState";
-import ScriptControllerStateDTO from "./ScriptControllerStateDTO";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import SystemProcess, {
+import { LogService } from "../../../../core/LogService";
+import { ControllerState } from "../../types/ControllerState";
+import { ScriptControllerStateDTO } from "./ScriptControllerStateDTO";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import {
+    SystemProcess,
     SystemProcessEvent,
     SystemProcessEventCallback
 } from "../../../systems/types/SystemProcess";
-import System, {
-    isSystemArgumentList, isSystemEnvironment,
+import {
+    System,
+    isSystemArgumentList,
+    isSystemEnvironment,
     SystemArgumentList,
     SystemEnvironment
 } from "../../../systems/types/System";
@@ -139,7 +142,7 @@ export abstract class BaseScriptController implements StepController {
     }
 
     public toString (): string {
-        return `BaseScriptController#${this._name}`;
+        return `${this._controllerName}#${this._name}`;
     }
 
     public getStateDTO (): ScriptControllerStateDTO {
@@ -150,8 +153,8 @@ export abstract class BaseScriptController implements StepController {
         };
     }
 
-    public toJSON (): Json {
-        return this.getStateDTO() as unknown as Json;
+    public toJSON (): JsonAny {
+        return this.getStateDTO() as unknown as JsonAny;
     }
 
     public isRunning () : boolean {

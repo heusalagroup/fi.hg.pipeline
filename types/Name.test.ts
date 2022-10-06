@@ -1,6 +1,8 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { isName, parseName, stringifyName } from "./Name";
+import PipelineDefaults from "../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isName', () => {
 

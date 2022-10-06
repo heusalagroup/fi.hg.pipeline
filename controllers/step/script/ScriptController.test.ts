@@ -1,8 +1,10 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ScriptController, { isScriptController } from "./ScriptController";
-import PipelineContext from "../../../PipelineContext";
-import PureSystem from "../../../systems/pure/PureSystem";
+import { ScriptController, isScriptController } from "./ScriptController";
+import { PipelineContext } from "../../../PipelineContext";
+import { PureSystem } from "../../../systems/pure/PureSystem";
+import PipelineDefaults from "../../../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isScriptController', () => {
 

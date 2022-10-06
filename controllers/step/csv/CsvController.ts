@@ -1,17 +1,17 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonAny } from "../../../../core/Json";
-import Name from "../../../types/Name";
+import { Name } from "../../../types/Name";
 import { isString } from "../../../../core/modules/lodash";
-import LogService from "../../../../core/LogService";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
+import { LogService } from "../../../../core/LogService";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import { StringUtils } from "../../../../core/StringUtils";
 import { isCsv, parseCsv, stringifyCsv } from "../../../../core/Csv";
-import Controller from "../../types/Controller";
+import { Controller } from "../../types/Controller";
 import { isCsvControllerAction, CsvControllerAction } from "./CsvControllerAction";
-import BaseStepController from "../types/BaseStepController";
-import CsvStep, { isCsvStep, parseCsvStep } from "./CsvStep";
+import { BaseStepController } from "../types/BaseStepController";
+import { CsvStep, isCsvStep, parseCsvStep } from "./CsvStep";
 
 const LOG = LogService.createLogger('CsvController');
 

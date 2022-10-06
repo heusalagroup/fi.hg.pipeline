@@ -1,16 +1,16 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Name from "../../../types/Name";
-import PipelineContext from "../../../PipelineContext";
+import { Name } from "../../../types/Name";
+import { PipelineContext } from "../../../PipelineContext";
 import {
     SystemArgumentList,
     SystemEnvironment
 } from "../../../systems/types/System";
-import Controller from "../../types/Controller";
-import BaseScriptController from "../script/BaseScriptController";
-import GitStep, { isGitStep, parseGitStep } from "./GitStep";
-import GitControllerAction from "./GitControllerAction";
-import ControllerType from "../../types/ControllerType";
+import { Controller } from "../../types/Controller";
+import { BaseScriptController } from "../script/BaseScriptController";
+import { GitStep, isGitStep, parseGitStep } from "./GitStep";
+import { GitControllerAction } from "./GitControllerAction";
+import { ControllerType } from "../../types/ControllerType";
 
 export class GitController extends BaseScriptController {
 

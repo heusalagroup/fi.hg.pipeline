@@ -1,11 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Observer, { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
-import Json from "../../../core/Json";
+import { Observer, ObserverCallback, ObserverDestructor } from "../../../core/Observer";
+import { JsonAny } from "../../../core/Json";
 import Name, { isName } from "../../types/Name";
 import StepController, { isStepController } from "../step/types/StepController";
 import { filter, isArrayOf, map } from "../../../core/modules/lodash";
-import LogService from "../../../core/LogService";
+import { LogService } from "../../../core/LogService";
 import Controller from "../types/Controller";
 import ControllerState from "../types/ControllerState";
 import StepControllerStateDTO from "../step/types/StepControllerStateDTO";
@@ -109,8 +109,8 @@ export class JobController implements Controller {
         };
     }
 
-    public toJSON (): Json {
-        return this.getStateDTO() as unknown as Json;
+    public toJSON (): JsonAny {
+        return this.getStateDTO() as unknown as JsonAny;
     }
 
     public isRunning () : boolean {

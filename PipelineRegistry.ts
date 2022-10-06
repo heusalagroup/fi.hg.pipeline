@@ -1,3 +1,4 @@
+// Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Step from "./types/Step";
@@ -8,8 +9,14 @@ export class PipelineRegistry {
 
     private static _stepControllers : ControllerFactory[] = [];
 
+    public static hasControllers () : boolean {
+        return this._stepControllers.length !== 0;
+    }
+
     public static registerController (controller : ControllerFactory) {
-        this._stepControllers.push(controller);
+        if (find(this._stepControllers, (item) => item === controller) === undefined) {
+            this._stepControllers.push(controller);
+        }
     }
 
     public static findController (model : Step) : ControllerFactory | undefined {
@@ -17,21 +24,16 @@ export class PipelineRegistry {
     }
 
     public static parseControllerModel (model : any) : Step | undefined {
-
         return reduce(
             this._stepControllers,
             (prevResult: any, item: ControllerFactory) => {
-
                 if (prevResult !== undefined) {
                     return prevResult;
                 }
-
                 return item.parseControllerModel(model);
-
             },
             undefined
         );
-
     }
 
 }

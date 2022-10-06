@@ -7,15 +7,15 @@ import {
     ReadonlyJsonArray,
     ReadonlyJsonObject
 } from "../../../../core/Json";
-import Name from "../../../types/Name";
-import LogService from "../../../../core/LogService";
-import ControllerType from "../../types/ControllerType";
-import PipelineContext from "../../../PipelineContext";
-import StringUtils from "../../../../core/StringUtils";
-import BaseStepController from "../types/BaseStepController";
-import ConcatStep, { isConcatStep, parseConcatStep } from "./ConcatStep";
-import Controller from "../../types/Controller";
-import ConcatControllerAction, { isConcatControllerAction } from "./ConcatControllerAction";
+import { Name } from "../../../types/Name";
+import { LogService } from "../../../../core/LogService";
+import { ControllerType } from "../../types/ControllerType";
+import { PipelineContext } from "../../../PipelineContext";
+import { StringUtils } from "../../../../core/StringUtils";
+import { BaseStepController } from "../types/BaseStepController";
+import { ConcatStep, isConcatStep, parseConcatStep } from "./ConcatStep";
+import { Controller } from "../../types/Controller";
+import { ConcatControllerAction, isConcatControllerAction } from "./ConcatControllerAction";
 import { concat, isArray, isArrayOf, reduce } from "../../../../core/modules/lodash";
 
 const LOG = LogService.createLogger('ConcatController');

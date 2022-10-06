@@ -1,11 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import SystemProcess, {
+import {
+    SystemProcess,
     SystemProcessDestructor,
-    SystemProcessEvent, SystemProcessEventCallback
+    SystemProcessEvent,
+    SystemProcessEventCallback
 } from "../types/SystemProcess";
-import Json from "../../../core/Json";
-import Observer from "../../../core/Observer";
+import { JsonAny } from "../../../core/Json";
+import { Observer } from "../../../core/Observer";
 import { SystemArgumentList, SystemEnvironment } from "../types/System";
 
 /**
@@ -39,7 +41,7 @@ export class PureSystemProcess implements SystemProcess {
         return 'PureSystemProcess';
     }
 
-    public toJSON (): Json {
+    public toJSON (): JsonAny {
         return {
             type: 'PureSystemProcess'
         };

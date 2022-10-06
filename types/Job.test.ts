@@ -2,6 +2,8 @@
 
 import { isJob, parseJob, stringifyJob } from "./Job";
 import Script from "../controllers/step/script/Script";
+import PipelineDefaults from "../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isJob', () => {
 

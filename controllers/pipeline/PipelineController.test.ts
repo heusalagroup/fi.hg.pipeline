@@ -6,6 +6,8 @@ import JobController from "../job/JobController";
 import ScriptController from "../step/script/ScriptController";
 import PipelineContext from "../../PipelineContext";
 import PureSystem from "../../systems/pure/PureSystem";
+import PipelineDefaults from "../../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isPipelineController', () => {
 

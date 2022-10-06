@@ -1,13 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import VariablesModel from "./types/VariablesModel";
-import PipelineParameterArray from "./types/PipelineParameterArray";
-import Json, { isJsonObject, parseJson, ReadonlyJsonAny } from "../core/Json";
-import JsonAny from "../core/Json";
+import { VariablesModel } from "./types/VariablesModel";
+import { PipelineParameterArray } from "./types/PipelineParameterArray";
+import {  JsonAny, isJsonObject, parseJson, ReadonlyJsonAny } from "../core/Json";
 import { get, set } from "../core/modules/lodash";
-import StringUtils, { VariableResolverCallback } from "../core/StringUtils";
-import System from "./systems/types/System";
-import LogService from "../core/LogService";
+import { StringUtils, VariableResolverCallback } from "../core/StringUtils";
+import { System } from "./systems/types/System";
+import { LogService } from "../core/LogService";
 
 const LOG = LogService.createLogger('PipelineContext');
 
@@ -94,7 +93,7 @@ export class PipelineContext {
         return 'PipelineContext';
     }
 
-    public toJSON (): Json {
+    public toJSON (): JsonAny {
         return {
             type: 'fi.nor.pipeline.context',
             variables: parseJson(JSON.stringify(this._variables))

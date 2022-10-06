@@ -2,7 +2,7 @@
 
 import Name from "../../types/Name";
 import { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
-import Json from "../../../core/Json";
+import { JsonAny } from "../../../core/Json";
 import { isFunction, isObject } from "../../../core/modules/lodash";
 import ControllerState from "./ControllerState";
 import ControllerStateDTO from "./ControllerStateDTO";
@@ -64,7 +64,7 @@ export interface Controller {
 
     getStateDTO () : ControllerStateDTO;
 
-    toJSON (): Json;
+    toJSON (): JsonAny;
 
 }
 

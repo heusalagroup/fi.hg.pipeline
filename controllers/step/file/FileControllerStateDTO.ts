@@ -1,9 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ControllerType from "../../types/ControllerType";
-import ControllerState from "../../types/ControllerState";
+import { ControllerType } from "../../types/ControllerType";
+import { ControllerState } from "../../types/ControllerState";
 import { hasNoOtherKeys, isRegularObject } from "../../../../core/modules/lodash";
-import StepControllerStateDTO from "../types/StepControllerStateDTO";
+import { StepControllerStateDTO } from "../types/StepControllerStateDTO";
 
 export interface ScriptControllerStateDTO extends StepControllerStateDTO {
 

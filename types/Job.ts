@@ -11,10 +11,8 @@ export const JOB_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
 ]);
 
 export interface Job extends BasePipelineModel {
-
     readonly name  : string;
     readonly steps : readonly Step[];
-
 }
 
 

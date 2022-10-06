@@ -1,15 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Name from "../../../types/Name";
-import PipelineContext from "../../../PipelineContext";
+import { Name } from "../../../types/Name";
+import { PipelineContext } from "../../../PipelineContext";
 import {
     SystemArgumentList,
     SystemEnvironment
 } from "../../../systems/types/System";
-import Controller from "../../types/Controller";
-import Script, { isScript, parseScript } from "./Script";
-import BaseScriptController from "./BaseScriptController";
-import ControllerType from "../../types/ControllerType";
+import { Controller } from "../../types/Controller";
+import { Script, isScript, parseScript } from "./Script";
+import { BaseScriptController } from "./BaseScriptController";
+import { ControllerType } from "../../types/ControllerType";
 
 export class ScriptController extends BaseScriptController {
 

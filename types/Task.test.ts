@@ -1,6 +1,8 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import Task, { copyTask, isTask, parseTask, stringifyTask } from "./Task";
+import PipelineDefaults from "../PipelineDefaults";
+PipelineDefaults.registerControllers();
 
 describe('isTask', () => {
 
