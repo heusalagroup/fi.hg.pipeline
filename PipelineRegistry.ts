@@ -14,13 +14,13 @@ export class PipelineRegistry {
     }
 
     public static registerController (controller : ControllerFactory) {
-        if (find(this._stepControllers, (item) => item === controller) === undefined) {
+        if (find(this._stepControllers, (item: ControllerFactory) : boolean => item === controller) === undefined) {
             this._stepControllers.push(controller);
         }
     }
 
     public static findController (model : Step) : ControllerFactory | undefined {
-        return find(this._stepControllers, (item) => item.isControllerModel(model));
+        return find(this._stepControllers, (item: ControllerFactory): boolean => item.isControllerModel(model));
     }
 
     public static parseControllerModel (model : any) : Step | undefined {

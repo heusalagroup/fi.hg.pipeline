@@ -57,7 +57,7 @@ export class JobController implements Controller {
         this._observer        = new Observer<JobControllerEvent>(`JobController#${this._name}`);
         this._state           = ControllerState.CONSTRUCTED;
         this._changedCallback = this._onChanged.bind(this);
-        this._stepDestructors = map(steps, item => item.onChanged(this._changedCallback));
+        this._stepDestructors = map(steps, (item: StepController) => item.onChanged(this._changedCallback));
 
     }
 
@@ -357,11 +357,11 @@ export class JobController implements Controller {
     }
 
     public getErrorString () : string {
-        return map(this._steps, step => step.getErrorString()).join('\n');
+        return map(this._steps, (step: StepController) => step.getErrorString()).join('\n');
     }
 
     public getOutputString () : string {
-        return map(this._steps, step => step.getOutputString()).join('\n');
+        return map(this._steps, (step: StepController) => step.getOutputString()).join('\n');
     }
 
     public static Event = JobControllerEvent;

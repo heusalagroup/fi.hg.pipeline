@@ -431,11 +431,11 @@ export class StageController implements Controller {
     }
 
     public getErrorString () : string {
-        return map(this._jobs, job => job.getErrorString()).join('\n');
+        return map(this._jobs, (job: JobController) : string => job.getErrorString()).join('\n');
     }
 
     public getOutputString () : string {
-        return map(this._jobs, job => job.getOutputString()).join('\n');
+        return map(this._jobs, (job: JobController) : string => job.getOutputString()).join('\n');
     }
 
 

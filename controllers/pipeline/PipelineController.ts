@@ -345,11 +345,11 @@ export class PipelineController implements Controller {
     }
 
     public getErrorString () : string {
-        return map(this._stages, stage => stage.getErrorString()).join('\n');
+        return map(this._stages, (stage: StageController) : string => stage.getErrorString()).join('\n');
     }
 
     public getOutputString () : string {
-        return map(this._stages, stage => stage.getOutputString()).join('\n');
+        return map(this._stages, (stage: StageController) : string => stage.getOutputString()).join('\n');
     }
 
     public static Event = PipelineControllerEvent;

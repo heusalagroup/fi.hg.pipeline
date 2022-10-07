@@ -65,7 +65,7 @@ export function parseAgentPoolDTO (value: any): AgentPoolDTO | undefined {
     let accounts : any = value?.accounts;
 
     if (isArray(accounts)) {
-        accounts = filter(map(accounts, item => parseAgentAccountDTO(item)), item => !!item);
+        accounts = filter(map(accounts, (item: any) => parseAgentAccountDTO(item)), (item: AgentAccountDTO | undefined) => !!item);
         if (accounts.length === 0) {
             accounts = undefined;
         }
