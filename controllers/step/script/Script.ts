@@ -1,15 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { Step } from "../../../types/Step";
-import {
-    concat,
-    hasNoOtherKeys,
-    isArrayOrUndefinedOf,
-    isRegularObjectOrUndefinedOf,
-    isString, isStringOrUndefined
-} from "../../../../core/modules/lodash";
+import { concat } from "../../../../core/functions/concat";
 import { Name, isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
+import { isString, isStringOrUndefined } from "../../../../core/types/String";
+import { isRegularObjectOrUndefinedOf } from "../../../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../../../core/types/OtherKeys";
+import { isArrayOrUndefinedOf } from "../../../../core/types/Array";
 
 export const SCRIPT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',

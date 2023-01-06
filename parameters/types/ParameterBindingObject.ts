@@ -1,20 +1,18 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { reduce } from "../../../core/functions/reduce";
+import { trim } from "../../../core/functions/trim";
 import {
-    isRegularObject,
-    isString,
-    isStringOrUndefined,
-    isUndefined,
-    keys,
-    reduce,
-    trim
-} from "../../../core/modules/lodash";
-import ParameterBindingType, {
+    ParameterBindingType,
     isParameterBindingType,
     parseParameterBindingType
 } from "./ParameterBindingType";
 import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../core/Json";
-import ParameterBindingMap from "./ParameterBindingMap";
+import { ParameterBindingMap } from "./ParameterBindingMap";
+import { isUndefined } from "../../../core/types/undefined";
+import { isString, isStringOrUndefined } from "../../../core/types/String";
+import { isRegularObject } from "../../../core/types/RegularObject";
+import { keys } from "../../../core/functions/keys";
 
 /**
  * Binding configuration for a resource outside of the Pipeline model.

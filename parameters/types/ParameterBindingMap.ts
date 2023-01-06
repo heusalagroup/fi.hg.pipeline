@@ -1,10 +1,8 @@
-// Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
+// Copyright (c) 2021-2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    isRegularObjectOf,
-    isString,
-    TestCallbackNonStandardOf
-} from "../../../core/modules/lodash";
+import { TestCallbackNonStandardOf } from "../../../core/types/TestCallback";
+import { isString } from "../../../core/types/String";
+import { isRegularObjectOf } from "../../../core/types/RegularObject";
 
 /**
  * Binding configuration for a resource outside of the Pipeline model.

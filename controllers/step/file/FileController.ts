@@ -2,7 +2,6 @@
 
 import { ReadonlyJsonAny } from "../../../../core/Json";
 import { Name } from "../../../types/Name";
-import { isString, isStringOrUndefined } from "../../../../core/modules/lodash";
 import { LogService } from "../../../../core/LogService";
 import { ControllerType } from "../../types/ControllerType";
 import { PipelineContext } from "../../../PipelineContext";
@@ -11,6 +10,7 @@ import { isFileControllerAction, FileControllerAction } from "./FileControllerAc
 import { BaseStepController } from "../types/BaseStepController";
 import { FileStep, isFileStep, parseFileStep } from "./FileStep";
 import { Controller } from "../../types/Controller";
+import { isString, isStringOrUndefined } from "../../../../core/types/String";
 
 const LOG = LogService.createLogger('FileController');
 

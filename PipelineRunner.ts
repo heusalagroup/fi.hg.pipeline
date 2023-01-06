@@ -1,21 +1,21 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Pipeline, { isPipeline } from "./types/Pipeline";
-import Stage, { isStage } from "./types/Stage";
-import Step from "./types/Step";
-import Job, { isJob } from "./types/Job";
+import { Pipeline, isPipeline } from "./types/Pipeline";
+import { Stage, isStage } from "./types/Stage";
+import { Step } from "./types/Step";
+import { Job, isJob } from "./types/Job";
 import { LogService } from "../core/LogService";
 import { PipelineController } from "./controllers/pipeline/PipelineController";
-import { map } from "../core/modules/lodash";
-import StageController from "./controllers/stage/StageController";
-import JobController from "./controllers/job/JobController";
-import StepController from "./controllers/step/types/StepController";
-import Controller from "./controllers/types/Controller";
+import { map } from "../core/functions/map";
+import { StageController } from "./controllers/stage/StageController";
+import { JobController } from "./controllers/job/JobController";
+import { StepController } from "./controllers/step/types/StepController";
+import { Controller } from "./controllers/types/Controller";
 import { ObserverDestructor } from "../core/Observer";
-import PipelineModel from "./types/PipelineModel";
-import PipelineContext from "./PipelineContext";
-import ControllerFactory from "./controllers/types/ControllerFactory";
-import PipelineRegistry from "./PipelineRegistry";
+import { PipelineModel } from "./types/PipelineModel";
+import { PipelineContext } from "./PipelineContext";
+import { ControllerFactory } from "./controllers/types/ControllerFactory";
+import { PipelineRegistry } from "./PipelineRegistry";
 
 const LOG = LogService.createLogger('PipelineRunner');
 

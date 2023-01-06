@@ -1,7 +1,8 @@
 // Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isString, isStringOf, trim } from "../../core/modules/lodash";
+import { trim } from "../../core/functions/trim";
+import { isString, isStringOf } from "../../core/types/String";
 
 export type Name = string;
 

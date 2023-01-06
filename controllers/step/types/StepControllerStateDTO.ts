@@ -2,8 +2,8 @@
 
 import ControllerType from "../../types/ControllerType";
 import ControllerState from "../../types/ControllerState";
-import { isRegularObject } from "../../../../core/modules/lodash";
 import ControllerStateDTO from "../../types/ControllerStateDTO";
+import { isRegularObject } from "../../../../core/types/RegularObject";
 
 export interface StepControllerStateDTO extends ControllerStateDTO {
 

@@ -5,13 +5,16 @@ import { JsonAny } from "../../../../core/Json";
 import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 import { Name, isName } from "../../../types/Name";
 import { StepController } from "./StepController";
-import { isFunction, isPromise, isString, isUndefined } from "../../../../core/modules/lodash";
 import { LogService } from "../../../../core/LogService";
 import { ControllerState } from "../../types/ControllerState";
 import { BaseStepControllerStateDTO } from "./BaseStepControllerStateDTO";
 import { ControllerType } from "../../types/ControllerType";
 import { PipelineContext } from "../../../PipelineContext";
 import { StringUtils } from "../../../../core/StringUtils";
+import { isUndefined } from "../../../../core/types/undefined";
+import { isString } from "../../../../core/types/String";
+import { isFunction } from "../../../../core/types/Function";
+import { isPromise } from "../../../../core/types/Promise";
 
 const LOG = LogService.createLogger('BaseStepController');
 

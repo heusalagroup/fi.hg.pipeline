@@ -1,14 +1,10 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    hasNoOtherKeys,
-    isRegularObject,
-    isStringOrUndefined,
-    isUndefined,
-    parseString
-} from "../../core/modules/lodash";
-
 import AgentAccountModel, { isAgentAccountModel, parseAgentAccountModel } from "../types/AgentAccountModel";
+import { isUndefined } from "../../core/types/undefined";
+import { isStringOrUndefined, parseString } from "../../core/types/String";
+import { isRegularObject } from "../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
 
 export interface AgentAccountDTO {
 

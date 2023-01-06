@@ -1,16 +1,15 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    hasNoOtherKeys,
-    isArrayOf,
-    isRegularObject,
-    isString, isUndefined
-} from "../../core/modules/lodash";
-import PipelineModel, { isPipelineModel } from "./PipelineModel";
-import PipelineRunType, { isPipelineRunType } from "./PipelineRunType";
+import { PipelineModel, isPipelineModel } from "./PipelineModel";
+import { PipelineRunType, isPipelineRunType } from "./PipelineRunType";
 import { isJsonObject, JsonObject } from "../../core/Json";
-import ParameterBindingMap, { isParameterBindingMap } from "../parameters/types/ParameterBindingMap";
-import ParameterBindingString, { isParameterBindingString } from "../parameters/types/ParameterBindingString";
+import { ParameterBindingMap, isParameterBindingMap } from "../parameters/types/ParameterBindingMap";
+import { ParameterBindingString, isParameterBindingString } from "../parameters/types/ParameterBindingString";
+import { isUndefined } from "../../core/types/undefined";
+import { isString } from "../../core/types/String";
+import { isRegularObject } from "../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
+import { isArrayOf } from "../../core/types/Array";
 
 export interface PipelineRunModel {
 

@@ -1,12 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    isArrayOf,
-    isRegularObject,
-    isRegularObjectOf,
-    isString
-} from "../../../core/modules/lodash";
-import SystemProcess from "./SystemProcess";
+import { SystemProcess } from "./SystemProcess";
+import { isString } from "../../../core/types/String";
+import { isRegularObject, isRegularObjectOf } from "../../../core/types/RegularObject";
+import { isArrayOf } from "../../../core/types/Array";
 
 export type SystemArgumentList = readonly string[];
 export type SystemEnvironment = {readonly [key: string]: string};

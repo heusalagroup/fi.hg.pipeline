@@ -1,15 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ParameterType from "../types/ParameterType";
-import {
-    hasNoOtherKeys,
-    isRegularObject,
-    isString,
-    isStringOrUndefined,
-    isUndefined
-} from "../../../core/modules/lodash";
+import { ParameterType } from "../types/ParameterType";
 import { isReadonlyJsonAny, parseJson, ReadonlyJsonAny } from "../../../core/Json";
-import BaseParameterModel from "../types/BaseParameterModel";
+import { BaseParameterModel } from "../types/BaseParameterModel";
+import { isUndefined } from "../../../core/types/undefined";
+import { isString, isStringOrUndefined } from "../../../core/types/String";
+import { isRegularObject } from "../../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../../core/types/OtherKeys";
 
 export interface JsonParameterModel extends BaseParameterModel {
 

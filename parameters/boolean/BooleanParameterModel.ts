@@ -1,15 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ParameterType from "../types/ParameterType";
-import {
-    hasNoOtherKeys,
-    isRegularObject,
-    isString,
-    isStringOrUndefined,
-    isBooleanOrUndefined
-} from "../../../core/modules/lodash";
+import { ParameterType } from "../types/ParameterType";
 import { parseJson } from "../../../core/Json";
-import BaseParameterModel from "../types/BaseParameterModel";
+import { BaseParameterModel } from "../types/BaseParameterModel";
+import { isBooleanOrUndefined } from "../../../core/types/Boolean";
+import { isString, isStringOrUndefined } from "../../../core/types/String";
+import { isRegularObject } from "../../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../../core/types/OtherKeys";
 
 export interface BooleanParameterModel extends BaseParameterModel {
 

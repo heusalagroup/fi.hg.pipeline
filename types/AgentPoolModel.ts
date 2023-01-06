@@ -1,11 +1,8 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    hasNoOtherKeys,
-    isRegularObject,
-    isString,
-    isStringOrUndefined
-} from "../../core/modules/lodash";
+import { isString, isStringOrUndefined } from "../../core/types/String";
+import { isRegularObject } from "../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
 
 export interface AgentPoolModel {
 

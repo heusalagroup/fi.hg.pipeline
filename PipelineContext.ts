@@ -2,8 +2,9 @@
 
 import { VariablesModel } from "./types/VariablesModel";
 import { PipelineParameterArray } from "./types/PipelineParameterArray";
-import {  JsonAny, isJsonObject, parseJson, ReadonlyJsonAny } from "../core/Json";
-import { get, set } from "../core/modules/lodash";
+import { JsonAny, isJsonObject, parseJson, ReadonlyJsonAny } from "../core/Json";
+import { get } from "../core/functions/get";
+import { set } from "../core/functions/set";
 import { StringUtils, VariableResolverCallback } from "../core/StringUtils";
 import { System } from "./systems/types/System";
 import { LogService } from "../core/LogService";

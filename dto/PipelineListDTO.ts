@@ -1,10 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    hasNoOtherKeys, isArrayOf,
-    isRegularObject
-} from "../../core/modules/lodash";
 import PipelineDTO, { isPipelineDTO } from "./PipelineDTO";
+import { isRegularObject } from "../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
+import { isArrayOf } from "../../core/types/Array";
 
 export interface PipelineListDTO {
 

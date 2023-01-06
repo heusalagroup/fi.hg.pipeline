@@ -4,11 +4,6 @@ import { Observer, ObserverCallback, ObserverDestructor } from "../../../../core
 import { JsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 import { Name, isName } from "../../../types/Name";
 import { StepController } from "../types/StepController";
-import {
-    isArrayOf,
-    isRegularObjectOf,
-    isString, isStringOrUndefined
-} from "../../../../core/modules/lodash";
 import { LogService } from "../../../../core/LogService";
 import { ControllerState } from "../../types/ControllerState";
 import { ScriptControllerStateDTO } from "./ScriptControllerStateDTO";
@@ -26,6 +21,9 @@ import {
     SystemArgumentList,
     SystemEnvironment
 } from "../../../systems/types/System";
+import { isString, isStringOrUndefined } from "../../../../core/types/String";
+import { isRegularObjectOf } from "../../../../core/types/RegularObject";
+import { isArrayOf } from "../../../../core/types/Array";
 
 const LOG = LogService.createLogger('BaseScriptController');
 

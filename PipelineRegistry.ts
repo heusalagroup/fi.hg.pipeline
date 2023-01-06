@@ -1,9 +1,10 @@
 // Copyright (c) 2022. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Step from "./types/Step";
-import ControllerFactory from "./controllers/types/ControllerFactory";
-import { find, reduce } from "../core/modules/lodash";
+import { Step } from "./types/Step";
+import { ControllerFactory } from "./controllers/types/ControllerFactory";
+import { find } from "../core/functions/find";
+import { reduce } from "../core/functions/reduce";
 
 export class PipelineRegistry {
 

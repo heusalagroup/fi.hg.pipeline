@@ -2,7 +2,6 @@
 
 import { JsonAny, isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
 import { Name } from "../../../types/Name";
-import { isString } from "../../../../core/modules/lodash";
 import { LogService } from "../../../../core/LogService";
 import { ControllerType } from "../../types/ControllerType";
 import { PipelineContext } from "../../../PipelineContext";
@@ -11,6 +10,7 @@ import { isJsonControllerAction, JsonControllerAction } from "./JsonControllerAc
 import { BaseStepController } from "../types/BaseStepController";
 import { JsonStep, isJsonStep, parseJsonStep } from "./JsonStep";
 import { Controller } from "../../types/Controller";
+import { isString } from "../../../../core/types/String";
 
 const LOG = LogService.createLogger('JsonController');
 

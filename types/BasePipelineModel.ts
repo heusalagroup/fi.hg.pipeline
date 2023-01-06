@@ -1,9 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isRegularObject, isString, isUndefined } from "../../core/modules/lodash";
 import PipelineParameterArray, { isPipelineParameterArray } from "./PipelineParameterArray";
 import VariablesModel, { isVariablesModel } from "./VariablesModel";
 import { ReadonlyJsonAny } from "../../core/Json";
+import { isUndefined } from "../../core/types/undefined";
+import { isString } from "../../core/types/String";
+import { isRegularObject } from "../../core/types/RegularObject";
 
 export interface BasePipelineModel {
 
@@ -30,4 +32,5 @@ export function isBasePipelineModel (value: any): value is BasePipelineModel {
     );
 }
 
+/** @deprecated Default export is deprecated */
 export default BasePipelineModel;

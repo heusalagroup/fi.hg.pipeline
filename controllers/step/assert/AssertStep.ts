@@ -1,14 +1,12 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { Step } from "../../../types/Step";
-import {
-    concat,
-    hasNoOtherKeys,
-    isUndefined
-} from "../../../../core/modules/lodash";
+import { concat } from "../../../../core/functions/concat";
 import { Name, isName } from "../../../types/Name";
 import { BASE_PIPELINE_KEYS, isBasePipelineModel } from "../../../types/BasePipelineModel";
 import { isReadonlyJsonAny, ReadonlyJsonAny } from "../../../../core/Json";
+import { isUndefined } from "../../../../core/types/undefined";
+import { hasNoOtherKeys } from "../../../../core/types/OtherKeys";
 
 export const ASSERT_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',

@@ -1,8 +1,9 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ControllerType, { isControllerType } from "./ControllerType";
-import ControllerState, { isControllerState } from "./ControllerState";
-import { isRegularObject, isString } from "../../../core/modules/lodash";
+import { ControllerType, isControllerType } from "./ControllerType";
+import { ControllerState, isControllerState } from "./ControllerState";
+import { isString } from "../../../core/types/String";
+import { isRegularObject } from "../../../core/types/RegularObject";
 
 export interface ControllerStateDTO {
 

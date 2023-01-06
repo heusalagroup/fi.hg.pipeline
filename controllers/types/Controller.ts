@@ -3,10 +3,11 @@
 import Name from "../../types/Name";
 import { ObserverCallback, ObserverDestructor } from "../../../core/Observer";
 import { JsonAny } from "../../../core/Json";
-import { isFunction, isObject } from "../../../core/modules/lodash";
 import ControllerState from "./ControllerState";
 import ControllerStateDTO from "./ControllerStateDTO";
 import PipelineContext from "../../PipelineContext";
+import { isFunction } from "../../../core/types/Function";
+import { isObject } from "../../../core/types/Object";
 
 export interface Controller {
 

@@ -1,16 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    hasNoOtherKeys,
-    isNumber,
-    isRegularObject,
-    isString,
-    isStringOrUndefined,
-    isUndefined,
-    parseInteger,
-    parseString
-} from "../../core/modules/lodash";
-import ControllerStateDTO, { isControllerStateDTO } from "../controllers/types/ControllerStateDTO";
+import { ControllerStateDTO, isControllerStateDTO } from "../controllers/types/ControllerStateDTO";
+import { isUndefined } from "../../core/types/undefined";
+import { isString, isStringOrUndefined, parseString } from "../../core/types/String";
+import { isNumber, parseInteger } from "../../core/types/Number";
+import { isRegularObject } from "../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
 
 export interface PublicPipelineRunDTO {
     readonly id           : string;

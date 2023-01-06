@@ -1,9 +1,11 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import Step, { isStep } from "./Step";
-import { concat, hasNoOtherKeys, isArrayOf } from "../../core/modules/lodash";
+import { Step, isStep } from "./Step";
+import { concat } from "../../core/functions/concat";
 import { isName } from "./Name";
-import BasePipelineModel, { BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
+import { BasePipelineModel, BASE_PIPELINE_KEYS, isBasePipelineModel } from "./BasePipelineModel";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
+import { isArrayOf } from "../../core/types/Array";
 
 export const JOB_STEP_KEYS = concat(BASE_PIPELINE_KEYS, [
     'name',

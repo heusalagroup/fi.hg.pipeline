@@ -2,7 +2,6 @@
 
 import { ReadonlyJsonAny } from "../../../../core/Json";
 import { Name } from "../../../types/Name";
-import { isString } from "../../../../core/modules/lodash";
 import { LogService } from "../../../../core/LogService";
 import { ControllerType } from "../../types/ControllerType";
 import { PipelineContext } from "../../../PipelineContext";
@@ -12,6 +11,7 @@ import { Controller } from "../../types/Controller";
 import { isCsvControllerAction, CsvControllerAction } from "./CsvControllerAction";
 import { BaseStepController } from "../types/BaseStepController";
 import { CsvStep, isCsvStep, parseCsvStep } from "./CsvStep";
+import { isString } from "../../../../core/types/String";
 
 const LOG = LogService.createLogger('CsvController');
 

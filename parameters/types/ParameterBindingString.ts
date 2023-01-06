@@ -1,9 +1,8 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    isString, trim
-} from "../../../core/modules/lodash";
+import { trim } from "../../../core/functions/trim";
 import { parseJson } from "../../../core/Json";
+import { isString } from "../../../core/types/String";
 
 /**
  * Binding configuration for a resource outside of the Pipeline model.

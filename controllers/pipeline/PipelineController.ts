@@ -4,7 +4,7 @@ import { Observer, ObserverCallback, ObserverDestructor } from "../../../core/Ob
 import { JsonAny } from "../../../core/Json";
 import { Name,isName } from "../../types/Name";
 import { StageController, isStageController, StageControllerDestructor } from "../stage/StageController";
-import { isArrayOf, map } from "../../../core/modules/lodash";
+import { map } from "../../../core/functions/map";
 import { Controller } from "../types/Controller";
 import { LogService } from "../../../core/LogService";
 import { ControllerState } from "../types/ControllerState";
@@ -12,6 +12,7 @@ import { PipelineControllerStateDTO } from "./PipelineControllerStateDTO";
 import { ControllerType } from "../types/ControllerType";
 import { StageControllerStateDTO } from "../stage/StageControllerStateDTO";
 import { PipelineContext } from "../../PipelineContext";
+import { isArrayOf } from "../../../core/types/Array";
 
 const LOG = LogService.createLogger('PipelineController');
 

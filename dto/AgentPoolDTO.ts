@@ -1,19 +1,14 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    filter,
-    hasNoOtherKeys,
-    isArray,
-    isArrayOrUndefinedOf,
-    isRegularObject,
-    isStringOrUndefined,
-    isUndefined,
-    map,
-    parseString
-} from "../../core/modules/lodash";
-
-import AgentPoolModel, { isAgentPoolModel, parseAgentPoolModel } from "../types/AgentPoolModel";
-import AgentAccountDTO, { isAgentAccountDTO, parseAgentAccountDTO } from "./AgentAccountDTO";
+import { filter } from "../../core/functions/filter";
+import { map } from "../../core/functions/map";
+import { AgentPoolModel, isAgentPoolModel, parseAgentPoolModel } from "../types/AgentPoolModel";
+import { AgentAccountDTO, isAgentAccountDTO, parseAgentAccountDTO } from "./AgentAccountDTO";
+import { isUndefined } from "../../core/types/undefined";
+import { isArray, isArrayOrUndefinedOf } from "../../core/types/Array";
+import { isStringOrUndefined, parseString } from "../../core/types/String";
+import { isRegularObject } from "../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../core/types/OtherKeys";
 
 export interface AgentPoolDTO {
 

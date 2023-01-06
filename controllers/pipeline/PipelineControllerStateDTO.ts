@@ -1,10 +1,13 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import ControllerType from "../types/ControllerType";
-import ControllerState, { isControllerState } from "../types/ControllerState";
-import { hasNoOtherKeys, isArrayOf, isRegularObject, isString } from "../../../core/modules/lodash";
-import ControllerStateDTO from "../types/ControllerStateDTO";
-import StageControllerStateDTO, { isStageControllerStateDTO } from "../stage/StageControllerStateDTO";
+import { ControllerType } from "../types/ControllerType";
+import { ControllerState, isControllerState } from "../types/ControllerState";
+import { ControllerStateDTO } from "../types/ControllerStateDTO";
+import { StageControllerStateDTO, isStageControllerStateDTO } from "../stage/StageControllerStateDTO";
+import { isString } from "../../../core/types/String";
+import { isRegularObject } from "../../../core/types/RegularObject";
+import { hasNoOtherKeys } from "../../../core/types/OtherKeys";
+import { isArrayOf } from "../../../core/types/Array";
 
 export interface PipelineControllerStateDTO extends ControllerStateDTO {
 

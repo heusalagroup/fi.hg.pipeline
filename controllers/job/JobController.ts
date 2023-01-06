@@ -2,16 +2,18 @@
 
 import { Observer, ObserverCallback, ObserverDestructor } from "../../../core/Observer";
 import { JsonAny } from "../../../core/Json";
-import Name, { isName } from "../../types/Name";
-import StepController, { isStepController } from "../step/types/StepController";
-import { filter, isArrayOf, map } from "../../../core/modules/lodash";
+import { Name, isName } from "../../types/Name";
+import { StepController, isStepController } from "../step/types/StepController";
+import { filter } from "../../../core/functions/filter";
+import { map } from "../../../core/functions/map";
 import { LogService } from "../../../core/LogService";
-import Controller from "../types/Controller";
-import ControllerState from "../types/ControllerState";
-import StepControllerStateDTO from "../step/types/StepControllerStateDTO";
-import JobControllerStateDTO from "./JobControllerStateDTO";
-import ControllerType from "../types/ControllerType";
-import PipelineContext from "../../PipelineContext";
+import { Controller } from "../types/Controller";
+import { ControllerState } from "../types/ControllerState";
+import { StepControllerStateDTO } from "../step/types/StepControllerStateDTO";
+import { JobControllerStateDTO } from "./JobControllerStateDTO";
+import { ControllerType } from "../types/ControllerType";
+import { PipelineContext } from "../../PipelineContext";
+import { isArrayOf } from "../../../core/types/Array";
 
 const LOG = LogService.createLogger('JobController');
 

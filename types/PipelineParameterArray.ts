@@ -1,10 +1,7 @@
 // Copyright (c) 2021. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import {
-    isArrayOf
-} from "../../core/modules/lodash";
-
 import ParameterModel, { isParameterModel } from "../parameters/ParameterModel";
+import { isArrayOf } from "../../core/types/Array";
 
 export type PipelineParameterArray = ParameterModel[];
 

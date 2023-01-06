@@ -16,7 +16,9 @@ import { BaseStepController } from "../types/BaseStepController";
 import { ConcatStep, isConcatStep, parseConcatStep } from "./ConcatStep";
 import { Controller } from "../../types/Controller";
 import { ConcatControllerAction, isConcatControllerAction } from "./ConcatControllerAction";
-import { concat, isArray, isArrayOf, reduce } from "../../../../core/modules/lodash";
+import { concat } from "../../../../core/functions/concat";
+import { reduce } from "../../../../core/functions/reduce";
+import { isArray, isArrayOf } from "../../../../core/types/Array";
 
 const LOG = LogService.createLogger('ConcatController');
 

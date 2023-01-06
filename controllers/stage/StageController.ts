@@ -8,7 +8,8 @@ import JobController, {
     isJobController,
     JobControllerDestructor
 } from "../job/JobController";
-import { every, filter, isArrayOf, map, some } from "../../../core/modules/lodash";
+import { filter } from "../../../core/functions/filter";
+import { map } from "../../../core/functions/map";
 import { Controller } from "../types/Controller";
 import { LogService } from "../../../core/LogService";
 import { ControllerState } from "../types/ControllerState";
@@ -16,6 +17,9 @@ import { StageControllerStateDTO } from "./StageControllerStateDTO";
 import { JobControllerStateDTO } from "../job/JobControllerStateDTO";
 import { ControllerType } from "../types/ControllerType";
 import { PipelineContext } from "../../PipelineContext";
+import { every } from "../../../core/functions/every";
+import { some } from "../../../core/functions/some";
+import { isArrayOf } from "../../../core/types/Array";
 
 const LOG = LogService.createLogger('StageController');
 
