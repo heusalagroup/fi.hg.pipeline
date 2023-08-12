@@ -369,7 +369,9 @@ export class JobController implements Controller {
     public static Event = JobControllerEvent;
 
 
-    private _onChanged (event: string, eventStep : StepController) : void {
+    private _onChanged (
+        // @ts-ignore
+        event: string, eventStep : StepController) : void {
 
         const prevState = this._state;
 

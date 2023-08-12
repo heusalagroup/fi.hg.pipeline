@@ -451,7 +451,9 @@ export abstract class BaseScriptController implements StepController {
     }
 
 
-    private _onClose (event: SystemProcessEvent, child: SystemProcess) {
+    private _onClose (
+        // @ts-ignore
+        event: SystemProcessEvent, child: SystemProcess) {
 
         const code = child.getExitStatus();
 

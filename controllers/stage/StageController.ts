@@ -443,7 +443,12 @@ export class StageController implements Controller {
     }
 
 
-    private _onChanged (event: string, eventJob : JobController) : void {
+    private _onChanged (
+        // @ts-ignore @todo why unused?
+        event: string,
+        // @ts-ignore @todo why unused?
+        eventJob : JobController
+    ) : void {
 
         const allJobsFinished = every(this._jobs, (job: JobController) : boolean => job.isFinished());
 

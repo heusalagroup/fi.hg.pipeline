@@ -35,6 +35,7 @@ export class PureSystem implements System {
     }
 
     public createDirectory (
+        // @ts-ignore @TODO: Why not used?
         target : string
     ) : System {
         this._notImplementedYet();
@@ -42,18 +43,23 @@ export class PureSystem implements System {
     }
 
     public readFile (
+        // @ts-ignore @TODO: Why not used?
         target : string
     ) : string {
         this._notImplementedYet();
         return '';
     }
 
-    pathExists (path: string) : boolean {
+    pathExists (
+        // @ts-ignore @TODO: Why not used?
+        path: string) : boolean {
         return false;
     }
 
     public writeFile (
+        // @ts-ignore @TODO: Why not used?
         target : string,
+        // @ts-ignore @TODO: Why not used?
         content : string
     ) : System {
         this._notImplementedYet();

@@ -356,7 +356,9 @@ export class PipelineController implements Controller {
     public static Event = PipelineControllerEvent;
 
 
-    private _onChanged (event: string, eventStage : StageController) : void {
+    private _onChanged (
+        // @ts-ignore
+        event: string, eventStage : StageController) : void {
 
         const prevState = this._state;
 
